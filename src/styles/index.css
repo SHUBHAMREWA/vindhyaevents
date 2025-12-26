@@ -1,0 +1,23 @@
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+
+/* Prevent horizontal scrolling */
+body,
+html {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Custom Slick Carousel Styles */
+.slick-dots li {
+  margin: 0;
+}
+
+.slick-dots li button:before {
+  display: none;
+}
+
+.slick-dots li.slick-active div {
+  @apply bg-white scale-150;
+}
