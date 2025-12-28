@@ -31,7 +31,7 @@ export default function Navbar() {
             transition={{ duration: 0.2 }}
           >
             <div>
-              <span className="text-rose-900 font-bold text-2xl tracking-wide block uppercase">Vindhya Events</span>
+              <span className="text-rose-900 font-bold text-2xl tracking-wide block uppercase">Vindhya </span>
               <span className="text-xs text-rose-400 tracking-widest font-semibold">EVENT MANAGEMENT</span>
             </div>
           </motion.div>
