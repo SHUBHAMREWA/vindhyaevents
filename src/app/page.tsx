@@ -40,7 +40,7 @@ export default function Home() {
       <HeroCarousel />
       <BookConsultation />
       <Services />
-      <ContactSection />
+      {/* <ContactSection /> */}
       <Gallery />
       <Testimonials />
       <AboutSection />

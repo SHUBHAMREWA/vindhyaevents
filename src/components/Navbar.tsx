@@ -31,8 +31,10 @@ export default function Navbar() {
             transition={{ duration: 0.2 }}
           >
             <div>
-              <span className="text-rose-900 font-bold text-2xl tracking-wide block uppercase">Vindhya Events </span>
-              <span className="text-xs text-rose-400 tracking-widest font-semibold">EVENT MANAGEMENT</span>
+              <span 
+               style={{ fontFamily: "cursive" }}
+               className="text-rose-900 font-bold text-2xl tracking-wide block ">Vindhya Events </span>
+              <span className="text-xs text-rose-400 tracking-widest font-semibold">Event Management</span>
             </div>
           </motion.div>
 
