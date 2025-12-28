@@ -31,7 +31,7 @@ export default function Navbar() {
             transition={{ duration: 0.2 }}
           >
             <div>
-              <span className="text-rose-900 font-bold text-2xl tracking-wide block uppercase">Vindhya EE </span>
+              <span className="text-rose-900 font-bold text-2xl tracking-wide block uppercase">Vindhya Events </span>
               <span className="text-xs text-rose-400 tracking-widest font-semibold">EVENT MANAGEMENT</span>
             </div>
           </motion.div>
@@ -49,7 +49,7 @@ export default function Navbar() {
               </button>
             ))}
             <button
-              onClick={() => scrollToSection("contact")}
+              onClick={() => scrollToSection("consultation")}
               className="ml-4 px-6 py-2.5 bg-gradient-to-r from-rose-500 to-rose-600 text-white rounded-full hover:from-rose-600 hover:to-rose-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
               Book Now
@@ -87,7 +87,7 @@ export default function Navbar() {
               </button>
             ))}
             <button
-              onClick={() => scrollToSection("contact")}
+              onClick={() => scrollToSection("consultation")}
               className="w-full mt-2 px-6 py-3 bg-gradient-to-r from-rose-500 to-rose-600 text-white hover:from-rose-600 hover:to-rose-700 transition-all duration-300 shadow-lg"
             >
               Book Now

@@ -74,11 +74,11 @@ export default function BookConsultation() {
             <div className="bg-white/80 backdrop-blur-sm p-6 shadow-lg border border-rose-100 rounded-xl">
               <div className="flex items-center gap-4 mb-4">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-rose-100 to-amber-100 flex items-center justify-center">
-                  <Phone className="w-6 h-6 text-rose-500" />
+                  <Phone  className="w-6 h-6 text-rose-500" />
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Call us</p>
-                  <p className="text-gray-900">+91 98765 43210</p>
+                  <a href="tel:9054718053" className="text-gray-900">+919054718053</a>
                 </div>
               </div>
               <div className="flex items-center gap-4">
@@ -87,7 +87,7 @@ export default function BookConsultation() {
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Email us</p>
-                  <p className="text-gray-900">hello@eternalmoments.com</p>
+                  <a href="mailto:vindhyaevent@gmail.com" className="text-gray-900">vindhyaevent@gmail.com</a>
                 </div>
               </div>
             </div>

@@ -7,7 +7,7 @@ export default function TopBanner() {
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-2 text-sm">
           {/* Scrolling Text for Mobile */}
-          <div className="md:hidden w-full overflow-hidden">
+          {/* <div className="md:hidden w-full overflow-hidden">
             <motion.div
               animate={{ x: [0, -1000] }}
               transition={{
@@ -23,7 +23,7 @@ export default function TopBanner() {
                 🎊 Professional Event Planning & Management Services 🎊
               </span>
             </motion.div>
-          </div>
+          </div> */}
 
           {/* Desktop Layout */}
           <div className="hidden md:flex items-center gap-6 flex-wrap justify-between w-full">
@@ -33,18 +33,18 @@ export default function TopBanner() {
               </span>
               <span className="hidden lg:inline-block">|</span>
               <span className="hidden lg:inline-block">
-                ✨ Creating Unforgettable Moments Since Years ✨
+                ✨ आपना के रीति रिवाज सजावत के साथ✨💛 ✨
               </span>
             </div>
             
             <div className="flex items-center gap-4 text-xs">
-              <a href="tel:7898522932" className="flex items-center gap-1.5 hover:text-amber-200 transition-colors">
+              <a href="tel:9054718053" className="flex items-center gap-1.5 hover:text-amber-200 transition-colors">
                 <Phone className="w-3.5 h-3.5" />
-                7898522932
+                +91 9054718053
               </a>
-              <a href="mailto:vindhyaevents@gmail.com" className="flex items-center gap-1.5 hover:text-amber-200 transition-colors">
+              <a href="mailto:vindhyaevent@gmail.com" className="flex items-center gap-1.5 hover:text-amber-200 transition-colors">
                 <Mail className="w-3.5 h-3.5" />
-                vindhyaevents@gmail.com
+                vindhyaevent@gmail.com
               </a>
               <span className="flex items-center gap-1.5">
                 <MapPin className="w-3.5 h-3.5" />
@@ -54,12 +54,15 @@ export default function TopBanner() {
           </div>
 
           {/* Mobile Contact Info */}
-          <div className="md:hidden flex items-center gap-3 text-xs">
-            <a href="tel:7898522932" className="flex items-center gap-1">
-              <Phone className="w-3.5 h-3.5" />
-              7898522932
+          <div className="md:hidden flex items-center gap-1 text-xs">
+            <a href="">
+            आपना के रीति रिवाज सजावत के साथ✨💛
             </a>
-            <a href="mailto:vindhyaevents@gmail.com" className="flex items-center gap-1">
+            <a href="tel:9054718053" className="flex items-center gap-1">
+              <Phone className="w-3.5 h-3.5" />
+              9054718053
+            </a>
+            <a href="mailto:vindhyaevent@gmail.com" className="flex items-center gap-1">
               <Mail className="w-3.5 h-3.5" />
             </a>
             <span className="flex items-center gap-1">
