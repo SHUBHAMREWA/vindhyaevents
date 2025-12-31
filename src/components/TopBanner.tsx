@@ -32,17 +32,20 @@ export default function TopBanner() {
                 🎉 <span className="font-medium">Welcome to Vindhya Events</span>
               </span>
               <span className="hidden lg:inline-block">|</span>
-              <span className="hidden lg:inline-block">
+              <span className="hidden lg:inline-block ">
                 ✨ आपना के रीति रिवाज सजावत के साथ✨💛 ✨
-              </span>
+              </span> 
+
             </div>
             
-            <div className="flex items-center gap-4 text-xs">
-              <a href="tel:9054718053" className="flex items-center gap-1.5 hover:text-amber-200 transition-colors">
-                <Phone className="w-3.5 h-3.5" />
+            <div className="flex items-center gap-4 text-xs">  
+
+
+              <a href="tel:9054718053" className="flex items-center  gap-1.5 hover:text-amber-200 transition-colors">
+                <Phone className="w-3.5 h-3.5 " />
                 +91 9054718053
               </a>
-              <a href="mailto:vindhyaevent@gmail.com" className="flex items-center gap-1.5 hover:text-amber-200 transition-colors">
+              <a href="mailto:vindhyaevent@gmail.com" className="flex  items-center gap-1.5 hover:text-amber-200 transition-colors">
                 <Mail className="w-3.5 h-3.5" />
                 vindhyaevent@gmail.com
               </a>
@@ -54,10 +57,10 @@ export default function TopBanner() {
           </div>
 
           {/* Mobile Contact Info */}
-          <div className="md:hidden flex items-center gap-1 text-xs">
-            <a href="">
-            आपना के रीति रिवाज सजावत के साथ✨💛
-            </a>
+          <div className="md:hidden flex items-center  gap-1 text-xs">
+            <span className="flex items-center flex-wrap">
+            🎊 Professional Event Planning & Management Services 🎊
+            </span>
             <a href="tel:9054718053" className="flex items-center gap-1">
               <Phone className="w-3.5 h-3.5" />
               9054718053
