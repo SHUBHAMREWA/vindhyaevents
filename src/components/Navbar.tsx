@@ -13,7 +13,15 @@ export default function Navbar() {
       element.scrollIntoView({ behavior: "smooth" });
       setMobileMenuOpen(false);
     }
-  };
+  };  
+
+  const TopScroll = ()=>{
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth"
+      });
+  }
 
   return (
     <motion.nav
@@ -31,7 +39,8 @@ export default function Navbar() {
             transition={{ duration: 0.2 }}
           >
             <div>
-              <span 
+              <span  
+               onClick={TopScroll}
                style={{ fontFamily: "cursive" }}
                className="text-rose-900 font-bold text-2xl tracking-wide block ">Vindhya Events </span>
               <span className="text-xs text-rose-400 tracking-widest font-semibold">Event Management</span>
