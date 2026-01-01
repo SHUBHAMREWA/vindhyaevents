@@ -236,6 +236,7 @@ export default function BookConsultation() {
                         <Phone className="w-4 h-4" />
                         Phone Number
                       </label>
+                      
                       <input
                         type="tel"
                         value={formData.phone}
