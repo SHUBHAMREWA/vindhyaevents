@@ -140,6 +140,7 @@ export default function BookConsultation() {
               Let's discuss your dream wedding and how we can make it a reality. Our expert planners are ready to bring your vision to life.
             </p>
 
+
             {/* Benefits */}
             <div className="space-y-3 mb-6">
               {benefits.map((benefit, index) => (
