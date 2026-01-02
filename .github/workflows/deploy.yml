@@ -17,21 +17,23 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            set -e
+
             echo "===== SSH CONNECTED ====="
             whoami
             pwd
-            ls -la
 
             cd /home/ubuntu/vindhyaevents || exit 1
 
             echo "===== INSIDE PROJECT ====="
             pwd
-            ls -la
 
-            git pull origin main
+            git fetch origin
+            git reset --hard origin/main
+            git clean -fd
             git log -1
 
             npm install
             npm run build
 
-            pm2 reload vindhyaevents
+            # pm2 reload vindhyaevents
