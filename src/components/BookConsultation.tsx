@@ -316,7 +316,7 @@ export default function BookConsultation() {
                   </div>
 
                   {/* Submit Button */}
-                  {/* <motion.button
+                  <motion.button
                     type="submit"
                     disabled={!formData.captchaToken}
                     whileHover={formData.captchaToken ? { scale: 1.02 } : {}}
@@ -334,7 +334,7 @@ export default function BookConsultation() {
                     {formData.captchaToken && (
                       <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-rose-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     )}
-                  </motion.button> */}
+                  </motion.button>
 
                   <p className="text-xs text-gray-400 text-center mt-4">
                     Strictly confidential & • No spam promise
