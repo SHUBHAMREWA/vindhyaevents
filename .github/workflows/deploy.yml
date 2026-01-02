@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy via SSH to EC2
+      - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -19,21 +19,28 @@ jobs:
           script: |
             set -e
 
-            echo "===== SSH CONNECTED ====="
+            echo "===== CONNECTED TO EC2 ====="
             whoami
             pwd
 
-            cd /home/ubuntu/vindhyaevents || exit 1
+            # ===== CONFIG =====
+            APP_DIR="/home/ubuntu/vindhyaevents"
+            APP_NAME="vindhyaevents"
 
-            echo "===== INSIDE PROJECT ====="
-            pwd
+            echo "===== GO TO APP DIRECTORY ====="
+            cd $APP_DIR
 
+            echo "===== UPDATE CODE ====="
             git fetch origin
             git reset --hard origin/main
             git clean -fd
             git log -1
 
+            echo "===== INSTALL & BUILD ====="
             npm install
             npm run build
 
-            # pm2 reload vindhyaevents
+            echo "===== PM2 RELOAD OR START ====="
+            pm2 reload $APP_NAME || pm2 start npm --name "$APP_NAME" -- start
+
+            echo "===== DEPLOY FINISHED SUCCESSFULLY ====="
