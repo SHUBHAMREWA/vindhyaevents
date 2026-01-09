@@ -48,7 +48,7 @@ const services = [
 
 export default function Services() {
   return (
-    <section className="py-24 bg-gradient-to-b from-white to-rose-50/30" id="services">
+    <section className="py-24 bg-gradient-to-b from-white/20 to-rose-50/5 backdrop-blur-sm" id="services">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -78,7 +78,7 @@ export default function Services() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 whileHover={{ y: -12 }}
-                className="bg-white shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden group rounded-xl"
+                className="bg-white/10 backdrop-blur-md shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden group rounded-xl border border-white/10"
               >
                 {/* Image */}
                 <div className="relative h-56 overflow-hidden">

@@ -3,7 +3,7 @@ import { Heart } from "lucide-react";
 
 export default function AboutSection() {
   return (
-    <section className="py-20 bg-gradient-to-b from-rose-50/30 to-white" id="about">
+    <section className="py-20 bg-gradient-to-b from-rose-50/5 to-white/20 backdrop-blur-sm" id="about">
       <div className="container mx-auto px-6">
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">

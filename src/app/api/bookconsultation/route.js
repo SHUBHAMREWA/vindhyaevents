@@ -13,17 +13,12 @@ export async function POST(req) {
       date,
       eventType,
       message,
-    } = await req.json();
+    } = await req.json();  
 
-    console.log("Booking Data:", {
-      name,
-      email,
-      phone,
-      date,
-      eventType,
-      message,
-    });
 
+  
+
+  
     // 🔐 CAPTCHA verify
     const verifyRes = await fetch(
       "https://challenges.cloudflare.com/turnstile/v0/siteverify",
@@ -38,6 +33,8 @@ export async function POST(req) {
 
     const captchaResult = await verifyRes.json();
 
+  
+
     if (!captchaResult.success) {
       return NextResponse.json(
         { success: false, message: "Captcha verification failed" },
@@ -45,6 +42,14 @@ export async function POST(req) {
       );
     }
 
+     
+       
+     if(!email) {
+      return NextResponse.json({
+            success : false , 
+            message : "email is not defign"
+      })
+     }
     // 📩 Email send (after captcha success)
     const mailResult = await BookConsultant(
       email, // ✅ better

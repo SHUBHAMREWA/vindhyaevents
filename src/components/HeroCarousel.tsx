@@ -47,13 +47,14 @@ export default function HeroCarousel() {
   const settings = {
     dots: true,
     infinite: true,
-    speed: 1000,
+    speed: 1500,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 5000,
+    autoplaySpeed: 3500,
     fade: true,
     pauseOnHover: false,
+    cssEase: "linear",
     arrows: false, // 👈 hum khud ke arrows use kar rahe hain
     beforeChange: (_: number, next: number) => setCurrentSlide(next),
     appendDots: (dots: React.ReactNode) => (

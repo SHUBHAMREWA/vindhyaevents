@@ -7,6 +7,35 @@ body,
 html {
   overflow-x: hidden;
   max-width: 100vw;
+  /* Fixed Background Image for the entire site */
+  /* Fallback to online image if local 'wedding-bg.jpg' is missing */
+background-image: 
+  linear-gradient(
+    rgba(255, 255, 255, 0.741),
+    rgba(255, 255, 255, 0.225)
+  ),
+  url('/wedding-bg.jpg');
+  
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Lift n8n Chatbot on Mobile to avoid Bottom Nav overlap */
+@media (max-width: 768px) {
+  /* Targeting multiple potential classes n8n might use */
+  .n8n-chat-widget,
+  .n8n-chat-widget-toggle,
+  div[class*="n8n-chat"] {
+    bottom: 90px !important;
+  }
+  
+  /* Also lift the chat window when open */
+  .n8n-chat-widget-window {
+    bottom: 90px !important;
+    height: calc(100% - 100px) !important;
+  }
 }
 
 /* Custom Slick Carousel Styles */

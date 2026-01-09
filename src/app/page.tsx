@@ -34,7 +34,7 @@ const TopBanner = dynamic(() => import("@/components/TopBanner"), {
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-white overflow-x-hidden">
+    <main className="min-h-screen bg-transparent overflow-x-hidden">
       <TopBanner />
       <Navbar />
       <HeroCarousel />

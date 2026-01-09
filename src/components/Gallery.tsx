@@ -32,7 +32,7 @@ export default function Gallery() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <section className="py-20 bg-white" id="gallery">
+    <section className="py-20 bg-white/20 backdrop-blur-sm" id="gallery">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

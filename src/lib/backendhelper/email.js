@@ -128,12 +128,3 @@ export const BookConsultant  = async(to , subject )=>{
 
 
 }
-
-
-(async () => {
-  const res = await BookConsultant(
-    "test@gmail.com",
-    "Consultant Booking"
-  );
-  console.log(res);
-})();

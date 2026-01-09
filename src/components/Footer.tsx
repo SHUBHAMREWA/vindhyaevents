@@ -13,7 +13,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-gradient-to-b from-rose-900 to-rose-950 text-white" id="contact">
+    <footer className="bg-gradient-to-b from-rose-900/40 to-rose-950/50 backdrop-blur-sm text-white" id="contact">
       <div className="container mx-auto px-6 py-16">
         <div className="grid md:grid-cols-4 gap-12 mb-12">
           {/* Logo & Tagline */}

@@ -98,7 +98,7 @@ export default function BlogSection() {
   const regularPosts = filteredPosts.filter((post) => !post.featured);
 
   return (
-    <section id="blog" className="py-20 bg-gradient-to-b from-white via-rose-50/30 to-white">
+    <section id="blog" className="py-20 bg-gradient-to-b from-white/20 via-rose-50/5 to-white/20 backdrop-blur-sm">
       <div className="container mx-auto px-6">
         {/* Header */}
         <motion.div
@@ -236,7 +236,7 @@ export default function BlogSection() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="group cursor-pointer"
             >
-              <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 h-full flex flex-col">
+              <div className="bg-white/20 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 h-full flex flex-col border border-white/10">
                 {/* Image */}
                 <div className="relative h-56 overflow-hidden">
                   <ImageWithFallback

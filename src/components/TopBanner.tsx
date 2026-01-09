@@ -60,19 +60,19 @@ export default function TopBanner() {
           </div>
 
           {/* Mobile Contact Info */}
-          <div className="md:hidden flex items-center  gap-1 text-xs">
-            <span className="flex items-center flex-wrap">
-            🎊 Professional Event Planning & Management Services 🎊
-            </span>
-            <a href="tel:9054718053" className="flex items-center gap-1">
-              <Phone className="w-3.5 h-3.5" />
-              9054718053
+          <div className="md:hidden flex justify-between w-full items-center gap-1 text-[10px] px-1">
+             <a href="tel:9054718053" className="flex items-center gap-1 bg-white/10 px-2 py-1 rounded-full backdrop-blur-sm">
+              <Phone className="w-3 h-3" />
+              <span>Call Now</span>
             </a>
-            <a href="mailto:vindhyaevent@gmail.com" className="flex items-center gap-1">
-              <Mail className="w-3.5 h-3.5" />
+            
+             <a href="mailto:vindhyaevent@gmail.com" className="flex items-center gap-1 bg-white/10 px-2 py-1 rounded-full backdrop-blur-sm">
+              <Mail className="w-3 h-3" />
+              <span>Email</span>
             </a>
+
             <span className="flex items-center gap-1">
-              <MapPin className="w-3.5 h-3.5" />
+              <MapPin className="w-3 h-3" />
               Rewa, MP
             </span>
           </div>

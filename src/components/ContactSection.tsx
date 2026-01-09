@@ -6,7 +6,7 @@ export default function ContactSection() {
   const [showTitle, setShowTitle] = useState(false);
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-rose-50/30">
+    <section className="py-20 bg-gradient-to-b from-white/20 to-rose-50/5 backdrop-blur-sm">
       <div className="container mx-auto px-6">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Left Side - Contact Info */}
