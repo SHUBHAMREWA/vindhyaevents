@@ -11,10 +11,10 @@ html {
   /* Fallback to online image if local 'wedding-bg.jpg' is missing */
 background-image: 
   linear-gradient(
-    rgba(255, 255, 255, 0.741),
-    rgba(255, 255, 255, 0.225)
+    rgba(170, 255, 247, 0.499),
+    rgba(255, 255, 255, 0)
   ),
-  url('/wedding-bg.jpg');
+  url('/background.png');
   
   background-attachment: fixed;
   background-size: cover;
