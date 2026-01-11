@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { Heart, Menu, X, Home, Sparkles, Images, CalendarHeart } from "lucide-react";
 import { useState } from "react";
 import "./cssFile/Navbar.css"  ;
@@ -27,12 +27,20 @@ export default function Navbar() {
 
   return (
     <>
+      {/* Mobile Menu Overlay - Click outside to close */}
+      {mobileMenuOpen && (
+        <div 
+          className="fixed inset-0 z-30 bg-black/10 backdrop-blur-sm md:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
       {/* Top Navbar */}
       <motion.nav
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6 }}
-        className="fixed top-10 left-0 right-0 z-50 border-b border-rose-100 shadow-sm bg-white/60 backdrop-blur-md"
+        className="fixed top-[39px] left-0 right-0 z-50 border-b border-white/20 shadow-sm bg-white/70 backdrop-blur-xl"
       >
         <div className="container mx-auto px-6 py-1">
           <div className="flex items-center justify-between">
@@ -76,30 +84,33 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu Dropdown (Appears from top when toggled) */}
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden mt-4 pb-4 border-t border-rose-100 pt-4"
-            >
-              {menuItems.map((item) => (
-                <button
-                  key={item}
-                  onClick={() => scrollToSection(item)}
-                  className="block w-full text-left px-4 py-3 text-gray-700 hover:bg-rose-50 hover:text-rose-500 transition-all duration-200 rounded-lg mb-1"
-                >
-                  {item}
-                </button>
-              ))}
-              <button
-                onClick={() => scrollToSection("consultation")}
-                className="w-full mt-2 px-6 py-3 bg-gradient-to-r from-rose-500 to-rose-600 text-white hover:from-rose-600 hover:to-rose-700 transition-all duration-300 shadow-lg"
+          <AnimatePresence>
+            {mobileMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0, overflow: "hidden" }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="md:hidden mt-4 pb-4 border-t border-rose-100 pt-4"
               >
-                Book Now
-              </button>
-            </motion.div>
-          )}
+                {menuItems.map((item) => (
+                  <button
+                    key={item}
+                    onClick={() => scrollToSection(item)}
+                    className="block w-full text-left px-4 py-3 text-gray-700 hover:bg-rose-50 hover:text-rose-500 transition-all duration-200 rounded-lg mb-1"
+                  >
+                    {item}
+                  </button>
+                ))}
+                <button
+                  onClick={() => scrollToSection("consultation")}
+                  className="w-full mt-2 px-6 py-3 bg-gradient-to-r from-rose-500 to-rose-600 text-white hover:from-rose-600 hover:to-rose-700 transition-all duration-300 shadow-lg"
+                >
+                  Book Now
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </motion.nav>
 
@@ -128,9 +139,9 @@ export default function Navbar() {
           <div className="relative -top-6 flex flex-col items-center justify-center w-16">
             <button 
               onClick={() => scrollToSection("consultation")}
-              className="flex flex-col items-center justify-center w-14 h-14 bg-gradient-to-r from-rose-500 to-rose-600 text-white rounded-full shadow-lg shadow-rose-200 border-4 border-white transform transition-transform active:scale-95"
+              className="flex flex-col items-center justify-center w-12 h-12 bg-gradient-to-r from-rose-500 to-rose-600 text-white rounded-full shadow-lg shadow-rose-200 border-4 border-white transform transition-transform active:scale-95"
             >
-              <CalendarHeart className="w-6 h-6" />
+              <CalendarHeart className="w-5 h-5" />
             </button>
             <span className="text-[10px] font-medium text-rose-600 mt-1 font-bold">Book</span>
           </div>

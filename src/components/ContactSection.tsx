@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import { Phone, Mail, MapPin, Calendar } from "lucide-react";
+import Image from "next/image";
 
 export default function ContactSection() {
   const [showTitle, setShowTitle] = useState(false);
@@ -19,7 +20,7 @@ export default function ContactSection() {
             <h2 className="text-rose-900 mb-6">
               Contact & Book a Consultation
             </h2>
-            <p className="text-gray-600 mb-8 leading-relaxed">
+            <p className="text-white/90 mb-8 leading-relaxed font-medium">
               Let's bring your dream wedding to life. Our expert team is here to
               guide you through every step of your special day. Book a
               personalized consultation with us today.
@@ -31,7 +32,7 @@ export default function ContactSection() {
                   <Phone className="w-5 h-5 text-rose-500" />
                 </div>
                 <div>
-                  <p className="text-gray-600">+1 (555) 123-4567</p>
+                  <p className="text-white/90 font-medium">+1 (555) 123-4567</p>
                 </div>
               </div>
 
@@ -40,7 +41,7 @@ export default function ContactSection() {
                   <Mail className="w-5 h-5 text-rose-500" />
                 </div>
                 <div>
-                  <p className="text-gray-600">hello@eternalmoments.com</p>
+                  <p className="text-white/90 font-medium">hello@eternalmoments.com</p>
                 </div>
               </div>
 
@@ -49,7 +50,7 @@ export default function ContactSection() {
                   <MapPin className="w-5 h-5 text-rose-500" />
                 </div>
                 <div>
-                  <p className="text-gray-600">
+                  <p className="text-white/90 font-medium">
                     123 Wedding Avenue, Suite 400
                     <br />
                     New York, NY 10001
@@ -78,15 +79,17 @@ export default function ContactSection() {
             className="relative"
           >
             <div
-              className="relative overflow-hidden shadow-2xl cursor-pointer group"
+              className="relative overflow-hidden shadow-2xl cursor-pointer group h-[500px]"
               onClick={() => setShowTitle(!showTitle)}
               onMouseEnter={() => setShowTitle(true)}
               onMouseLeave={() => setShowTitle(false)}
             >
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1613822425851-d4b7756f4f22?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3ZWRkaW5nJTIwc2hvd2Nhc2UlMjBwb3J0Zm9saW98ZW58MXx8fHwxNzY2NDE0NDA3fDA&ixlib=rb-4.1.0&q=80&w=1080"
                 alt="Wedding Showcase"
-                className="w-full h-[500px] object-cover transform group-hover:scale-110 transition-transform duration-700"
+                fill
+                className="object-cover transform group-hover:scale-110 transition-transform duration-700"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
               
               {/* Overlay with Title */}

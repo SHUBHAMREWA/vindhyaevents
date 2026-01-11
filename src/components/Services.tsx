@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { Calendar, Flower2, Camera, Music, Utensils, Sparkles } from "lucide-react";
+import Image from "next/image";
 
 const services = [
   {
@@ -57,11 +58,11 @@ export default function Services() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <div className="inline-block px-6 py-2.5 bg-gradient-to-r from-rose-100 to-amber-100 text-rose-600 mb-6 shadow-sm rounded-full">
+          <div className="inline-block px-6 py-2.5 bg-gradient-to-r from-rose-100/50 to-amber-100/50 text-rose-600 mb-6 shadow-sm rounded-full backdrop-blur-md border border-white/20">
             What We Offer
           </div>
           <h2 className="text-rose-900 mb-6">Our Services</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg leading-relaxed">
+          <p className="text-white/90 max-w-2xl mx-auto text-lg leading-relaxed font-medium">
             Comprehensive wedding services designed to make your special day
             absolutely perfect
           </p>
@@ -78,14 +79,16 @@ export default function Services() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 whileHover={{ y: -12 }}
-                className="bg-white/10 backdrop-blur-md shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden group rounded-xl border border-white/10"
+                className="bg-white/10 backdrop-blur-xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden group rounded-3xl border border-white/20"
               >
                 {/* Image */}
                 <div className="relative h-56 overflow-hidden">
-                  <img
+                  <Image
                     src={service.image}
                     alt={service.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                   
@@ -101,7 +104,7 @@ export default function Services() {
                     {service.title}
                   </h3>
 
-                  <p className="text-gray-600 leading-relaxed mb-4">
+                  <p className="text-white/90 leading-relaxed mb-4 font-medium">
                     {service.description}
                   </p>
 

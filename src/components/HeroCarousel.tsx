@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import Slider from "react-slick";
+import Image from "next/image";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -51,7 +52,7 @@ export default function HeroCarousel() {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 3500,
+    autoplaySpeed: 2000,
     fade: true,
     pauseOnHover: false,
     cssEase: "linear",
@@ -97,15 +98,21 @@ export default function HeroCarousel() {
         {slides.map((slide, index) => (
           <div key={index} className="relative h-[80vh] outline-none">
             {/* Background */}
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${slide.image})` }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
+            {/* Background */}
+            <div className="absolute inset-0">
+              <Image
+                src={slide.image}
+                alt={slide.title}
+                fill
+                priority={index === 0}
+                className="object-cover"
+                quality={90}
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50 z-10" />
             </div>
 
             {/* Text */}
-            <div className="relative h-full flex items-center justify-center text-center px-6">
+            <div className="relative z-30 h-full flex items-center justify-center text-center px-6">
               <AnimatePresence mode="wait">
                 {currentSlide === index && (
                   <motion.div
@@ -120,7 +127,7 @@ export default function HeroCarousel() {
                       initial={{ opacity: 0, y: 40 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.2 }}
-                      className="text-white text-4xl md:text-6xl mb-4"
+                      className="text-white text-4xl md:text-6xl mb-4 font-serif drop-shadow-lg"
                     >
                       {slide.title}
                     </motion.h1>
@@ -129,7 +136,7 @@ export default function HeroCarousel() {
                       initial={{ opacity: 0, y: 40 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4 }}
-                      className="text-white/90 text-xl md:text-2xl"
+                      className="text-white/90 text-xl md:text-2xl font-medium drop-shadow-md"
                     >
                       {slide.subtitle}
                     </motion.p>
@@ -139,8 +146,8 @@ export default function HeroCarousel() {
                       initial={{ opacity: 0, y: 40 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.6 }}
-                      className="mt-8 px-10 py-4 bg-rose-400 text-white rounded-full
-                                 hover:bg-rose-500 transition transform hover:scale-105"
+                      className="mt-8 px-10 py-4 bg-gradient-to-r from-rose-500 to-rose-600 text-white rounded-full
+                                 hover:from-rose-600 hover:to-rose-700 transition transform hover:scale-105 shadow-xl hover:shadow-2xl cursor-pointer"
                     >
                       Book Consultation
                     </motion.button>

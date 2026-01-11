@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { Heart } from "lucide-react";
+import Image from "next/image";
 
 export default function AboutSection() {
   return (
@@ -15,11 +16,13 @@ export default function AboutSection() {
               transition={{ duration: 0.8 }}
               className="relative"
             >
-              <div className="relative overflow-hidden shadow-2xl">
-                <img
+              <div className="relative overflow-hidden shadow-2xl h-[400px]">
+                <Image
                   src="https://images.unsplash.com/photo-1519741497674-611481863552?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800&q=80"
                   alt="About Us"
-                  className="w-full h-[400px] object-cover"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </div>
 
@@ -45,7 +48,7 @@ export default function AboutSection() {
               
               <h2 className="text-rose-900 mb-6">About Eternal Moments</h2>
               
-              <div className="space-y-4 text-gray-600 leading-relaxed">
+              <div className="space-y-4 text-white/90 leading-relaxed font-medium">
                 <p>
                   For over a decade, Eternal Moments has been crafting
                   unforgettable wedding experiences that celebrate love in its
@@ -72,15 +75,15 @@ export default function AboutSection() {
               <div className="mt-8 grid grid-cols-3 gap-6">
                 <div className="text-center">
                   <div className="text-rose-500 mb-2">500+</div>
-                  <p className="text-gray-600 text-sm">Weddings Planned</p>
+                  <p className="text-white/90 text-sm font-medium">Weddings Planned</p>
                 </div>
                 <div className="text-center">
                   <div className="text-rose-500 mb-2">10+</div>
-                  <p className="text-gray-600 text-sm">Years Experience</p>
+                  <p className="text-white/90 text-sm font-medium">Years Experience</p>
                 </div>
                 <div className="text-center">
                   <div className="text-rose-500 mb-2">98%</div>
-                  <p className="text-gray-600 text-sm">Happy Couples</p>
+                  <p className="text-white/90 text-sm font-medium">Happy Couples</p>
                 </div>
               </div>
             </motion.div>

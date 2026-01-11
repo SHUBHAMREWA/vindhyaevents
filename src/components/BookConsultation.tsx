@@ -157,20 +157,20 @@ export default function BookConsultation() {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            {/* Mobile Improved Layout (Side-by-Side Row) */}
-            <div className="flex flex-row md:block gap-2 items-center md:space-y-0 h-full">
+            {/* Mobile Improved Layout (Vertical Stack on Mobile) */}
+            <div className="flex flex-col gap-3 md:block md:space-y-0 h-full">
               
               {/* Left Column: Header + Benefits */}
-              <div className="w-[52%] md:w-full text-left md:text-left shrink-0">
+              <div className="w-full text-left md:text-left shrink-0">
                  <div className="inline-block px-2 py-0.5 md:px-4 md:py-1.5 bg-gradient-to-r from-rose-100 to-amber-100 text-rose-600 mb-1.5 md:mb-4 rounded-full text-[9px] md:text-xs font-medium tracking-wide shadow-sm whitespace-nowrap">
                   ✨ Start Your Journey
                 </div>
                 
-                <h2 className="text-xs md:text-3xl font-serif text-rose-900 mb-2 md:mb-4 leading-tight">
-                  Book Your <span className="text-rose-500">Free</span> <br className="md:hidden" /> Consultation
+                <h2 className="text-[1.35rem] md:text-3xl font-serif text-rose-900 mb-1.5 md:mb-4 leading-tight">
+                  Book Your <span className="text-rose-500">Free</span> Consultation
                 </h2>
                 
-                <p className="hidden lg:block text-gray-600 text-lg mb-6 leading-relaxed">
+                <p className="block text-[11px] md:text-lg text-white/90 mb-3 md:mb-6 leading-relaxed font-medium drop-shadow-sm line-clamp-2 md:line-clamp-none">
                   Let's discuss your dream wedding and how we can make it a reality. Our expert planners are ready to bring your vision to life.
                 </p>
 
@@ -185,50 +185,43 @@ export default function BookConsultation() {
                       transition={{ duration: 0.6, delay: index * 0.1 }}
                       className="flex items-start gap-1.5 md:align-center md:gap-3 bg-transparent md:bg-white/10 md:backdrop-blur-sm p-0 md:p-2 rounded-none md:rounded-lg"
                     >
-                      <div className="w-3.5 h-3.5 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-rose-400 to-amber-400 flex items-center justify-center flex-shrink-0 shadow-sm mt-0.5 md:mt-0">
-                        <CircleCheck className="w-2 h-2 md:w-5 md:h-5 text-white" />
+                      <div className="w-3 h-3 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-rose-400 to-amber-400 flex items-center justify-center flex-shrink-0 shadow-sm mt-0.5 md:mt-0">
+                        <CircleCheck className="w-1.5 h-1.5 md:w-5 md:h-5 text-white" />
                       </div>
-                      <span className="text-[9px] md:text-base text-gray-700 font-medium leading-tight">{benefit}</span>
+                      <span className="text-[10px] md:text-base text-white/90 font-medium leading-tight drop-shadow-sm">{benefit}</span>
                     </motion.div>
                   ))}
                 </div>
               </div>
 
               {/* Right Column: Contact Info Card (Slim Vertical) */}
-              <div className="w-[48%] md:w-full flex md:block self-stretch">
-                 <div className="w-full bg-white/90 backdrop-blur-md p-2 md:p-5 shadow-sm md:shadow-xl border border-rose-100/50 rounded-lg md:rounded-2xl relative overflow-hidden flex flex-col justify-center h-full gap-2 md:gap-4">
+              <div className="w-full flex md:block self-stretch">
+                 <div className="w-full bg-white/95 backdrop-blur-md p-1.5 md:p-5 shadow-sm border border-rose-100/50 rounded-xl md:rounded-2xl relative overflow-hidden grid grid-cols-2 md:flex md:flex-col justify-center h-full gap-1.5 md:gap-4">
                      <div className="absolute top-0 right-0 w-24 h-24 bg-rose-100/50 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 hidden md:block" />
                      
                      {/* Phone */}
-                   <a href="tel:9054718053" className="flex flex-col md:flex-row items-start md:items-center gap-1 md:gap-4 p-1.5 md:p-3 rounded-lg md:rounded-xl hover:bg-rose-50/50 transition-colors border border-transparent hover:border-rose-100">
-                      <div className="flex items-center gap-1.5 md:gap-0">
-                        <div className="w-5 h-5 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-rose-100 to-amber-100 flex items-center justify-center shrink-0">
-                          <Phone  className="w-2.5 h-2.5 md:w-6 md:h-6 text-rose-500" />
-                        </div>
-                        <p className="md:hidden text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Call us</p>
+                   <a href="tel:9054718053" className="flex flex-col items-center text-center md:flex-row md:items-center md:text-left gap-1 md:gap-4 p-1 md:p-3 rounded-lg md:rounded-xl hover:bg-rose-50/50 transition-colors border border-transparent hover:border-rose-100">
+                      <div className="w-5 h-5 md:w-12 md:h-12 rounded-full bg-rose-50 flex items-center justify-center shrink-0">
+                        <Phone  className="w-2.5 h-2.5 md:w-6 md:h-6 text-rose-500" />
                       </div>
-                      <div>
-                        <p className="hidden md:block text-xs text-gray-500 uppercase tracking-wider font-semibold mb-0.5">Call us</p>
-                        <span className="text-[10px] md:text-lg font-bold text-gray-900 block md:inline">+91 90547 18053</span>
+                      <div className="w-full">
+                        <p className="text-[7px] md:text-xs text-gray-500 uppercase tracking-tighter font-bold md:mb-0.5">Call Us</p>
+                        <span className="text-[8px] xs:text-[9.5px] md:text-lg font-bold text-gray-900 leading-none">+91 9054718053</span>
                       </div>
                    </a>
 
                     {/* Email */}
-                   <a href="mailto:vindhyaevent@gmail.com" className="flex flex-col md:flex-row items-start md:items-center gap-1 md:gap-4 p-1.5 md:p-3 rounded-lg md:rounded-xl hover:bg-rose-50/50 transition-colors border border-transparent hover:border-rose-100 overflow-hidden">
-                      <div className="flex items-center gap-1.5 md:gap-0">
-                        <div className="w-5 h-5 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-rose-100 to-amber-100 flex items-center justify-center shrink-0">
-                          <Mail className="w-2.5 h-2.5 md:w-6 md:h-6 text-rose-500" />
-                        </div>
-                        <p className="md:hidden text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Email us</p>
+                   <a href="mailto:vindhyaevent@gmail.com" className="flex flex-col items-center text-center md:flex-row md:items-center md:text-left gap-1 md:gap-4 p-1 md:p-3 rounded-lg md:rounded-xl hover:bg-rose-50/50 transition-colors border border-transparent hover:border-rose-100 overflow-hidden">
+                      <div className="w-5 h-5 md:w-12 md:h-12 rounded-full bg-rose-50 flex items-center justify-center shrink-0">
+                        <Mail className="w-2.5 h-2.5 md:w-6 md:h-6 text-rose-500" />
                       </div>
                       <div className="w-full">
-                         <p className="hidden md:block text-xs text-gray-500 uppercase tracking-wider font-semibold mb-0.5">Email us</p>
-                        <span className="text-[10px] md:text-base font-bold text-gray-900 truncate block">vindhyaevent@gmail.com</span>
+                         <p className="text-[7px] md:text-xs text-gray-500 uppercase tracking-tighter font-bold md:mb-0.5">Email Us</p>
+                        <span className="text-[8px] xs:text-[9.5px] md:text-base font-bold text-gray-900 leading-none truncate block">vindhyaevent@gmail.com</span>
                       </div>
                    </a>
                  </div>
               </div>
-
             </div>
           </motion.div>
           </motion.div>
@@ -242,7 +235,7 @@ export default function BookConsultation() {
           >
             <div className="relative">
               <div className="absolute -inset-1 bg-gradient-to-r from-rose-400 to-amber-400 rounded-2xl blur opacity-20" />
-              <div className="relative bg-white/20 backdrop-blur-xl p-4 md:p-6 lg:p-8 shadow-2xl border border-white/20 rounded-2xl">
+              <div className="relative bg-white/20 backdrop-blur-xl p-4 md:p-6 lg:p-8 shadow-2xl border border-white/20 rounded-3xl">
                 <form onSubmit={handleSubmit} className="space-y-3 md:space-y-5">
                   <div className="text-center mb-6">
                     <h3 className="text-2xl font-serif text-gray-900 mb-2">Let's Plan Your Day</h3>
@@ -392,7 +385,7 @@ export default function BookConsultation() {
                     disabled={!formData.captchaToken}
                     whileHover={formData.captchaToken ? { scale: 1.02 } : {}}
                     whileTap={formData.captchaToken ? { scale: 0.98 } : {}}
-                    className={`w-full py-3 md:py-4 rounded-xl font-medium tracking-wide flex items-center justify-center gap-2 mt-2 md:mt-4 overflow-hidden relative transition-all duration-300 text-sm md:text-base ${
+                    className={`w-full py-3 md:py-4 rounded-full font-medium tracking-wide flex items-center justify-center gap-2 mt-2 md:mt-4 overflow-hidden relative transition-all duration-300 text-sm md:text-base ${
                       formData.captchaToken
                         ? "bg-gradient-to-r from-rose-500 via-rose-600 to-amber-500 text-white shadow-lg hover:shadow-2xl hover:shadow-rose-200 cursor-pointer group"
                         : "bg-gray-100 text-gray-400 cursor-not-allowed grayscale"
@@ -415,14 +408,14 @@ export default function BookConsultation() {
                     type="submit"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full py-3 rounded-xl bg-gradient-to-r from-rose-500 to-rose-600 text-white font-medium shadow-md flex items-center justify-center gap-2 mt-2"
+                    className="w-full py-3 rounded-full bg-gradient-to-r from-rose-500 to-rose-600 text-white font-medium shadow-md flex items-center justify-center gap-2 mt-2"
                   >
                     <Phone className="w-4 h-4" />
                     Request Call Back
                   </motion.button>
                 )}
 
-                <p className="text-xs text-gray-400 text-center mt-2">
+                <p className="text-xs text-white/90 text-center mt-2 font-medium">
                   Strictly confidential & • No spam promise
                 </p>
                 </form>

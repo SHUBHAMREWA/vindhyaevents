@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { useState } from "react";
+import Image from "next/image";
 
 const galleryImages = [
   {
@@ -11,7 +12,7 @@ const galleryImages = [
     title: "Garden Wedding",
   },
   {
-    url: "https://images.unsplash.com/photo-1522673607211-8389f446f1e8?w=800&q=80",
+    url: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800&q=80",
     title: "Elegant Reception",
   },
   {
@@ -45,7 +46,7 @@ export default function Gallery() {
             Portfolio
           </div>
           <h2 className="text-rose-900 mb-4">Our Wedding Gallery</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-white/90 max-w-2xl mx-auto font-medium">
             A glimpse into the beautiful weddings we've had the privilege to create
           </p>
         </motion.div>
@@ -58,14 +59,16 @@ export default function Gallery() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="relative overflow-hidden aspect-[4/3] group cursor-pointer"
+              className="relative overflow-hidden aspect-[4/3] group cursor-pointer rounded-3xl"
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
             >
-              <img
+              <Image
                 src={image.url}
                 alt={image.title}
-                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                fill
+                className="object-cover transform group-hover:scale-110 transition-transform duration-700"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
               
               {/* Overlay */}
@@ -90,7 +93,7 @@ export default function Gallery() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="text-center mt-12"
         >
-          <button className="px-8 py-3 border-2 border-rose-400 text-rose-400 hover:bg-rose-400 hover:text-white transition-all duration-300 transform hover:scale-105">
+          <button className="px-8 py-3 border-2 border-rose-400 text-rose-400 hover:bg-rose-400 hover:text-white transition-all duration-300 transform hover:scale-105 rounded-full font-medium">
             View Full Portfolio
           </button>
         </motion.div>
