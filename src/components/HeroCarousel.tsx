@@ -4,9 +4,26 @@ import Slider from "react-slick";
 import Image from "next/image";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import girlImg from '../../public/girlsimg.png';
+import decoration1img from "../../public/dercoration1.png"
 
 const slides = [
   {
+    
+    image:
+      girlImg ,
+    title: "Creating Timeless Memories",
+    subtitle: "Where Love Stories Begin",
+  },
+    {
+    
+    image:
+      decoration1img ,
+    title: "Creating Timeless Memories",
+    subtitle: "Where Love Stories Begin",
+  },
+  {
+    
     image:
       "https://images.unsplash.com/photo-1724847664960-5060a1ae8259",
     title: "Creating Timeless Memories",
@@ -48,7 +65,7 @@ export default function HeroCarousel() {
   const settings = {
     dots: true,
     infinite: true,
-    speed: 1500,
+    speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
