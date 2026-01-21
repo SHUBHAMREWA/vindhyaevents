@@ -17,6 +17,7 @@ const slides = [
   },
     {
     
+      
     image:
       decoration1img ,
     title: "Creating Timeless Memories",
