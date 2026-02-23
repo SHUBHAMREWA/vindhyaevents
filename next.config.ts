@@ -24,8 +24,6 @@ const nextConfig: NextConfig = {
   compress: true,
   // Optimize production builds
   reactStrictMode: true,
-  // Enable SWC minification (faster than Terser)
-  swcMinify: true,
 };
 
 export default nextConfig;
