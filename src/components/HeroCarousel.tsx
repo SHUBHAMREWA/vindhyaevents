@@ -70,9 +70,10 @@ export default function HeroCarousel() {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 3000,
     fade: true,
     pauseOnHover: false,
+    lazyLoad: 'ondemand' as const,
     cssEase: "linear",
     arrows: false, // 👈 hum khud ke arrows use kar rahe hain
     beforeChange: (_: number, next: number) => setCurrentSlide(next),
@@ -123,8 +124,10 @@ export default function HeroCarousel() {
                 alt={slide.title}
                 fill
                 priority={index === 0}
+                loading={index === 0 ? 'eager' : 'lazy'}
                 className="object-cover"
-                quality={90}
+                quality={index === 0 ? 85 : 70}
+                sizes="100vw"
               />
               <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50 z-10" />
             </div>

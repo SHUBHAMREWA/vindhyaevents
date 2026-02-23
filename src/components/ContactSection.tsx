@@ -88,6 +88,8 @@ export default function ContactSection() {
                 src="https://images.unsplash.com/photo-1613822425851-d4b7756f4f22?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3ZWRkaW5nJTIwc2hvd2Nhc2UlMjBwb3J0Zm9saW98ZW58MXx8fHwxNzY2NDE0NDA3fDA&ixlib=rb-4.1.0&q=80&w=1080"
                 alt="Wedding Showcase"
                 fill
+                loading="lazy"
+                quality={70}
                 className="object-cover transform group-hover:scale-110 transition-transform duration-700"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />

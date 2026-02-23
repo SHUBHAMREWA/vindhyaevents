@@ -21,6 +21,8 @@ export default function AboutSection() {
                   src="https://images.unsplash.com/photo-1519741497674-611481863552?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800&q=80"
                   alt="About Us"
                   fill
+                  loading="lazy"
+                  quality={70}
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
