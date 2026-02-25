@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Outfit } from "next/font/google"; // Elegant & Modern fonts
+import { Playfair_Display, Outfit } from "next/font/google";
 import "@/styles/index.css";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 const playfair = Playfair_Display({ 
   subsets: ["latin"], 
@@ -32,10 +33,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`scroll-smooth ${playfair.variable} ${outfit.variable}`}>
       <body className="antialiased font-sans">
-        {children}
-        
-
-
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

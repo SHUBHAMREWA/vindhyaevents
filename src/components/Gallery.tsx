@@ -33,7 +33,7 @@ export default function Gallery() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <section className="py-20 bg-white/20 backdrop-blur-sm" id="gallery">
+    <section className="py-20 bg-gray-50" id="gallery">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -45,8 +45,8 @@ export default function Gallery() {
           <div className="inline-block px-4 py-2 bg-rose-100 text-rose-600 mb-4">
             Portfolio
           </div>
-          <h2 className="text-rose-900 mb-4">Our Wedding Gallery</h2>
-          <p className="text-white/90 max-w-2xl mx-auto font-medium">
+          <h2 className="mb-4" style={{ color: "var(--c-footer-from)" }}>Our Wedding Gallery</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto font-medium">
             A glimpse into the beautiful weddings we've had the privilege to create
           </p>
         </motion.div>
