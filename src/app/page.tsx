@@ -11,6 +11,11 @@ const TopBanner = dynamic(() => import("@/components/TopBanner"), {
   ssr: false,
 });
 
+// Cursor — desktop only, zero cost on mobile
+const CustomCursor = dynamic(() => import("@/components/CustomCursor"), {
+  ssr: false,
+});
+
 const HeroCarousel = dynamic(() => import("@/components/HeroCarousel"), {
   ssr: false,
   loading: () => (
@@ -105,6 +110,7 @@ export default function Home() {
         <Footer />
       </Suspense>
       <ChatbotWidget />
+      <CustomCursor />
     </main>
   );
 }

@@ -1,50 +1,42 @@
+"use client";
+
 import { useState, useRef } from "react";
-import { motion, AnimatePresence } from "motion/react";
 import Slider from "react-slick";
 import Image from "next/image";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import girlImg from '../../public/girlsimg.png';
-import decoration1img from "../../public/dercoration1.png"
+import girlImg from "../../public/girlsimg.png";
+import decoration1img from "../../public/dercoration1.png";
+import { useTheme } from "@/context/ThemeContext";
 
 const slides = [
   {
-    
-    image:
-      girlImg ,
-    title: "Creating Timeless Memories",
-    subtitle: "Where Love Stories Begin",
-  },
-    {
-    
-      
-    image:
-      decoration1img ,
+    image: girlImg,
     title: "Creating Timeless Memories",
     subtitle: "Where Love Stories Begin",
   },
   {
-    
-    image:
-      "https://images.unsplash.com/photo-1724847664960-5060a1ae8259",
+    image: decoration1img,
+    title: "Celebrating Every Tradition",
+    subtitle: "आपना के रीति रिवाज सजावत के साथ",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1724847664960-5060a1ae8259?w=1200&q=75",
     title: "Creating Timeless Memories",
     subtitle: "Where Love Stories Begin",
   },
   {
-    image:
-      "https://images.unsplash.com/photo-1732382643619-872165f61891",
+    image: "https://images.unsplash.com/photo-1732382643619-872165f61891?w=1200&q=75",
     title: "Your Dream Wedding",
     subtitle: "Beautifully Crafted, Perfectly Planned",
   },
   {
-    image:
-      "https://images.unsplash.com/photo-1719468452346-20bbb785de2e",
+    image: "https://images.unsplash.com/photo-1719468452346-20bbb785de2e?w=1200&q=75",
     title: "Elegant Celebrations",
     subtitle: "Every Detail, Every Moment",
   },
   {
-    image:
-      "https://images.unsplash.com/photo-1640745685024-af4663065ce3",
+    image: "https://images.unsplash.com/photo-1640745685024-af4663065ce3?w=1200&q=75",
     title: "Bespoke Celebrations",
     subtitle: "Blossoming Beauty for Your Special Day",
   },
@@ -52,30 +44,26 @@ const slides = [
 
 export default function HeroCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const sliderRef = useRef<Slider | null>(null);  
-    
+  const sliderRef = useRef<Slider | null>(null);
+  const { theme } = useTheme();
 
-   const scrollToSection = (item: string) => {
-    const sectionId = item.toLowerCase();
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
+  const scrollToSection = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
   const settings = {
     dots: true,
     infinite: true,
-    speed: 500,
+    speed: 600,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 3000,
+    autoplaySpeed: 4500, // longer = less forced reflow
     fade: true,
     pauseOnHover: false,
-    lazyLoad: 'ondemand' as const,
-    cssEase: "linear",
-    arrows: false, // 👈 hum khud ke arrows use kar rahe hain
+    lazyLoad: "ondemand" as const,
+    cssEase: "ease-in-out",
+    arrows: false,
     beforeChange: (_: number, next: number) => setCurrentSlide(next),
     appendDots: (dots: React.ReactNode) => (
       <div className="absolute bottom-8 w-full">
@@ -89,26 +77,20 @@ export default function HeroCarousel() {
 
   return (
     <div className="relative h-[80vh] overflow-hidden mt-[88px]" id="home">
-      {/* PREVIOUS BUTTON */}
+      {/* Prev */}
       <button
         onClick={() => sliderRef.current?.slickPrev()}
-        className="absolute left-6 top-1/2 -translate-y-1/2 z-20
-                   w-12 h-12 rounded-full
-                   bg-white/20 backdrop-blur-md text-white
-                   flex items-center justify-center
-                   hover:bg-white/40 transition"
+        aria-label="Previous slide"
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/20 text-white flex items-center justify-center hover:bg-white/40 transition text-xl font-light"
       >
         ‹
       </button>
 
-      {/* NEXT BUTTON */}
+      {/* Next */}
       <button
         onClick={() => sliderRef.current?.slickNext()}
-        className="absolute right-6 top-1/2 -translate-y-1/2 z-20
-                   w-12 h-12 rounded-full
-                   bg-white/20 backdrop-blur-md text-white
-                   flex items-center justify-center
-                   hover:bg-white/40 transition"
+        aria-label="Next slide"
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/20 text-white flex items-center justify-center hover:bg-white/40 transition text-xl font-light"
       >
         ›
       </button>
@@ -116,66 +98,45 @@ export default function HeroCarousel() {
       <Slider ref={sliderRef} {...settings} className="h-full">
         {slides.map((slide, index) => (
           <div key={index} className="relative h-[80vh] outline-none">
-            {/* Background */}
-            {/* Background */}
+            {/* Image */}
             <div className="absolute inset-0">
               <Image
                 src={slide.image}
                 alt={slide.title}
                 fill
                 priority={index === 0}
-                loading={index === 0 ? 'eager' : 'lazy'}
+                loading={index === 0 ? "eager" : "lazy"}
                 className="object-cover"
-                quality={index === 0 ? 85 : 70}
+                quality={index === 0 ? 85 : 65}
                 sizes="100vw"
+                // fetchPriority for the LCP element
+                {...(index === 0 ? { fetchPriority: "high" } : {})}
               />
               <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50 z-10" />
             </div>
 
-            {/* Text */}
-            <div className="relative z-30 h-full flex items-center justify-center text-center px-6">
-              <AnimatePresence mode="wait">
-                {currentSlide === index && (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -30 }}
-                    transition={{ duration: 0.8 }}
-                    className="max-w-4xl"
+            {/* Text — CSS animation, no Framer Motion */}
+            {currentSlide === index && (
+              <div className="relative z-30 h-full flex items-center justify-center text-center px-6">
+                <div className="hero-text-enter max-w-4xl">
+                  <h1 className="text-white text-4xl md:text-6xl mb-4 font-serif drop-shadow-lg">
+                    {slide.title}
+                  </h1>
+                  <p className="text-white/90 text-xl md:text-2xl font-medium drop-shadow-md mb-8">
+                    {slide.subtitle}
+                  </p>
+                  <button
+                    onClick={() => scrollToSection("consultation")}
+                    className="px-10 py-4 text-white rounded-full transition-all duration-200 hover:opacity-90 hover:scale-105 shadow-xl font-medium"
+                    style={{
+                      background: `linear-gradient(to right, ${theme.vars["--c-primary"]}, ${theme.vars["--c-primary-dark"]})`,
+                    }}
                   >
-                    <motion.h1
-                      initial={{ opacity: 0, y: 40 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 }}
-                      className="text-white text-4xl md:text-6xl mb-4 font-serif drop-shadow-lg"
-                    >
-                      {slide.title}
-                    </motion.h1>
-
-                    <motion.p
-                      initial={{ opacity: 0, y: 40 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.4 }}
-                      className="text-white/90 text-xl md:text-2xl font-medium drop-shadow-md"
-                    >
-                      {slide.subtitle}
-                    </motion.p>
-
-                    <motion.button 
-                     onClick={()=>scrollToSection("consultation")}
-                      initial={{ opacity: 0, y: 40 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.6 }}
-                      className="mt-8 px-10 py-4 bg-gradient-to-r from-rose-500 to-rose-600 text-white rounded-full
-                                 hover:from-rose-600 hover:to-rose-700 transition transform hover:scale-105 shadow-xl hover:shadow-2xl cursor-pointer"
-                    >
-                      Book Consultation
-                    </motion.button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+                    Book Consultation
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         ))}
       </Slider>

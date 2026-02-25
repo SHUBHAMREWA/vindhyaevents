@@ -21,6 +21,15 @@
   --c-footer-to:      #4c0519;
 }
 
+/* ─── Hero slide text animation (replaces Framer Motion) ─── */
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-text-enter {
+  animation: heroFadeUp 0.7s ease forwards;
+}
+
 /* Apple-style Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
@@ -42,6 +51,14 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: var(--font-outfit), system-ui, -apple-system, sans-serif;
+}
+
+/* Hide native cursor on desktop — custom cursor replaces it.
+   Touch devices keep default (custom cursor JS skips them too). */
+@media (pointer: fine) {
+  html, * {
+    cursor: none !important;
+  }
 }
 
 h1, h2, h3, h4, h5, h6, .font-serif {
