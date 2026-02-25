@@ -137,7 +137,9 @@ export default function BookConsultation() {
       />
 
   
-    <section className="py-10 md:py-16 bg-gradient-to-br from-rose-50/20 via-white/10 to-amber-50/5 relative overflow-hidden backdrop-blur-sm" id="consultation">
+    <section className="py-10 md:py-16 relative overflow-hidden" id="consultation"
+      style={{ background: "linear-gradient(135deg, var(--c-bg-soft) 0%, var(--c-bg) 50%, var(--c-bg-soft) 100%)" }}
+    >
       {/* Decorative Elements */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-rose-200/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-200/20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
@@ -162,15 +164,15 @@ export default function BookConsultation() {
               
               {/* Left Column: Header + Benefits */}
               <div className="w-full text-left md:text-left shrink-0">
-                 <div className="inline-block px-2 py-0.5 md:px-4 md:py-1.5 bg-gradient-to-r from-rose-100 to-amber-100 text-rose-600 mb-1.5 md:mb-4 rounded-full text-[9px] md:text-xs font-medium tracking-wide shadow-sm whitespace-nowrap">
+                 <div className="inline-block px-2 py-0.5 md:px-4 md:py-1.5 mb-1.5 md:mb-4 rounded-full text-[9px] md:text-xs font-medium tracking-wide shadow-sm whitespace-nowrap" style={{ background: "var(--c-bg-soft)", color: "var(--c-primary)" }}>
                   ✨ Start Your Journey
                 </div>
                 
-                <h2 className="text-[1.35rem] md:text-3xl font-serif text-rose-900 mb-1.5 md:mb-4 leading-tight">
-                  Book Your <span className="text-rose-500">Free</span> Consultation
+                <h2 className="text-[1.35rem] md:text-3xl font-serif mb-1.5 md:mb-4 leading-tight" style={{ color: "var(--c-footer-from)" }}>
+                  Book Your <span style={{ color: "var(--c-primary)" }}>Free</span> Consultation
                 </h2>
                 
-                <p className="block text-[11px] md:text-lg text-white/90 mb-3 md:mb-6 leading-relaxed font-medium drop-shadow-sm line-clamp-2 md:line-clamp-none">
+                <p className="block text-[11px] md:text-lg text-gray-600 mb-3 md:mb-6 leading-relaxed font-medium line-clamp-2 md:line-clamp-none">
                   Let's discuss your dream wedding and how we can make it a reality. Our expert planners are ready to bring your vision to life.
                 </p>
 
@@ -188,7 +190,7 @@ export default function BookConsultation() {
                       <div className="w-3 h-3 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-rose-400 to-amber-400 flex items-center justify-center flex-shrink-0 shadow-sm mt-0.5 md:mt-0">
                         <CircleCheck className="w-1.5 h-1.5 md:w-5 md:h-5 text-white" />
                       </div>
-                      <span className="text-[10px] md:text-base text-white/90 font-medium leading-tight drop-shadow-sm">{benefit}</span>
+                      <span className="text-[10px] md:text-base text-gray-700 font-medium leading-tight">{benefit}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -235,7 +237,7 @@ export default function BookConsultation() {
           >
             <div className="relative">
               <div className="absolute -inset-1 bg-gradient-to-r from-rose-400 to-amber-400 rounded-2xl blur opacity-20" />
-              <div className="relative bg-white/20 backdrop-blur-xl p-4 md:p-6 lg:p-8 shadow-2xl border border-white/20 rounded-3xl">
+              <div className="relative bg-white p-4 md:p-6 lg:p-8 shadow-2xl border border-gray-100 rounded-3xl">
                 <form onSubmit={handleSubmit} className="space-y-3 md:space-y-5">
                   <div className="text-center mb-6">
                     <h3 className="text-2xl font-serif text-gray-900 mb-2">Let's Plan Your Day</h3>
@@ -408,14 +410,14 @@ export default function BookConsultation() {
                     type="submit"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full py-3 rounded-full bg-gradient-to-r from-rose-500 to-rose-600 text-white font-medium shadow-md flex items-center justify-center gap-2 mt-2"
+                    className="w-full py-3 rounded-full text-white font-medium shadow-md flex items-center justify-center gap-2 mt-2" style={{ background: `linear-gradient(to right, var(--c-primary), var(--c-primary-dark))` }}
                   >
                     <Phone className="w-4 h-4" />
                     Request Call Back
                   </motion.button>
                 )}
 
-                <p className="text-xs text-white/90 text-center mt-2 font-medium">
+                <p className="text-xs text-gray-500 text-center mt-2 font-medium">
                   Strictly confidential & • No spam promise
                 </p>
                 </form>

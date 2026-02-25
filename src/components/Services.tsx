@@ -49,7 +49,7 @@ const services = [
 
 export default function Services() {
   return (
-    <section className="py-24 bg-gradient-to-b from-white/20 to-rose-50/5 backdrop-blur-sm" id="services">
+    <section className="py-24 bg-gradient-to-b from-white to-rose-50/30" id="services">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -58,11 +58,11 @@ export default function Services() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <div className="inline-block px-6 py-2.5 bg-gradient-to-r from-rose-100/50 to-amber-100/50 text-rose-600 mb-6 shadow-sm rounded-full backdrop-blur-md border border-white/20">
+          <div className="inline-block px-6 py-2.5 bg-gradient-to-r from-rose-100 to-amber-100 text-rose-600 mb-6 shadow-sm rounded-full">
             What We Offer
           </div>
-          <h2 className="text-rose-900 mb-6">Our Services</h2>
-          <p className="text-white/90 max-w-2xl mx-auto text-lg leading-relaxed font-medium">
+          <h2 className="mb-6" style={{ color: "var(--c-footer-from)" }}>Our Services</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto text-lg leading-relaxed font-medium">
             Comprehensive wedding services designed to make your special day
             absolutely perfect
           </p>
@@ -79,7 +79,7 @@ export default function Services() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 whileHover={{ y: -12 }}
-                className="bg-white/10 backdrop-blur-xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden group rounded-3xl border border-white/20"
+                className="bg-white shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden group rounded-3xl border border-gray-100"
               >
                 {/* Image */}
                 <div className="relative h-56 overflow-hidden">
@@ -102,15 +102,15 @@ export default function Services() {
 
                 {/* Content */}
                 <div className="p-6">
-                  <h3 className="text-rose-900 mb-3">
+                  <h3 className="mb-3" style={{ color: "var(--c-footer-from)" }}>
                     {service.title}
                   </h3>
 
-                  <p className="text-white/90 leading-relaxed mb-4 font-medium">
+                  <p className="text-gray-600 leading-relaxed mb-4 font-medium">
                     {service.description}
                   </p>
 
-                  <button className="text-rose-500 hover:text-rose-600 flex items-center gap-2 group-hover:gap-3 transition-all duration-300 font-medium">
+                  <button className="flex items-center gap-2 group-hover:gap-3 transition-all duration-300 font-medium hover:opacity-80" style={{ color: "var(--c-primary)" }}>
                     Learn More
                     <svg
                       className="w-4 h-4"

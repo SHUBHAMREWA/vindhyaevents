@@ -3,7 +3,9 @@ import { Phone, Mail, MapPin } from "lucide-react";
 
 export default function TopBanner() {
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-rose-600 via-pink-600 to-rose-600 text-white h-[40px] flex items-center overflow-hidden">
+    <div className="fixed top-0 left-0 right-0 z-50 text-white h-[40px] flex items-center overflow-hidden"
+      style={{ background: "linear-gradient(to right, var(--c-banner-from), var(--c-primary), var(--c-banner-to))" }}
+    >
       <div className="container mx-auto px-6 h-full flex items-center py-0">
         <div className="flex flex-col md:flex-row items-center justify-between gap-2 text-sm">
           {/* Scrolling Text for Mobile */}

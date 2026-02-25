@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function AboutSection() {
   return (
-    <section className="py-20 bg-gradient-to-b from-rose-50/5 to-white/20 backdrop-blur-sm" id="about">
+    <section className="py-20 bg-gradient-to-b from-rose-50/30 to-white" id="about">
       <div className="container mx-auto px-6">
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -50,7 +50,7 @@ export default function AboutSection() {
               
               <h2 className="text-rose-900 mb-6">About Eternal Moments</h2>
               
-              <div className="space-y-4 text-white/90 leading-relaxed font-medium">
+              <div className="space-y-4 text-gray-600 leading-relaxed font-medium">
                 <p>
                   For over a decade, Eternal Moments has been crafting
                   unforgettable wedding experiences that celebrate love in its
@@ -77,15 +77,15 @@ export default function AboutSection() {
               <div className="mt-8 grid grid-cols-3 gap-6">
                 <div className="text-center">
                   <div className="text-rose-500 mb-2">500+</div>
-                  <p className="text-white/90 text-sm font-medium">Weddings Planned</p>
+                  <p className="text-gray-600 text-sm font-medium">Weddings Planned</p>
                 </div>
                 <div className="text-center">
                   <div className="text-rose-500 mb-2">10+</div>
-                  <p className="text-white/90 text-sm font-medium">Years Experience</p>
+                  <p className="text-gray-600 text-sm font-medium">Years Experience</p>
                 </div>
                 <div className="text-center">
                   <div className="text-rose-500 mb-2">98%</div>
-                  <p className="text-white/90 text-sm font-medium">Happy Couples</p>
+                  <p className="text-gray-600 text-sm font-medium">Happy Couples</p>
                 </div>
               </div>
             </motion.div>

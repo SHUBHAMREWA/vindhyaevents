@@ -7,7 +7,7 @@ export default function ContactSection() {
   const [showTitle, setShowTitle] = useState(false);
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white/20 to-rose-50/5 backdrop-blur-sm">
+    <section className="py-20 bg-gradient-to-b from-white to-rose-50/30">
       <div className="container mx-auto px-6">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Left Side - Contact Info */}
@@ -20,7 +20,7 @@ export default function ContactSection() {
             <h2 className="text-rose-900 mb-6">
               Contact & Book a Consultation
             </h2>
-            <p className="text-white/90 mb-8 leading-relaxed font-medium">
+            <p className="text-gray-600 mb-8 leading-relaxed font-medium">
               Let's bring your dream wedding to life. Our expert team is here to
               guide you through every step of your special day. Book a
               personalized consultation with us today.
@@ -32,7 +32,7 @@ export default function ContactSection() {
                   <Phone className="w-5 h-5 text-rose-500" />
                 </div>
                 <div>
-                  <p className="text-white/90 font-medium">+1 (555) 123-4567</p>
+                  <p className="text-gray-600 font-medium">+1 (555) 123-4567</p>
                 </div>
               </div>
 
@@ -41,7 +41,7 @@ export default function ContactSection() {
                   <Mail className="w-5 h-5 text-rose-500" />
                 </div>
                 <div>
-                  <p className="text-white/90 font-medium">hello@eternalmoments.com</p>
+                  <p className="text-gray-600 font-medium">hello@eternalmoments.com</p>
                 </div>
               </div>
 
@@ -50,7 +50,7 @@ export default function ContactSection() {
                   <MapPin className="w-5 h-5 text-rose-500" />
                 </div>
                 <div>
-                  <p className="text-white/90 font-medium">
+                  <p className="text-gray-600 font-medium">
                     123 Wedding Avenue, Suite 400
                     <br />
                     New York, NY 10001

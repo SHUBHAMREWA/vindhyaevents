@@ -2,6 +2,25 @@
 @import './tailwind.css';
 @import './theme.css';
 
+/* ─── Default Theme Variables (Rose) ─────────────────────── */
+:root {
+  --c-primary:        #f43f5e;
+  --c-primary-dark:   #e11d48;
+  --c-primary-light:  #fda4af;
+  --c-secondary:      #f59e0b;
+  --c-accent:         #fb7185;
+  --c-bg:             #ffffff;
+  --c-bg-soft:        #fff1f2;
+  --c-surface:        #ffffff;
+  --c-text:           #1c1917;
+  --c-text-muted:     #6b7280;
+  --c-border:         #fecdd3;
+  --c-banner-from:    #e11d48;
+  --c-banner-to:      #f43f5e;
+  --c-footer-from:    #881337;
+  --c-footer-to:      #4c0519;
+}
+
 /* Apple-style Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
@@ -34,19 +53,7 @@ body,
 html {
   overflow-x: hidden;
   max-width: 100vw;
-  /* Fixed Background Image for the entire site */
-  /* Fallback to online image if local 'wedding-bg.jpg' is missing */
-background-image: 
-  linear-gradient(
-    rgba(170, 255, 247, 0.499),
-    rgba(255, 255, 255, 0)
-  ),
-  url('/background.png');
-  
-  background-attachment: fixed;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-color: #fff;
 }
 
 /* Lift n8n Chatbot on Mobile to avoid Bottom Nav overlap */
