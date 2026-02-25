@@ -3,39 +3,60 @@ import { Playfair_Display, Outfit } from "next/font/google";
 import "@/styles/index.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 
-const playfair = Playfair_Display({ 
-  subsets: ["latin"], 
+const playfair = Playfair_Display({
+  subsets: ["latin"],
   variable: "--font-playfair",
-  display: "swap" 
+  display: "swap",
+  preload: true,
 });
 
-const outfit = Outfit({ 
-  subsets: ["latin"], 
+const outfit = Outfit({
+  subsets: ["latin"],
   variable: "--font-outfit",
-  display: "swap" 
+  display: "swap",
+  preload: true,
 });
 
 export const metadata: Metadata = {
-  title: "Elegant Wedding Website | Timeless Memories",
-  description: "Beautifully Crafted, Perfectly Planned Wedding Events and Decor Services.",
-   icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "48x48", type: "image/png" },
-    ],
+  title: "Vindhya Events | Wedding & Event Management Rewa MP",
+  description:
+    "Professional wedding and event management services in Rewa, Madhya Pradesh. Creating unforgettable celebrations with traditional elegance.",
+  icons: {
+    icon: [{ url: "/favicon.ico", sizes: "48x48", type: "image/png" }],
   },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`scroll-smooth ${playfair.variable} ${outfit.variable}`}>
+    <html
+      lang="en"
+      className={`scroll-smooth ${playfair.variable} ${outfit.variable}`}
+    >
+      <head>
+        {/* ── Preconnect to external origins ── */}
+        <link rel="preconnect" href="https://images.unsplash.com" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+
+        {/* ── Preload LCP hero image (first carousel slide - local PNG) ── */}
+        <link
+          rel="preload"
+          as="image"
+          href="/girlsimg.png"
+          fetchPriority="high"
+        />
+
+        {/* ── Prefetch Unsplash images used in hero carousel ── */}
+        <link rel="prefetch" href="https://images.unsplash.com/photo-1724847664960-5060a1ae8259?w=1200&q=75" as="image" />
+        <link rel="prefetch" href="https://images.unsplash.com/photo-1732382643619-872165f61891?w=1200&q=75" as="image" />
+
+        {/* ── Viewport ── */}
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+      </head>
       <body className="antialiased font-sans">
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

@@ -1,7 +1,8 @@
 "use client";
 
-import { motion, AnimatePresence } from "motion/react";
-import { Heart, Menu, X, Home, Sparkles, Images, CalendarHeart } from "lucide-react";
+// ⚡ NO Framer Motion here — Navbar is above-the-fold critical path.
+//    All animations use CSS only to keep TBT low.
+import { Menu, X, Home, Sparkles, Images, CalendarHeart } from "lucide-react";
 import { useState } from "react";
 import ThemePicker from "./ThemePicker";
 import { useTheme } from "@/context/ThemeContext";
@@ -31,26 +32,21 @@ export default function Navbar() {
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 z-30 bg-black/10 backdrop-blur-sm md:hidden"
+          className="fixed inset-0 z-30 bg-black/10 md:hidden"
           onClick={() => setMobileMenuOpen(false)}
         />
       )}
 
-      {/* Top Navbar */}
-      <motion.nav
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        className="fixed top-[39px] left-0 right-0 z-50 border-b shadow-sm bg-white"
+      {/* Top Navbar — CSS slide-in (no Framer Motion) */}
+      <nav
+        className="navbar-slide fixed top-[39px] left-0 right-0 z-50 border-b shadow-sm bg-white"
         style={{ borderColor: theme.vars["--c-border"] }}
       >
         <div className="container mx-auto px-6 py-1">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <motion.div
-              className="flex items-center gap-3 cursor-pointer"
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.2 }}
+            <div
+              className="flex items-center gap-3 cursor-pointer select-none"
               onClick={TopScroll}
             >
               <div>
@@ -67,7 +63,7 @@ export default function Navbar() {
                   Event Management
                 </span>
               </div>
-            </motion.div>
+            </div>
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center gap-1">
@@ -75,144 +71,131 @@ export default function Navbar() {
                 <button
                   key={item}
                   onClick={() => scrollToSection(item)}
-                  className="relative px-4 py-2 text-gray-700 transition-all duration-300 group hover:opacity-80"
-                  style={{ ["--hover-color" as string]: theme.vars["--c-primary"] }}
+                  className="nav-link relative px-4 py-2 text-gray-700 transition-colors duration-200"
                   onMouseEnter={(e) => (e.currentTarget.style.color = theme.vars["--c-primary"])}
                   onMouseLeave={(e) => (e.currentTarget.style.color = "")}
                 >
                   {item}
                   <span
-                    className="absolute bottom-0 left-0 w-0 h-0.5 group-hover:w-full transition-all duration-300"
+                    className="nav-underline absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300"
                     style={{ backgroundColor: theme.vars["--c-primary"] }}
                   />
                 </button>
               ))}
 
-              {/* Theme Picker */}
               <div className="ml-2">
                 <ThemePicker />
               </div>
 
-              {/* Book Now CTA */}
               <button
                 onClick={() => scrollToSection("consultation")}
-                className="ml-3 px-6 py-2.5 text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-medium"
+                className="ml-3 px-6 py-2.5 text-white rounded-full transition-opacity duration-200 shadow-lg hover:opacity-90 transform hover:-translate-y-0.5 font-medium"
                 style={{
                   background: `linear-gradient(to right, ${theme.vars["--c-primary"]}, ${theme.vars["--c-primary-dark"]})`,
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
-                onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
               >
                 Book Now
               </button>
             </div>
 
-            {/* Hidden Mobile div placeholder */}
             <div className="md:hidden" />
           </div>
 
-          {/* Mobile Menu Dropdown */}
-          <AnimatePresence>
-            {mobileMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, height: 0, overflow: "hidden" }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="md:hidden mt-2 pb-2 border-t pt-2"
-                style={{ borderColor: theme.vars["--c-border"] }}
-              >
-                {menuItems.map((item) => (
-                  <button
-                    key={item}
-                    onClick={() => scrollToSection(item)}
-                    className="block w-full text-left px-4 py-3 text-gray-700 transition-all duration-200 rounded-lg mb-1 hover:opacity-80"
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = theme.vars["--c-bg-soft"];
-                      e.currentTarget.style.color = theme.vars["--c-primary"];
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = "";
-                      e.currentTarget.style.color = "";
-                    }}
-                  >
-                    {item}
-                  </button>
-                ))}
-
-                {/* Theme Picker Inline for Mobile */}
-                <ThemePicker mobileInline />
-
+          {/* Mobile Dropdown — CSS transition, no Framer Motion */}
+          <div
+            className="md:hidden overflow-hidden transition-all duration-300 ease-in-out"
+            style={{ maxHeight: mobileMenuOpen ? "600px" : "0px" }}
+          >
+            <div
+              className="mt-2 pb-2 border-t pt-2"
+              style={{ borderColor: theme.vars["--c-border"] }}
+            >
+              {menuItems.map((item) => (
                 <button
-                  onClick={() => scrollToSection("consultation")}
-                  className="w-full mt-2 px-6 py-3 text-white transition-all duration-300 shadow-lg rounded-xl font-medium"
-                  style={{
-                    background: `linear-gradient(to right, ${theme.vars["--c-primary"]}, ${theme.vars["--c-primary-dark"]})`,
+                  key={item}
+                  onClick={() => scrollToSection(item)}
+                  className="block w-full text-left px-4 py-3 text-gray-700 transition-colors duration-200 rounded-lg mb-1"
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = theme.vars["--c-bg-soft"];
+                    e.currentTarget.style.color = theme.vars["--c-primary"];
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "";
+                    e.currentTarget.style.color = "";
                   }}
                 >
-                  Book Now
+                  {item}
                 </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
+              ))}
+
+              <ThemePicker mobileInline />
+
+              <button
+                onClick={() => scrollToSection("consultation")}
+                className="w-full mt-2 px-6 py-3 text-white transition-opacity duration-200 shadow-lg rounded-xl font-medium hover:opacity-90"
+                style={{
+                  background: `linear-gradient(to right, ${theme.vars["--c-primary"]}, ${theme.vars["--c-primary-dark"]})`,
+                }}
+              >
+                Book Now
+              </button>
+            </div>
+          </div>
         </div>
-      </motion.nav>
+      </nav>
 
       {/* Mobile Bottom Navigation */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-[0_-5px_10px_rgba(0,0,0,0.05)] pb-1">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-[0_-4px_12px_rgba(0,0,0,0.06)] pb-1">
         <div className="relative flex justify-between items-end px-4 h-16 w-full">
-
-          {/* Home */}
           <button
             onClick={TopScroll}
-            className="flex flex-col items-center justify-center w-14 h-full pb-1 text-gray-500 space-y-1 transition-colors"
-            onMouseEnter={(e) => (e.currentTarget.style.color = theme.vars["--c-primary"])}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "")}
+            className="flex flex-col items-center justify-center w-14 h-full pb-1 text-gray-500 space-y-1 transition-colors duration-150 active:scale-95"
+            onTouchStart={(e) => (e.currentTarget.style.color = theme.vars["--c-primary"])}
+            onTouchEnd={(e) => (e.currentTarget.style.color = "")}
           >
             <Home className="w-5 h-5" />
             <span className="text-[10px] font-medium">Home</span>
           </button>
 
-          {/* Services */}
           <button
-            onClick={() => scrollToSection("Services")}
-            className="flex flex-col items-center justify-center w-14 h-full pb-1 text-gray-500 space-y-1 transition-colors"
-            onMouseEnter={(e) => (e.currentTarget.style.color = theme.vars["--c-primary"])}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "")}
+            onClick={() => scrollToSection("services")}
+            className="flex flex-col items-center justify-center w-14 h-full pb-1 text-gray-500 space-y-1 transition-colors duration-150 active:scale-95"
+            onTouchStart={(e) => (e.currentTarget.style.color = theme.vars["--c-primary"])}
+            onTouchEnd={(e) => (e.currentTarget.style.color = "")}
           >
             <Sparkles className="w-5 h-5" />
             <span className="text-[10px] font-medium">Services</span>
           </button>
 
-          {/* Center Floating Book Button */}
-          <div className="relative -top-6 flex flex-col items-center justify-center w-16">
+          {/* Center FAB */}
+          <div className="relative -top-5 flex flex-col items-center w-16">
             <button
               onClick={() => scrollToSection("consultation")}
-              className="flex flex-col items-center justify-center w-12 h-12 text-white rounded-full shadow-lg border-4 border-white transform transition-transform active:scale-95"
-              style={{ background: `linear-gradient(to right, ${theme.vars["--c-primary"]}, ${theme.vars["--c-primary-dark"]})` }}
+              className="w-12 h-12 text-white rounded-full shadow-lg border-4 border-white active:scale-90 transition-transform duration-150"
+              style={{
+                background: `linear-gradient(to right, ${theme.vars["--c-primary"]}, ${theme.vars["--c-primary-dark"]})`,
+              }}
             >
-              <CalendarHeart className="w-5 h-5" />
+              <CalendarHeart className="w-5 h-5 mx-auto" />
             </button>
             <span className="text-[10px] font-bold mt-1" style={{ color: theme.vars["--c-primary"] }}>
               Book
             </span>
           </div>
 
-          {/* Gallery */}
           <button
-            onClick={() => scrollToSection("Gallery")}
-            className="flex flex-col items-center justify-center w-14 h-full pb-1 text-gray-500 space-y-1 transition-colors"
-            onMouseEnter={(e) => (e.currentTarget.style.color = theme.vars["--c-primary"])}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "")}
+            onClick={() => scrollToSection("gallery")}
+            className="flex flex-col items-center justify-center w-14 h-full pb-1 text-gray-500 space-y-1 transition-colors duration-150 active:scale-95"
+            onTouchStart={(e) => (e.currentTarget.style.color = theme.vars["--c-primary"])}
+            onTouchEnd={(e) => (e.currentTarget.style.color = "")}
           >
             <Images className="w-5 h-5" />
             <span className="text-[10px] font-medium">Gallery</span>
           </button>
 
-          {/* Menu Toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="flex flex-col items-center justify-center w-14 h-full pb-1 space-y-1 transition-colors"
+            className="flex flex-col items-center justify-center w-14 h-full pb-1 space-y-1 transition-colors duration-150"
             style={{ color: mobileMenuOpen ? theme.vars["--c-primary"] : "" }}
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
