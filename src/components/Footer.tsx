@@ -1,17 +1,24 @@
+"use client";
+
+import Link from "next/link";
 import { Heart, Mail, Phone, MapPin, Instagram, Facebook, Twitter } from "lucide-react";
 
-export default function Footer() {
-  const quickLinks = [
-    "Home",
-    "Services",
-    "Gallery",
-    "About Us",
-    "Contact",
-    "Blog",
-    "FAQ",
-    "Testimonials",
-  ];
+// ── Link config: href = route or anchor ──────────────────────
+const quickLinks = [
+  { label: "Home",         href: "/"             },
+  { label: "Services",     href: "/#services"    },
+  { label: "Gallery",      href: "/gallery"      },
+  { label: "About Us",     href: "/about"        },
+];
 
+const moreLinks = [
+  { label: "Contact",      href: "/#contact"     },
+  { label: "Blog",         href: "/blog"         },
+  { label: "Testimonials", href: "/#testimonials"  },
+  { label: "Book Now",     href: "/#consultation" },
+];
+
+export default function Footer() {
   return (
     <footer
       className="text-white"
@@ -20,46 +27,60 @@ export default function Footer() {
     >
       <div className="container mx-auto px-6 py-16">
         <div className="grid md:grid-cols-4 gap-12 mb-12">
+
           {/* Logo & Tagline */}
           <div className="md:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <Heart className="w-8 h-8 text-rose-400 fill-rose-400" />
-              <span className="text-white">Eternal Moments</span>
-            </div>
-            <p className="text-rose-200 text-sm leading-relaxed">
+            <Link href="/" className="flex items-center gap-2 mb-4 w-fit">
+              <Heart className="w-8 h-8 fill-current" style={{ color: "var(--c-accent, #fb7185)" }} />
+              <span className="text-white font-serif text-lg font-semibold">Vindhya Events</span>
+            </Link>
+            <p className="text-white/60 text-sm leading-relaxed">
               Creating timeless memories and celebrating love stories since 2013.
-              Your dream wedding starts here.
+              Your dream wedding starts here — आपके सपनों की शादी।
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-white mb-4">Quick Links</h4>
-            <ul className="space-y-2">
-              {quickLinks.slice(0, 4).map((link) => (
-                <li key={link}>
-                  <a
-                    href={`#${link.toLowerCase().replace(" ", "-")}`}
-                    className="text-rose-200 hover:text-white transition-colors duration-300 text-sm"
+            <h4 className="text-white font-semibold mb-5 text-sm uppercase tracking-widest opacity-80">
+              Quick Links
+            </h4>
+            <ul className="space-y-3">
+              {quickLinks.map(({ label, href }) => (
+                <li key={label}>
+                  <Link
+                    href={href}
+                    className="text-white/60 hover:text-white transition-colors duration-200 text-sm flex items-center gap-2 group"
                   >
-                    {link}
-                  </a>
+                    <span
+                      className="w-0 h-px transition-all duration-300 group-hover:w-3"
+                      style={{ background: "var(--c-accent, #fb7185)" }}
+                    />
+                    {label}
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
+          {/* More Links */}
           <div>
-            <h4 className="text-white mb-4">More</h4>
-            <ul className="space-y-2">
-              {quickLinks.slice(4).map((link) => (
-                <li key={link}>
-                  <a
-                    href={`#${link.toLowerCase().replace(" ", "-")}`}
-                    className="text-rose-200 hover:text-white transition-colors duration-300 text-sm"
+            <h4 className="text-white font-semibold mb-5 text-sm uppercase tracking-widest opacity-80">
+              More
+            </h4>
+            <ul className="space-y-3">
+              {moreLinks.map(({ label, href }) => (
+                <li key={label}>
+                  <Link
+                    href={href}
+                    className="text-white/60 hover:text-white transition-colors duration-200 text-sm flex items-center gap-2 group"
                   >
-                    {link}
-                  </a>
+                    <span
+                      className="w-0 h-px transition-all duration-300 group-hover:w-3"
+                      style={{ background: "var(--c-accent, #fb7185)" }}
+                    />
+                    {label}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -67,64 +88,54 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-white mb-4">Get in Touch</h4>
-            <div className="space-y-3 text-sm">
-              <div className="flex items-start gap-3">
-                <Phone className="w-4 h-4 text-rose-400 mt-1 flex-shrink-0" />
-                <p className="text-rose-200">+1 (555) 123-4567</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <Mail className="w-4 h-4 text-rose-400 mt-1 flex-shrink-0" />
-                <p className="text-rose-200">hello@eternalmoments.com</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-rose-400 mt-1 flex-shrink-0" />
-                <p className="text-rose-200">
-                  123 Wedding Avenue, Suite 400
-                  <br />
-                  New York, NY 10001
-                </p>
+            <h4 className="text-white font-semibold mb-5 text-sm uppercase tracking-widest opacity-80">
+              Get in Touch
+            </h4>
+            <div className="space-y-4 text-sm">
+              <a href="tel:+919876543210" className="flex items-start gap-3 text-white/60 hover:text-white transition-colors group">
+                <Phone className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: "var(--c-accent, #fb7185)" }} />
+                <span>+91 98765 43210</span>
+              </a>
+              <a href="mailto:info@vindhyaevents.com" className="flex items-start gap-3 text-white/60 hover:text-white transition-colors group">
+                <Mail className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: "var(--c-accent, #fb7185)" }} />
+                <span>info@vindhyaevents.com</span>
+              </a>
+              <div className="flex items-start gap-3 text-white/60">
+                <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: "var(--c-accent, #fb7185)" }} />
+                <span>Rewa, Madhya Pradesh<br />India — 486001</span>
               </div>
             </div>
 
-            {/* Social Media Icons */}
-            <div className="flex gap-4 mt-6">
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full bg-rose-800 hover:bg-rose-700 flex items-center justify-center transition-all duration-300 transform hover:scale-110"
-                aria-label="Instagram"
-              >
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full bg-rose-800 hover:bg-rose-700 flex items-center justify-center transition-all duration-300 transform hover:scale-110"
-                aria-label="Facebook"
-              >
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full bg-rose-800 hover:bg-rose-700 flex items-center justify-center transition-all duration-300 transform hover:scale-110"
-                aria-label="Twitter"
-              >
-                <Twitter className="w-5 h-5" />
-              </a>
+            {/* Social Icons */}
+            <div className="flex gap-3 mt-6">
+              {[
+                { href: "https://instagram.com", icon: Instagram, label: "Instagram" },
+                { href: "https://facebook.com",  icon: Facebook,  label: "Facebook"  },
+                { href: "https://twitter.com",   icon: Twitter,   label: "Twitter"   },
+              ].map(({ href, icon: Icon, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 hover:opacity-100"
+                  style={{ background: "rgba(255,255,255,0.12)", opacity: 0.7 }}
+                >
+                  <Icon className="w-4 h-4" />
+                </a>
+              ))}
             </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-rose-800 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-rose-300">
-            <p>© 2024 Eternal Moments. All rights reserved.</p>
+        <div className="border-t pt-8" style={{ borderColor: "rgba(255,255,255,0.12)" }}>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/40">
+            <p>© 2025 Vindhya Events, Rewa. All rights reserved.</p>
             <div className="flex gap-6">
-              <a href="#" className="hover:text-white transition-colors">
-                Privacy Policy
-              </a>
-              <a href="#" className="hover:text-white transition-colors">
-                Terms of Service
-              </a>
+              <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+              <Link href="/terms"   className="hover:text-white transition-colors">Terms of Service</Link>
             </div>
           </div>
         </div>

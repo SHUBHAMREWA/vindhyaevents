@@ -1,29 +1,51 @@
 "use client";
 
-// ⚡ NO Framer Motion here — Navbar is above-the-fold critical path.
-//    All animations use CSS only to keep TBT low.
 import { Menu, X, Home, Sparkles, Images, CalendarHeart } from "lucide-react";
 import { useState } from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import ThemePicker from "./ThemePicker";
 import { useTheme } from "@/context/ThemeContext";
 import "./cssFile/Navbar.css";
+
+// Items that are full routes vs scroll-to-section on homepage
+const ROUTE_ITEMS: Record<string, string> = {
+  About:   "/about",
+  Gallery: "/gallery",
+  Blog:    "/blog",
+};
 
 export default function Navbar() {
   const menuItems = ["Home", "Services", "Gallery", "About", "Blog", "Contact"];
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { theme } = useTheme();
+  const pathname  = usePathname();
+  const router    = useRouter();
+  const isHome    = pathname === "/";
 
-  const scrollToSection = (item: string) => {
+  // ── Universal nav handler ──────────────────────────────────
+  // Route items  → router.push(route)  (works on mobile touch)
+  // Section items → smooth scroll on home, anchor redirect elsewhere
+  const handleNav = (item: string) => {
+    setMobileMenuOpen(false);
+    const route = ROUTE_ITEMS[item];
+    if (route) {
+      router.push(route);
+      return;
+    }
+    // Section scroll
     const sectionId = item.toLowerCase();
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setMobileMenuOpen(false);
+    if (isHome) {
+      const el = document.getElementById(sectionId);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    } else {
+      router.push(`/#${sectionId}`);
     }
   };
 
-  const TopScroll = () => {
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id.toLowerCase());
+    if (el) el.scrollIntoView({ behavior: "smooth" });
     setMobileMenuOpen(false);
   };
 
@@ -44,10 +66,10 @@ export default function Navbar() {
       >
         <div className="container mx-auto px-6 py-1">
           <div className="flex items-center justify-between">
-            {/* Logo */}
-            <div
-              className="flex items-center gap-3 cursor-pointer select-none"
-              onClick={TopScroll}
+            {/* Logo → always navigates to home */}
+            <Link
+              href="/"
+              className="flex items-center gap-3 select-none"
             >
               <div>
                 <span
@@ -63,25 +85,34 @@ export default function Navbar() {
                   Event Management
                 </span>
               </div>
-            </div>
+            </Link>
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center gap-1">
-              {menuItems.map((item) => (
-                <button
-                  key={item}
-                  onClick={() => scrollToSection(item)}
-                  className="nav-link relative px-4 py-2 text-gray-700 transition-colors duration-200"
-                  onMouseEnter={(e) => (e.currentTarget.style.color = theme.vars["--c-primary"])}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "")}
-                >
-                  {item}
-                  <span
-                    className="nav-underline absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300"
-                    style={{ backgroundColor: theme.vars["--c-primary"] }}
-                  />
-                </button>
-              ))}
+              {menuItems.map((item) => {
+                const route = ROUTE_ITEMS[item];
+                const isActive = pathname === route;
+                const commonStyle = { color: isActive ? theme.vars["--c-primary"] : "" };
+                const cls = "nav-link relative px-4 py-2 text-gray-700 transition-colors duration-200";
+                const underline = <span className="nav-underline absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300" style={{ backgroundColor: theme.vars["--c-primary"] }} />;
+                return route ? (
+                  <Link key={item} href={route}
+                    className={cls}
+                    style={commonStyle}
+                    onMouseEnter={e => (e.currentTarget.style.color = theme.vars["--c-primary"])}
+                    onMouseLeave={e => (e.currentTarget.style.color = isActive ? theme.vars["--c-primary"] : "")}>
+                    {item}{underline}
+                  </Link>
+                ) : (
+                  <button key={item}
+                    onClick={() => isHome ? scrollToSection(item) : (window.location.href = `/#${item.toLowerCase()}`)}
+                    className={cls}
+                    onMouseEnter={e => (e.currentTarget.style.color = theme.vars["--c-primary"])}
+                    onMouseLeave={e => (e.currentTarget.style.color = "")}>
+                    {item}{underline}
+                  </button>
+                );
+              })}
 
               <div className="ml-2">
                 <ThemePicker />
@@ -113,13 +144,13 @@ export default function Navbar() {
               {menuItems.map((item) => (
                 <button
                   key={item}
-                  onClick={() => scrollToSection(item)}
-                  className="block w-full text-left px-4 py-3 text-gray-700 transition-colors duration-200 rounded-lg mb-1"
-                  onMouseEnter={(e) => {
+                  className="block w-full text-left px-4 py-3 text-gray-700 transition-colors duration-200 rounded-lg mb-1 active:opacity-70"
+                  onClick={() => handleNav(item)}
+                  onTouchStart={(e) => {
                     e.currentTarget.style.backgroundColor = theme.vars["--c-bg-soft"];
                     e.currentTarget.style.color = theme.vars["--c-primary"];
                   }}
-                  onMouseLeave={(e) => {
+                  onTouchEnd={(e) => {
                     e.currentTarget.style.backgroundColor = "";
                     e.currentTarget.style.color = "";
                   }}
@@ -147,21 +178,21 @@ export default function Navbar() {
       {/* Mobile Bottom Navigation */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-[0_-4px_12px_rgba(0,0,0,0.06)] pb-1">
         <div className="relative flex justify-between items-end px-4 h-16 w-full">
+          {/* Home */}
           <button
-            onClick={TopScroll}
-            className="flex flex-col items-center justify-center w-14 h-full pb-1 text-gray-500 space-y-1 transition-colors duration-150 active:scale-95"
-            onTouchStart={(e) => (e.currentTarget.style.color = theme.vars["--c-primary"])}
-            onTouchEnd={(e) => (e.currentTarget.style.color = "")}
+            onClick={() => router.push("/")}
+            className="flex flex-col items-center justify-center w-14 h-full pb-1 space-y-1 transition-colors duration-150 active:scale-95"
+            style={{ color: pathname === "/" ? theme.vars["--c-primary"] : "#6b7280" }}
           >
             <Home className="w-5 h-5" />
             <span className="text-[10px] font-medium">Home</span>
           </button>
 
+          {/* Services */}
           <button
-            onClick={() => scrollToSection("services")}
-            className="flex flex-col items-center justify-center w-14 h-full pb-1 text-gray-500 space-y-1 transition-colors duration-150 active:scale-95"
-            onTouchStart={(e) => (e.currentTarget.style.color = theme.vars["--c-primary"])}
-            onTouchEnd={(e) => (e.currentTarget.style.color = "")}
+            onClick={() => handleNav("Services")}
+            className="flex flex-col items-center justify-center w-14 h-full pb-1 space-y-1 transition-colors duration-150 active:scale-95"
+            style={{ color: "#6b7280" }}
           >
             <Sparkles className="w-5 h-5" />
             <span className="text-[10px] font-medium">Services</span>
@@ -170,11 +201,9 @@ export default function Navbar() {
           {/* Center FAB */}
           <div className="relative -top-5 flex flex-col items-center w-16">
             <button
-              onClick={() => scrollToSection("consultation")}
+              onClick={() => handleNav("consultation")}
               className="w-12 h-12 text-white rounded-full shadow-lg border-4 border-white active:scale-90 transition-transform duration-150"
-              style={{
-                background: `linear-gradient(to right, ${theme.vars["--c-primary"]}, ${theme.vars["--c-primary-dark"]})`,
-              }}
+              style={{ background: `linear-gradient(to right, ${theme.vars["--c-primary"]}, ${theme.vars["--c-primary-dark"]})` }}
             >
               <CalendarHeart className="w-5 h-5 mx-auto" />
             </button>
@@ -183,11 +212,11 @@ export default function Navbar() {
             </span>
           </div>
 
+          {/* Gallery → /gallery route */}
           <button
-            onClick={() => scrollToSection("gallery")}
-            className="flex flex-col items-center justify-center w-14 h-full pb-1 text-gray-500 space-y-1 transition-colors duration-150 active:scale-95"
-            onTouchStart={(e) => (e.currentTarget.style.color = theme.vars["--c-primary"])}
-            onTouchEnd={(e) => (e.currentTarget.style.color = "")}
+            onClick={() => router.push("/gallery")}
+            className="flex flex-col items-center justify-center w-14 h-full pb-1 space-y-1 transition-colors duration-150 active:scale-95"
+            style={{ color: pathname === "/gallery" ? theme.vars["--c-primary"] : "#6b7280" }}
           >
             <Images className="w-5 h-5" />
             <span className="text-[10px] font-medium">Gallery</span>
