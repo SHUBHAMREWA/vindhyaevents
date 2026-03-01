@@ -30,6 +30,11 @@
   animation: heroFadeUp 0.7s ease forwards;
 }
 
+/* Spinner keyframe — used by inline-style loading skeletons */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 /* Apple-style Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
