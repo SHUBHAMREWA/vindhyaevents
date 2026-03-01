@@ -2,230 +2,224 @@
 
 import { useEffect, useRef } from "react";
 
-export default function CustomCursor() {
-  const dotRef   = useRef<HTMLDivElement>(null);
-  const ringRef  = useRef<HTMLDivElement>(null);
-  const glowRef  = useRef<HTMLDivElement>(null);
-  const trailRef = useRef<HTMLDivElement[]>([]);
+const PINK   = "#FF3CAC";
+const PURPLE = "#784BA0";
+const ORANGE = "#FF8C00";
+const COLORS = [PINK, PURPLE, ORANGE];
 
-  const mouse  = useRef({ x: -300, y: -300 });
-  const lerped = useRef({ x: -300, y: -300 });
-  const rafId  = useRef(0);
-  const isHovered = useRef(false);
-  const isClicked = useRef(false);
+interface Particle {
+  x: number; y: number;
+  vx: number; vy: number;
+  rx: number; ry: number;
+  color: string;
+  alpha: number;
+  decay: number;
+  rotation: number;
+}
+
+export default function CustomCursor() {
+  const canvasRef   = useRef<HTMLCanvasElement>(null);
+  const isPointerRef = useRef(false); // true when hovering interactive element
 
   useEffect(() => {
-    // Skip entirely on touch/mobile devices
     if (typeof window === "undefined") return;
     if (window.matchMedia("(pointer: coarse)").matches) return;
 
-    /* ── Trail particles ─────────────────────────────────────── */
-    const TRAIL_COUNT = 6;
-    const trail = trailRef.current;
-    trail.forEach((el, i) => {
-      if (!el) return;
-      el.style.opacity = String((1 - i / TRAIL_COUNT) * 0.25);
-      el.style.transform = "translate(-300px,-300px) translate(-50%,-50%)";
-    });
+    const canvas = canvasRef.current!;
+    const ctx    = canvas.getContext("2d")!;
 
-    const trailPositions = Array.from({ length: TRAIL_COUNT }, () => ({
-      x: -300,
-      y: -300,
-    }));
-
-    /* ── Mouse events ────────────────────────────────────────── */
-    const onMove = (e: MouseEvent) => {
-      mouse.current.x = e.clientX;
-      mouse.current.y = e.clientY;
+    const resize = () => {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
     };
+    resize();
+    window.addEventListener("resize", resize);
 
-    const onDown = () => {
-      isClicked.current = true;
-      if (dotRef.current) dotRef.current.style.transform += " scale(0.6)";
-      if (ringRef.current) ringRef.current.style.transform += " scale(0.85)";
-    };
-    const onUp = () => {
-      isClicked.current = false;
-    };
-
-    /* ── Hover detection ─────────────────────────────────────── */
+    /* ── Track hover over interactive elements ───────────── */
     const INTERACTIVE = "a, button, [role='button'], input, textarea, select, label, [data-cursor]";
 
-    const onEnter = () => { isHovered.current = true; };
-    const onLeave = () => { isHovered.current = false; };
+    const onEnter = () => { isPointerRef.current = true;  };
+    const onLeave = () => { isPointerRef.current = false; };
 
     const attachHover = () => {
-      document.querySelectorAll<HTMLElement>(INTERACTIVE).forEach((el) => {
+      document.querySelectorAll<HTMLElement>(INTERACTIVE).forEach(el => {
         el.addEventListener("mouseenter", onEnter);
         el.addEventListener("mouseleave", onLeave);
       });
     };
     attachHover();
-    const observer = new MutationObserver(attachHover);
-    observer.observe(document.body, { childList: true, subtree: true });
+    const mo = new MutationObserver(attachHover);
+    mo.observe(document.body, { childList: true, subtree: true });
 
-    document.addEventListener("mousemove", onMove);
-    document.addEventListener("mousedown", onDown);
-    document.addEventListener("mouseup", onUp);
+    /* ── Mouse + particles ───────────────────────────────── */
+    const mouse     = { x: -300, y: -300 };
+    const particles: Particle[] = [];
+    let lastSpawn   = 0;
+    let rafId       = 0;
 
-    /* ── Animation loop ──────────────────────────────────────── */
-    // Faster lerp = 0.22 (was 0.12 before)
-    const LERP_RING  = 0.22;
-    const LERP_GLOW  = 0.10;
-    const glowPos = { x: -300, y: -300 };
+    const onMove = (e: MouseEvent) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
 
-    let frame = 0;
+      const now = performance.now();
+      if (now - lastSpawn < 25) return;
+      lastSpawn = now;
 
-    const tick = () => {
-      frame++;
-      const mx = mouse.current.x;
-      const my = mouse.current.y;
-
-      /* dot — instant */
-      if (dotRef.current) {
-        dotRef.current.style.transform =
-          `translate(${mx}px,${my}px) translate(-50%,-50%) scale(${isClicked.current ? 0.55 : 1})`;
-      }
-
-      /* ring — fast lerp */
-      lerped.current.x += (mx - lerped.current.x) * LERP_RING;
-      lerped.current.y += (my - lerped.current.y) * LERP_RING;
-
-      const rx = lerped.current.x;
-      const ry = lerped.current.y;
-      const size = isHovered.current ? 52 : 36;
-      const borderW = isHovered.current ? "1.5px" : "1.5px";
-      const ringScale = isClicked.current ? 0.85 : 1;
-
-      if (ringRef.current) {
-        ringRef.current.style.transform  = `translate(${rx}px,${ry}px) translate(-50%,-50%) scale(${ringScale})`;
-        ringRef.current.style.width      = `${size}px`;
-        ringRef.current.style.height     = `${size}px`;
-        ringRef.current.style.borderWidth = borderW;
-        ringRef.current.style.boxShadow  = isHovered.current
-          ? `0 0 12px 2px var(--c-primary), inset 0 0 8px rgba(255,255,255,0.08)`
-          : `0 0 6px 0px var(--c-primary)`;
-        ringRef.current.style.opacity    = isHovered.current ? "0.9" : "0.6";
-        ringRef.current.style.background = isHovered.current
-          ? "radial-gradient(circle, color-mix(in srgb, var(--c-primary) 18%, transparent), transparent)"
-          : "transparent";
-      }
-
-      /* glow — slowest lerp for dreamy trail */
-      glowPos.x += (mx - glowPos.x) * LERP_GLOW;
-      glowPos.y += (my - glowPos.y) * LERP_GLOW;
-
-      if (glowRef.current) {
-        glowRef.current.style.transform =
-          `translate(${glowPos.x}px,${glowPos.y}px) translate(-50%,-50%)`;
-      }
-
-      /* trail every 2 frames */
-      if (frame % 2 === 0) {
-        trailPositions.unshift({ x: mx, y: my });
-        trailPositions.pop();
-        trailPositions.forEach((pos, i) => {
-          const el = trail[i];
-          if (!el) return;
-          const frac = 1 - i / TRAIL_COUNT;
-          const s = frac * 5;
-          el.style.transform = `translate(${pos.x}px,${pos.y}px) translate(-50%,-50%)`;
-          el.style.width  = `${s}px`;
-          el.style.height = `${s}px`;
-          el.style.opacity = String(frac * 0.35);
+      for (let i = 0; i < 4; i++) {
+        const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+        const big   = Math.random() > 0.55;
+        particles.push({
+          x:        mouse.x + (Math.random() - 0.5) * 14,
+          y:        mouse.y + (Math.random() - 0.5) * 14,
+          vx:       (Math.random() - 0.5) * 5,
+          vy:       Math.random() * 3 + 1.5,
+          rx:       big ? Math.random() * 7 + 6  : Math.random() * 4 + 3,
+          ry:       big ? Math.random() * 9 + 11 : Math.random() * 5 + 4,
+          color,
+          alpha:    0.9 + Math.random() * 0.1,
+          decay:    Math.random() * 0.018 + 0.012,
+          rotation: Math.random() * Math.PI * 2,
         });
       }
-
-      rafId.current = requestAnimationFrame(tick);
     };
 
-    rafId.current = requestAnimationFrame(tick);
+    document.addEventListener("mousemove", onMove);
+    document.documentElement.style.cursor = "none";
+
+    /* ── Draw arrow cursor (default) ────────────────────── */
+    const drawArrow = (x: number, y: number) => {
+      // 3 overlapping vertical ellipses → paint arrow
+      const blobs = [
+        { dx:  7, dy:  8, rx: 7,  ry: 18, rot:  0.35, color: ORANGE },
+        { dx: -5, dy:  6, rx: 7,  ry: 19, rot: -0.25, color: PURPLE },
+        { dx:  1, dy:  0, rx: 8,  ry: 22, rot:  0.05, color: PINK   },
+      ];
+      blobs.forEach(b => {
+        ctx.save();
+        ctx.translate(x + b.dx, y + b.dy);
+        ctx.rotate(b.rot);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, b.rx, b.ry, 0, 0, Math.PI * 2);
+        ctx.fillStyle   = b.color;
+        ctx.globalAlpha = 0.95;
+        ctx.shadowColor = b.color;
+        ctx.shadowBlur  = 8;
+        ctx.fill();
+        ctx.restore();
+      });
+      // White tip highlight
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(x + 2, y - 14, 3, 0, Math.PI * 2);
+      ctx.fillStyle   = "rgba(255,255,255,0.6)";
+      ctx.globalAlpha = 1;
+      ctx.shadowBlur  = 0;
+      ctx.fill();
+      ctx.restore();
+    };
+
+    /* ── Draw pointer / finger cursor (on hover) ─────────── */
+    const drawPointer = (x: number, y: number) => {
+      // Blobs rotated ~60-70° to look like a pointing finger / 👆
+      // Slightly larger scale to indicate "active" state
+      const blobs = [
+        // orange — back, rotated most
+        { dx:  9, dy:  6, rx: 7,  ry: 19, rot: 1.15, color: ORANGE },
+        // purple — middle
+        { dx: -2, dy:  4, rx: 7,  ry: 20, rot: 0.85, color: PURPLE },
+        // pink — front pointer tip
+        { dx:  3, dy: -1, rx: 9,  ry: 22, rot: 0.95, color: PINK   },
+      ];
+      blobs.forEach(b => {
+        ctx.save();
+        ctx.translate(x + b.dx, y + b.dy);
+        ctx.rotate(b.rot);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, b.rx, b.ry, 0, 0, Math.PI * 2);
+        ctx.fillStyle   = b.color;
+        ctx.globalAlpha = 0.95;
+        ctx.shadowColor = b.color;
+        ctx.shadowBlur  = 12;  // stronger glow on hover
+        ctx.fill();
+        ctx.restore();
+      });
+      // White knuckle highlight
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(x + 10, y + 2, 3.5, 0, Math.PI * 2);
+      ctx.fillStyle   = "rgba(255,255,255,0.65)";
+      ctx.globalAlpha = 1;
+      ctx.shadowBlur  = 0;
+      ctx.fill();
+      ctx.restore();
+    };
+
+    /* ── Animation loop ──────────────────────────────────── */
+    const tick = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Particles
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x  += p.vx;
+        p.y  += p.vy;
+        p.vy += 0.18;
+        p.vx *= 0.97;
+        p.alpha    -= p.decay;
+        p.rotation += 0.04;
+
+        if (p.alpha <= 0) { particles.splice(i, 1); continue; }
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rotation);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, p.rx, p.ry, 0, 0, Math.PI * 2);
+        ctx.fillStyle   = p.color;
+        ctx.globalAlpha = p.alpha;
+        ctx.shadowColor = p.color;
+        ctx.shadowBlur  = 8;
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // Cursor
+      ctx.globalAlpha = 1;
+      ctx.shadowBlur  = 0;
+
+      if (isPointerRef.current) {
+        drawPointer(mouse.x, mouse.y);
+      } else {
+        drawArrow(mouse.x, mouse.y);
+      }
+
+      rafId = requestAnimationFrame(tick);
+    };
+
+    rafId = requestAnimationFrame(tick);
 
     return () => {
-      cancelAnimationFrame(rafId.current);
+      cancelAnimationFrame(rafId);
       document.removeEventListener("mousemove", onMove);
-      document.removeEventListener("mousedown", onDown);
-      document.removeEventListener("mouseup", onUp);
-      observer.disconnect();
+      window.removeEventListener("resize", resize);
+      document.documentElement.style.cursor = "";
+      mo.disconnect();
     };
   }, []);
 
-  // SSR / touch guard — don't even render on mobile
-  if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) {
-    return null;
-  }
-
-  const BASE: React.CSSProperties = {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    pointerEvents: "none",
-    zIndex: 99999,
-    borderRadius: "50%",
-    willChange: "transform",
-  };
-
   return (
-    <>
-      {/* ── Outer soft glow (slowest) ── */}
-      <div
-        ref={glowRef}
-        style={{
-          ...BASE,
-          width: "80px",
-          height: "80px",
-          background:
-            "radial-gradient(circle, color-mix(in srgb, var(--c-primary) 22%, transparent) 0%, transparent 70%)",
-          filter: "blur(8px)",
-          opacity: 0.5,
-          transition: "opacity 0.3s",
-          zIndex: 99996,
-        }}
-      />
-
-      {/* ── Trail dots ── */}
-      {Array.from({ length: 6 }).map((_, i) => (
-        <div
-          key={i}
-          ref={(el) => { if (el) trailRef.current[i] = el; }}
-          style={{
-            ...BASE,
-            width: "5px",
-            height: "5px",
-            background: "var(--c-primary)",
-            zIndex: 99997,
-            transition: "opacity 0.1s",
-          }}
-        />
-      ))}
-
-      {/* ── Ring (fast lerp) ── */}
-      <div
-        ref={ringRef}
-        style={{
-          ...BASE,
-          width: "36px",
-          height: "36px",
-          border: "1.5px solid var(--c-primary)",
-          opacity: 0.6,
-          zIndex: 99998,
-          transition: "width 0.2s ease, height 0.2s ease, opacity 0.2s, background 0.2s, box-shadow 0.2s",
-        }}
-      />
-
-      {/* ── Center dot (instant) ── */}
-      <div
-        ref={dotRef}
-        style={{
-          ...BASE,
-          width: "7px",
-          height: "7px",
-          background: "var(--c-primary)",
-          boxShadow: "0 0 6px 2px var(--c-primary)",
-          transition: "transform 0.05s, box-shadow 0.15s",
-          zIndex: 99999,
-        }}
-      />
-    </>
+    <canvas
+      ref={canvasRef}
+      aria-hidden="true"
+      style={{
+        position:      "fixed",
+        top:           0,
+        left:          0,
+        width:         "100%",
+        height:        "100%",
+        pointerEvents: "none",
+        zIndex:        99999,
+      }}
+    />
   );
 }
