@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, Outfit } from "next/font/google";
 import "@/styles/index.css";
 import { ThemeProvider } from "@/context/ThemeContext";
+import Script from "next/script";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -53,7 +54,22 @@ export default function RootLayout({
         <link rel="prefetch" href="https://images.unsplash.com/photo-1732382643619-872165f61891?w=1200&q=75" as="image" />
 
         {/* ── Viewport ── */}
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />  
+         
+         {/* Google Analytics */}
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-0SH969NJTJ"
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-0SH969NJTJ');
+        `}
+      </Script>
+
       </head>
       <body className="antialiased font-sans">
         <ThemeProvider>{children}</ThemeProvider>
