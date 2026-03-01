@@ -55,7 +55,7 @@ export default function RootLayout({
 
         {/* ── Viewport ── */}
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />  
-         
+        <meta name="google-site-verification" content="4nonbC24VepRpUfhhrnMtmWSevxuth55PkAi4Ken6uM" />
          {/* Google Analytics */}
       <Script
         src="https://www.googletagmanager.com/gtag/js?id=G-0SH969NJTJ"
