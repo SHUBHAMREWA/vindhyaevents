@@ -49,6 +49,7 @@ export default function RootLayout({
           fetchPriority="high"
         />
 
+
         {/* ── Prefetch Unsplash images used in hero carousel ── */}
         <link rel="prefetch" href="https://images.unsplash.com/photo-1724847664960-5060a1ae8259?w=1200&q=75" as="image" />
         <link rel="prefetch" href="https://images.unsplash.com/photo-1732382643619-872165f61891?w=1200&q=75" as="image" />
