@@ -1,7 +1,7 @@
 "use client";
 
 import { Menu, X, Home, Sparkles, Images, CalendarHeart } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import ThemePicker from "./ThemePicker";
@@ -22,6 +22,24 @@ export default function Navbar() {
   const pathname  = usePathname();
   const router    = useRouter();
   const isHome    = pathname === "/";
+
+  // Live date/year for mobile navbar
+  const [dateStr, setDateStr] = useState("");
+  useEffect(() => {
+    const fmt = () =>
+      new Date().toLocaleDateString("en-IN", {
+        weekday: "short",
+        day:     "2-digit",
+        month:   "short",
+        year:    "numeric",
+      });
+    setDateStr(fmt());
+    // refresh at midnight
+    const ms = new Date();
+    ms.setHours(24, 0, 0, 0);
+    const t = setTimeout(() => setDateStr(fmt()), ms.getTime() - Date.now());
+    return () => clearTimeout(t);
+  }, []);
 
   // ── Universal nav handler ──────────────────────────────────
   // Route items  → router.push(route)  (works on mobile touch)
@@ -129,7 +147,24 @@ export default function Navbar() {
               </button>
             </div>
 
-            <div className="md:hidden" />
+            {/* Mobile right-side: date + theme picker */}
+            <div className="md:hidden flex items-center gap-2">
+              {/* Live date pill */}
+              <div
+                className="flex flex-col items-end leading-none"
+              >
+                <span className="text-[9px] font-semibold tracking-widest uppercase"
+                  style={{ color: theme.vars["--c-primary-light"] }}>
+                  Today
+                </span>
+                <span className="text-[10px] font-bold"
+                  style={{ color: theme.vars["--c-footer-from"] }}>
+                  {dateStr}
+                </span>
+              </div>
+              {/* Theme picker (compact palette icon) */}
+              <ThemePicker />
+            </div>
           </div>
 
           {/* Mobile Dropdown — CSS transition, no Framer Motion */}

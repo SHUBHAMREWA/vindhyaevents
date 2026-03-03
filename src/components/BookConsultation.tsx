@@ -1,7 +1,15 @@
 import { motion } from "motion/react";
 import Script from "next/script";
 import { Calendar, Clock, User, Phone, Mail, MessageSquare, CircleCheck, PartyPopper } from "lucide-react";
-import { useState, useEffect, useRef } from "react"; 
+import { useState, useEffect, useRef } from "react";
+
+// WhatsApp SVG icon (no extra package needed)
+const WhatsAppIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 md:w-6 md:h-6">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.558 4.116 1.535 5.845L.057 23.492a.75.75 0 0 0 .904.964l5.805-1.524A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.713 9.713 0 0 1-4.962-1.358l-.355-.211-3.683.966.983-3.595-.232-.369A9.718 9.718 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/>
+  </svg>
+);
 
 export default function BookConsultation() {  
 
@@ -196,33 +204,49 @@ export default function BookConsultation() {
                 </div>
               </div>
 
-              {/* Right Column: Contact Info Card (Slim Vertical) */}
+              {/* Contact Info Card — bigger on mobile, 3 items */}
               <div className="w-full flex md:block self-stretch">
-                 <div className="w-full bg-white/95 backdrop-blur-md p-1.5 md:p-5 shadow-sm border border-rose-100/50 rounded-xl md:rounded-2xl relative overflow-hidden grid grid-cols-2 md:flex md:flex-col justify-center h-full gap-1.5 md:gap-4">
-                     <div className="absolute top-0 right-0 w-24 h-24 bg-rose-100/50 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 hidden md:block" />
-                     
-                     {/* Phone */}
-                   <a href="tel:9054718053" className="flex flex-col items-center text-center md:flex-row md:items-center md:text-left gap-1 md:gap-4 p-1 md:p-3 rounded-lg md:rounded-xl hover:bg-rose-50/50 transition-colors border border-transparent hover:border-rose-100">
-                      <div className="w-5 h-5 md:w-12 md:h-12 rounded-full bg-rose-50 flex items-center justify-center shrink-0">
-                        <Phone  className="w-2.5 h-2.5 md:w-6 md:h-6 text-rose-500" />
-                      </div>
-                      <div className="w-full">
-                        <p className="text-[7px] md:text-xs text-gray-500 uppercase tracking-tighter font-bold md:mb-0.5">Call Us</p>
-                        <span className="text-[8px] xs:text-[9.5px] md:text-lg font-bold text-gray-900 leading-none">+91 9054718053</span>
-                      </div>
-                   </a>
+                <div className="w-full bg-white/95 backdrop-blur-md p-3 md:p-5 shadow-sm border border-rose-100/50 rounded-xl md:rounded-2xl relative overflow-hidden flex flex-col gap-2 md:gap-4">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-rose-100/50 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 hidden md:block" />
 
-                    {/* Email */}
-                   <a href="mailto:vindhyaevent@gmail.com" className="flex flex-col items-center text-center md:flex-row md:items-center md:text-left gap-1 md:gap-4 p-1 md:p-3 rounded-lg md:rounded-xl hover:bg-rose-50/50 transition-colors border border-transparent hover:border-rose-100 overflow-hidden">
-                      <div className="w-5 h-5 md:w-12 md:h-12 rounded-full bg-rose-50 flex items-center justify-center shrink-0">
-                        <Mail className="w-2.5 h-2.5 md:w-6 md:h-6 text-rose-500" />
-                      </div>
-                      <div className="w-full">
-                         <p className="text-[7px] md:text-xs text-gray-500 uppercase tracking-tighter font-bold md:mb-0.5">Email Us</p>
-                        <span className="text-[8px] xs:text-[9.5px] md:text-base font-bold text-gray-900 leading-none truncate block">vindhyaevent@gmail.com</span>
-                      </div>
-                   </a>
-                 </div>
+                  {/* Phone */}
+                  <a href="tel:9054718053"
+                    className="flex items-center gap-3 md:gap-4 p-2.5 md:p-3 rounded-xl hover:bg-rose-50/60 active:bg-rose-100 transition-colors border border-transparent hover:border-rose-100">
+                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-rose-50 flex items-center justify-center shrink-0">
+                      <Phone className="w-5 h-5 md:w-6 md:h-6 text-rose-500" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] md:text-xs text-gray-500 uppercase tracking-wide font-bold mb-0.5">Call Us</p>
+                      <span className="text-sm md:text-lg font-bold text-gray-900 leading-none">+91 90547 18053</span>
+                    </div>
+                  </a>
+
+                  {/* WhatsApp */}
+                  <a href="https://wa.me/919054718053?text=Hi%20Vindhya%20Events%2C%20I%20want%20to%20book%20a%20consultation!"
+                    target="_blank" rel="noopener noreferrer"
+                    className="flex items-center gap-3 md:gap-4 p-2.5 md:p-3 rounded-xl hover:bg-green-50/60 active:bg-green-100 transition-colors border border-transparent hover:border-green-200">
+                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-green-50 flex items-center justify-center shrink-0">
+                      <span className="text-green-500"><WhatsAppIcon /></span>
+                    </div>
+                    <div>
+                      <p className="text-[10px] md:text-xs text-gray-500 uppercase tracking-wide font-bold mb-0.5">WhatsApp</p>
+                      <span className="text-sm md:text-lg font-bold text-gray-900 leading-none">Chat with Us</span>
+                    </div>
+                  </a>
+
+                  {/* Email */}
+                  <a href="mailto:vindhyaevent@gmail.com"
+                    className="flex items-center gap-3 md:gap-4 p-2.5 md:p-3 rounded-xl hover:bg-rose-50/60 active:bg-rose-100 transition-colors border border-transparent hover:border-rose-100">
+                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-rose-50 flex items-center justify-center shrink-0">
+                      <Mail className="w-5 h-5 md:w-6 md:h-6 text-rose-500" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[10px] md:text-xs text-gray-500 uppercase tracking-wide font-bold mb-0.5">Email Us</p>
+                      <span className="text-xs md:text-base font-bold text-gray-900 leading-none break-all">vindhyaevent@gmail.com</span>
+                    </div>
+                  </a>
+
+                </div>
               </div>
             </div>
           </motion.div>
