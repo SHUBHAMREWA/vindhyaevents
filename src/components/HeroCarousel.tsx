@@ -12,33 +12,34 @@ import { useTheme } from "@/context/ThemeContext";
 const slides = [
   {
     image: girlImg,
-    title: "Creating Timeless Memories",
-    subtitle: "Where Love Stories Begin",
+    // H1 slide — contains primary SEO keyword
+    title: "Wedding Planner in Rewa, Madhya Pradesh",
+    subtitle: "500+ Love Stories Crafted Since 2013 — Your Dream Wedding Awaits",
   },
   {
     image: decoration1img,
     title: "Celebrating Every Tradition",
-    subtitle: "आपना के रीति रिवाज सजावत के साथ",
+    subtitle: "आपके रीति-रिवाज़ को खूबसूरत सजावट के साथ मनाएं",
   },
   {
     image: "https://images.unsplash.com/photo-1724847664960-5060a1ae8259?w=1200&q=75",
-    title: "Creating Timeless Memories",
-    subtitle: "Where Love Stories Begin",
+    title: "Full-Service Wedding Planning",
+    subtitle: "From Mehndi to Baraat — Every Detail Perfectly Managed",
   },
   {
     image: "https://images.unsplash.com/photo-1732382643619-872165f61891?w=1200&q=75",
-    title: "Your Dream Wedding",
-    subtitle: "Beautifully Crafted, Perfectly Planned",
+    title: "Luxury Décor & Floral Design",
+    subtitle: "Transforming Venues into Breathtaking Celebrations",
   },
   {
     image: "https://images.unsplash.com/photo-1719468452346-20bbb785de2e?w=1200&q=75",
-    title: "Elegant Celebrations",
-    subtitle: "Every Detail, Every Moment",
+    title: "Elegant Sangeet & Reception",
+    subtitle: "Creating Unforgettable Moments for You and Your Guests",
   },
   {
     image: "https://images.unsplash.com/photo-1640745685024-af4663065ce3?w=1200&q=75",
-    title: "Bespoke Celebrations",
-    subtitle: "Blossoming Beauty for Your Special Day",
+    title: "Photography & Videography",
+    subtitle: "Preserving Your Precious Memories Forever",
   },
 ];
 
@@ -119,9 +120,16 @@ export default function HeroCarousel() {
             {currentSlide === index && (
               <div className="relative z-30 h-full flex items-center justify-center text-center px-6">
                 <div className="hero-text-enter max-w-4xl">
-                  <h1 className="text-white text-4xl md:text-6xl mb-4 font-serif drop-shadow-lg">
-                    {slide.title}
-                  </h1>
+                  {/* H1 for first slide (SEO primary heading), H2 for rest */}
+                  {index === 0 ? (
+                    <h1 className="text-white text-4xl md:text-6xl mb-4 font-serif drop-shadow-lg">
+                      {slide.title}
+                    </h1>
+                  ) : (
+                    <h2 className="text-white text-4xl md:text-6xl mb-4 font-serif drop-shadow-lg">
+                      {slide.title}
+                    </h2>
+                  )}
                   <p className="text-white/90 text-xl md:text-2xl font-medium drop-shadow-md mb-8">
                     {slide.subtitle}
                   </p>
