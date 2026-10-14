@@ -4,9 +4,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { galleryImages } from "@/data/staticData";
+import { useInstantContent } from "@/lib/cache/useInstantContent";
+import { GalleryShimmerSkeleton } from "@/components/HomeSkeletons";
 
 export default function GalleryPreview() {
-  const preview = galleryImages.slice(0, 6);
+  const { content, isLoading } = useInstantContent();
+  const rawImages = content.gallery && content.gallery.length > 0 ? content.gallery : galleryImages;
+  const preview = rawImages.slice(0, 6).map((img: any) => ({
+    url: img.url || img.image?.url || "",
+    title: img.title || "Wedding Décor",
+  }));
   return (
     <section className="py-20 bg-gray-50" id="gallery">
       <div className="container mx-auto px-6">
@@ -15,21 +22,25 @@ export default function GalleryPreview() {
             Portfolio
           </div>
           <h2 className="text-3xl font-serif mb-3" style={{ color: "var(--c-footer-from)" }}>Our Wedding Gallery</h2>
-          <p className="text-gray-600 max-w-xl mx-auto">A glimpse into the beautiful weddings we've had the privilege to create</p>
+          <p className="text-gray-600 max-w-xl mx-auto">A glimpse into the beautiful weddings we&apos;ve had the privilege to create</p>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {preview.map((img, i) => (
-            <motion.div key={img.url} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="relative aspect-[4/3] rounded-2xl overflow-hidden group shadow-md hover:shadow-xl">
-              <Image src={img.url} alt={img.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700" sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw" loading="lazy" />
-              <div className="absolute inset-0 flex items-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                style={{ background: "linear-gradient(to top, rgba(0,0,0,0.6), transparent)" }}>
-                <span className="text-white font-medium text-sm">{img.title}</span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        {isLoading && (!content.gallery || content.gallery.length === 0) ? (
+          <GalleryShimmerSkeleton />
+        ) : (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {preview.map((img, i) => (
+              <motion.div key={img.url} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.08 }}
+                className="relative aspect-[4/3] rounded-2xl overflow-hidden group shadow-md hover:shadow-xl">
+                <Image src={img.url} alt={img.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700" sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw" loading="lazy" />
+                <div className="absolute inset-0 flex items-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{ background: "linear-gradient(to top, rgba(0,0,0,0.6), transparent)" }}>
+                  <span className="text-white font-medium text-sm">{img.title}</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
 
         <div className="text-center mt-10">
           <Link href="/gallery">

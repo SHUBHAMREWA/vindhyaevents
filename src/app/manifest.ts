@@ -1,0 +1,87 @@
+import type { MetadataRoute } from "next";
+
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    name: "RIWAJ - Vindhya Events & Wedding Decor",
+    short_name: "RIWAJ Events",
+    description:
+      "Premier wedding and luxury event planning company in Rewa, Madhya Pradesh. 500+ love stories crafted since 2013.",
+    start_url: "/",
+    scope: "/",
+    id: "/?source=pwa",
+    display: "standalone",
+    display_override: ["window-controls-overlay", "standalone", "minimal-ui"],
+    background_color: "#ffffff",
+    theme_color: "#f43f5e",
+    orientation: "portrait-primary",
+    categories: ["lifestyle", "events", "entertainment", "business"],
+    shortcuts: [
+      {
+        name: "Book Consultation",
+        short_name: "Book Now",
+        description: "Schedule your free wedding consultation",
+        url: "/contact",
+        icons: [{ src: "/icons/icon-192x192.png", sizes: "192x192" }],
+      },
+      {
+        name: "Wedding Gallery",
+        short_name: "Gallery",
+        description: "Explore our latest wedding decors and themes",
+        url: "/gallery",
+        icons: [{ src: "/icons/icon-192x192.png", sizes: "192x192" }],
+      },
+      {
+        name: "Our Services",
+        short_name: "Services",
+        description: "Browse full wedding planning and decor services",
+        url: "/services",
+        icons: [{ src: "/icons/icon-192x192.png", sizes: "192x192" }],
+      },
+      {
+        name: "Wedding Blog & Ideas",
+        short_name: "Blog",
+        description: "Trending themes, bridal looks and wedding guides",
+        url: "/blog",
+        icons: [{ src: "/icons/icon-192x192.png", sizes: "192x192" }],
+      },
+    ],
+    icons: [
+      {
+        src: "/icons/icon-192x192.png",
+        sizes: "192x192",
+        type: "image/png",
+        purpose: "any",
+      },
+      {
+        src: "/icons/icon-512x512.png",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "any",
+      },
+      {
+        src: "/icons/icon-maskable-192x192.png",
+        sizes: "192x192",
+        type: "image/png",
+        purpose: "maskable",
+      },
+      {
+        src: "/icons/icon-maskable-512x512.png",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "maskable",
+      },
+      {
+        src: "/icons/badge-96x96.png",
+        sizes: "96x96",
+        type: "image/png",
+        purpose: "badge" as any,
+      },
+      {
+        src: "/icons/badge-72x72.png",
+        sizes: "72x72",
+        type: "image/png",
+        purpose: "badge" as any,
+      },
+    ],
+  };
+}

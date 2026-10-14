@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 
-export type ThemeId = "rose" | "royal" | "nature" | "sunset";
+export type ThemeId = "royal" | "rose" | "sunset" | "nature";
 
 export interface Theme {
   id: ThemeId;
@@ -14,29 +14,6 @@ export interface Theme {
 }
 
 export const THEMES: Theme[] = [
-  {
-    id: "rose",
-    name: "Rose",
-    description: "Romantic Pink & Gold",
-    dot: "#f43f5e",
-    vars: {
-      "--c-primary":        "#f43f5e",
-      "--c-primary-dark":   "#e11d48",
-      "--c-primary-light":  "#fda4af",
-      "--c-secondary":      "#f59e0b",
-      "--c-accent":         "#fb7185",
-      "--c-bg":             "#ffffff",
-      "--c-bg-soft":        "#fff1f2",
-      "--c-surface":        "#ffffff",
-      "--c-text":           "#1c1917",
-      "--c-text-muted":     "#6b7280",
-      "--c-border":         "#fecdd3",
-      "--c-banner-from":    "#e11d48",
-      "--c-banner-to":      "#f43f5e",
-      "--c-footer-from":    "#881337",
-      "--c-footer-to":      "#4c0519",
-    },
-  },
   {
     id: "royal",
     name: "Royal",
@@ -61,26 +38,26 @@ export const THEMES: Theme[] = [
     },
   },
   {
-    id: "nature",
-    name: "Nature",
-    description: "Dark Green & Cream",
-    dot: "#14532d",
+    id: "rose",
+    name: "Rose",
+    description: "Romantic Pink & Gold",
+    dot: "#f43f5e",
     vars: {
-      "--c-primary":        "#166534",
-      "--c-primary-dark":   "#14532d",
-      "--c-primary-light":  "#86efac",
-      "--c-secondary":      "#ca8a04",
-      "--c-accent":         "#4ade80",
-      "--c-bg":             "#f0fdf4",
-      "--c-bg-soft":        "#dcfce7",
+      "--c-primary":        "#f43f5e",
+      "--c-primary-dark":   "#e11d48",
+      "--c-primary-light":  "#fda4af",
+      "--c-secondary":      "#f59e0b",
+      "--c-accent":         "#fb7185",
+      "--c-bg":             "#ffffff",
+      "--c-bg-soft":        "#fff1f2",
       "--c-surface":        "#ffffff",
-      "--c-text":           "#052e16",
-      "--c-text-muted":     "#4b7a5c",
-      "--c-border":         "#bbf7d0",
-      "--c-banner-from":    "#14532d",
-      "--c-banner-to":      "#166534",
-      "--c-footer-from":    "#052e16",
-      "--c-footer-to":      "#021a0d",
+      "--c-text":           "#1c1917",
+      "--c-text-muted":     "#6b7280",
+      "--c-border":         "#fecdd3",
+      "--c-banner-from":    "#e11d48",
+      "--c-banner-to":      "#f43f5e",
+      "--c-footer-from":    "#881337",
+      "--c-footer-to":      "#4c0519",
     },
   },
   {
@@ -106,6 +83,29 @@ export const THEMES: Theme[] = [
       "--c-footer-to":      "#1c0a00",
     },
   },
+  {
+    id: "nature",
+    name: "Nature",
+    description: "Dark Green & Cream",
+    dot: "#14532d",
+    vars: {
+      "--c-primary":        "#166534",
+      "--c-primary-dark":   "#14532d",
+      "--c-primary-light":  "#86efac",
+      "--c-secondary":      "#ca8a04",
+      "--c-accent":         "#4ade80",
+      "--c-bg":             "#f0fdf4",
+      "--c-bg-soft":        "#dcfce7",
+      "--c-surface":        "#ffffff",
+      "--c-text":           "#052e16",
+      "--c-text-muted":     "#4b7a5c",
+      "--c-border":         "#bbf7d0",
+      "--c-banner-from":    "#14532d",
+      "--c-banner-to":      "#166534",
+      "--c-footer-from":    "#052e16",
+      "--c-footer-to":      "#021a0d",
+    },
+  },
 ];
 
 interface ThemeContextValue {
@@ -121,23 +121,25 @@ const ThemeContext = createContext<ThemeContextValue>({
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>(THEMES[0]);
 
+  const applyTheme = (t: Theme) => {
+    setTheme(t);
+    const root = document.documentElement;
+    Object.entries(t.vars).forEach(([key, val]) => root.style.setProperty(key, val));
+    document.body.style.backgroundColor = t.vars["--c-bg"];
+    localStorage.setItem("site-theme", t.id);
+  };
+
   // On mount: read saved theme from localStorage
   useEffect(() => {
     const saved = localStorage.getItem("site-theme") as ThemeId | null;
     if (saved) {
       const found = THEMES.find((t) => t.id === saved);
-      if (found) applyTheme(found);
+      if (found) {
+        const timer = setTimeout(() => applyTheme(found), 0);
+        return () => clearTimeout(timer);
+      }
     }
   }, []);
-
-  const applyTheme = (t: Theme) => {
-    setTheme(t);
-    const root = document.documentElement;
-    Object.entries(t.vars).forEach(([key, val]) => root.style.setProperty(key, val));
-    // Also set bg color on body
-    document.body.style.backgroundColor = t.vars["--c-bg"];
-    localStorage.setItem("site-theme", t.id);
-  };
 
   const setThemeById = (id: ThemeId) => {
     const found = THEMES.find((t) => t.id === id);

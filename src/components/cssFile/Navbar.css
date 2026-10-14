@@ -18,3 +18,28 @@
 .nav-link:hover .nav-underline {
   width: 100%;
 }
+
+/* Uniform, prominent desktop navigation menu typography */
+.nav-menu-item {
+  font-size: 15.5px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (min-width: 1024px) {
+  .nav-menu-item {
+    font-size: 16.5px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .nav-menu-item {
+    font-size: 17px;
+  }
+}
+

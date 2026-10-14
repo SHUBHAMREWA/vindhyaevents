@@ -1,20 +1,21 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About Us — Wedding Planners in Rewa Since 2013",
+  title: "About RIWAJ — Luxury Wedding Planners in Rewa Since 2021",
   description:
-    "Meet the passionate team behind Vindhya Events. With 10+ years of experience and 500+ weddings planned across Madhya Pradesh, we turn your dream wedding into a flawless reality. Based in Rewa, MP.",
+    "Started in 2021 with DJ sounds and event production, today RIWAJ (Vindhya Events) crafts magical weddings, royal decor, and celebrations across Rewa, Satna, and the entire Vindhya region.",
   keywords: [
-    "about Vindhya Events",
+    "about RIWAJ",
+    "RIWAJ wedding planner Rewa",
     "wedding planner Rewa team",
-    "experienced wedding planner MP",
+    "wedding decor Rewa MP",
     "event management company Rewa",
     "best wedding planner Madhya Pradesh",
   ],
   openGraph: {
-    title: "About Vindhya Events | Wedding Planners in Rewa, Madhya Pradesh",
+    title: "About RIWAJ | Luxury Wedding Planners in Rewa, Madhya Pradesh",
     description:
-      "Founded in 2013 in Rewa, Vindhya Events has crafted 500+ magical weddings across Madhya Pradesh. Meet our team of passionate wedding planners, decorators, and coordinators.",
+      "Started in 2021 from DJ sounds and audio production, RIWAJ has grown into a trusted luxury wedding and event decor brand across Rewa and nearby cities.",
     url: "https://vindhyaevents.in/about",
     images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
   },

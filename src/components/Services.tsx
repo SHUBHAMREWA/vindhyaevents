@@ -1,53 +1,78 @@
+"use client";
+
 import { motion } from "motion/react";
 import { Calendar, Flower2, Camera, Music, Utensils, Sparkles } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
-const services = [
+import { useInstantContent } from "@/lib/cache/useInstantContent";
+import { ServicesShimmerSkeleton } from "@/components/HomeSkeletons";
+
+const defaultServices = [
   {
     icon: Calendar,
     title: "Full Wedding Planning",
     description:
       "Comprehensive planning from start to finish. We handle every detail so you can enjoy your engagement stress-free.",
-    image: "https://images.unsplash.com/photo-1682802142549-b72576d31d5e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3ZWRkaW5nJTIwcGxhbm5pbmclMjBjb25zdWx0YXRpb258ZW58MXx8fHwxNzY2NDE0OTU0fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    image: "https://images.unsplash.com/photo-1519225429980-715cb0215aed?auto=format&fit=crop&w=1080&q=80",
   },
   {
     icon: Flower2,
     title: "Floral Design",
     description:
       "Custom floral arrangements that bring your vision to life with stunning beauty and elegance.",
-    image: "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3ZWRkaW5nJTIwZmxvcmFsJTIwZGVjb3JhdGlvbnxlbnwxfHx8fDE3NjYzMzExNzF8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    image: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1080&q=80",
   },
   {
     icon: Camera,
     title: "Photography & Videography",
     description:
       "Professional photographers and videographers to capture every precious moment of your special day.",
-    image: "https://images.unsplash.com/photo-1628221482312-439eb2f3367d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3ZWRkaW5nJTIwcGhvdG9ncmFwaHklMjBjYW1lcmF8ZW58MXx8fHwxNzY2NDE0OTU1fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    image: "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?auto=format&fit=crop&w=1080&q=80",
   },
   {
     icon: Music,
     title: "Entertainment",
     description:
       "Curated music and entertainment options to create the perfect atmosphere for your celebration.",
-    image: "https://images.unsplash.com/photo-1766113483422-7c871de23591?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3ZWRkaW5nJTIwcmVjZXB0aW9uJTIwZW50ZXJ0YWlubWVudHxlbnwxfHx8fDE3NjY0MTQ5NTV8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    image: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1080&q=80",
   },
   {
     icon: Utensils,
     title: "Catering Services",
     description:
       "Exquisite culinary experiences from renowned chefs, tailored to your taste and dietary needs.",
-    image: "https://images.unsplash.com/photo-1732259495388-af40b972c311?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3ZWRkaW5nJTIwY2F0ZXJpbmclMjBmb29kfGVufDF8fHx8MTc2NjMzODA3MHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    image: "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=1080&q=80",
   },
   {
     icon: Sparkles,
     title: "Venue Decoration",
     description:
       "Transform any space into a magical setting with our expert decoration and styling services.",
-    image: "https://images.unsplash.com/photo-1763553113332-800519753e40?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbGVnYW50JTIwd2VkZGluZyUyMHZlbnVlJTIwZGVjb3JhdGlvbnxlbnwxfHx8fDE3NjY0MTQ5NTZ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    image: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1080&q=80",
   },
 ];
 
+const iconMap: Record<string, any> = {
+  Calendar,
+  Flower2,
+  Camera,
+  Music,
+  Utensils,
+  Sparkles,
+};
+
 export default function Services() {
+  const { content, isLoading } = useInstantContent();
+
+  const displayServices = content.services && content.services.length > 0
+    ? content.services.map((s: any) => ({
+        icon: iconMap[s.iconName] || Sparkles,
+        title: s.title,
+        description: s.shortDescription || s.description || "",
+        image: s.coverImage?.url || s.image || defaultServices[0].image,
+      }))
+    : defaultServices;
   return (
     <section className="py-24 bg-gradient-to-b from-white to-rose-50/30" id="services">
       <div className="container mx-auto px-6">
@@ -68,8 +93,11 @@ export default function Services() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-          {services.map((service, index) => {
+        {isLoading && (!content.services || content.services.length === 0) ? (
+          <ServicesShimmerSkeleton />
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          {displayServices.map((service: any, index: number) => {
             const Icon = service.icon;
             return (
               <motion.div
@@ -110,8 +138,8 @@ export default function Services() {
                     {service.description}
                   </p>
 
-                  <button className="flex items-center gap-2 group-hover:gap-3 transition-all duration-300 font-medium hover:opacity-80" style={{ color: "var(--c-primary)" }}>
-                    Learn More
+                  <Link href="/contact" className="inline-flex items-center gap-2 group-hover:gap-3 transition-all duration-300 font-medium hover:opacity-80" style={{ color: "var(--c-primary)" }}>
+                    Inquire for Service
                     <svg
                       className="w-4 h-4"
                       fill="none"
@@ -125,11 +153,27 @@ export default function Services() {
                         d="M9 5l7 7-7 7"
                       />
                     </svg>
-                  </button>
+                  </Link>
                 </div>
               </motion.div>
             );
           })}
+        </div>
+      )}
+
+        <div className="text-center mt-12">
+          <Link
+            href="/services"
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full font-bold text-sm text-white shadow-lg transition-all duration-300 hover:scale-105"
+            style={{
+              background: "linear-gradient(to right, var(--c-primary), var(--c-primary-dark))",
+            }}
+          >
+            <span>View All Services & Packages</span>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </Link>
         </div>
       </div>
     </section>

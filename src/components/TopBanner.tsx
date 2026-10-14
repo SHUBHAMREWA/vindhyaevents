@@ -1,6 +1,7 @@
 "use client";
 
-import { Phone, Mail, MapPin } from "lucide-react";
+import { Phone, MapPin } from "lucide-react";
+import { useSettings } from "@/context/SettingsContext";
 
 // Inline WhatsApp SVG — no extra package
 const WAIcon = () => (
@@ -10,12 +11,22 @@ const WAIcon = () => (
   </svg>
 );
 
-const WA_LINK =
-  "https://wa.me/919054718053?text=Hi%20Vindhya%20Events%2C%20I%20want%20to%20book%20a%20consultation!";
-
 export default function TopBanner() {
+  const { phone, telLink, getWhatsAppLink, siteName, taglineHindi, bannerText, showTopBanner, address } = useSettings();
+
+  if (showTopBanner === false) {
+    return null;
+  }
+
+  const shortCity = address?.includes("Rewa")
+    ? "Rewa, MP"
+    : address?.split(",")[0] || "Rewa, MP";
+
+  const displayBannerText = bannerText?.trim() || `🎉 Welcome to ${siteName || "Vindhya Events"} — Weddings & Events`;
+
   return (
     <div
+      suppressHydrationWarning
       className="fixed top-0 left-0 right-0 z-50 text-white h-[40px] flex items-center overflow-hidden"
       style={{
         background:
@@ -27,67 +38,61 @@ export default function TopBanner() {
 
           {/* ── Desktop ──────────────────────────────────── */}
           <div className="hidden lg:flex items-center gap-4">
-            <span className="flex items-center gap-2">
-              🎉 <span className="font-medium">Welcome to Vindhya Events</span>
+            <span suppressHydrationWarning className="flex items-center gap-2">
+              <span suppressHydrationWarning className="font-medium">{displayBannerText}</span>
             </span>
-            <span className="opacity-40">|</span>
-            <span className="text-xs">✨ आपके रीति रिवाज सजावट के साथ ✨</span>
+            {taglineHindi && (
+              <>
+                <span className="opacity-40">|</span>
+                <span suppressHydrationWarning className="text-xs">{taglineHindi}</span>
+              </>
+            )}
           </div>
 
-          <div className="hidden lg:flex items-center gap-4 text-xs">
-            <a href="tel:9054718053"
-              className="flex items-center gap-1.5 hover:text-amber-200 transition-colors">
-              <Phone className="w-3.5 h-3.5" />
-              +91 90547 18053
-            </a>
-            <a href={WA_LINK} target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-1.5 hover:text-green-300 transition-colors">
-              <WAIcon />
-              WhatsApp
-            </a>
-            <a href="mailto:vindhyaevent@gmail.com"
-              className="flex items-center gap-1.5 hover:text-amber-200 transition-colors">
-              <Mail className="w-3.5 h-3.5" />
-              vindhyaevent@gmail.com
-            </a>
-            <span className="flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5" />
-              Rewa, MP
-            </span>
-          </div>
-
-          {/* ── Mobile — 3 bigger pill buttons ─────────── */}
-          <div className="lg:hidden flex justify-between items-center gap-2 w-full">
+          <div className="hidden lg:flex items-center gap-5 text-xs">
             <a
-              href="tel:9054718053"
-              className="flex items-center gap-1.5 bg-white/15 hover:bg-white/25 active:bg-white/30 px-3 py-1 rounded-full transition-colors font-semibold text-[11px]"
+              href={telLink}
+              className="flex items-center gap-1.5 hover:text-amber-200 transition-colors font-medium"
             >
-              <Phone className="w-3.5 h-3.5 flex-shrink-0" />
-              Call Now
+              <Phone className="w-3.5 h-3.5" />
+              <span suppressHydrationWarning>{phone}</span>
             </a>
-
             <a
-              href={WA_LINK}
+              href={getWhatsAppLink()}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 bg-green-500/30 hover:bg-green-500/50 active:bg-green-600/60 px-3 py-1 rounded-full transition-colors font-semibold text-[11px]"
+              className="flex items-center gap-1.5 hover:text-green-300 transition-colors font-medium group"
             >
-              <WAIcon />
-              WhatsApp
+              <span className="text-[#25D366] group-hover:scale-110 transition-transform inline-flex">
+                <WAIcon />
+              </span>
+              <span>WhatsApp</span>
+            </a>
+            <span className="flex items-center gap-1.5 opacity-80">
+              <MapPin className="w-3.5 h-3.5" />
+              <span suppressHydrationWarning>{shortCity}</span>
+            </span>
+          </div>
+
+          {/* ── Mobile — Only Call Now and WhatsApp ─────────── */}
+          <div className="lg:hidden flex items-center justify-center gap-3 w-full">
+            <a
+              href={telLink}
+              className="flex-1 max-w-[170px] flex items-center justify-center gap-2 bg-white/15 hover:bg-white/25 active:bg-white/30 px-3.5 py-1 rounded-full transition-colors font-semibold text-xs shadow-sm"
+            >
+              <Phone className="w-3.5 h-3.5 flex-shrink-0" />
+              <span>Call Now</span>
             </a>
 
             <a
-              href="mailto:vindhyaevent@gmail.com"
-              className="flex items-center gap-1.5 bg-white/15 hover:bg-white/25 active:bg-white/30 px-3 py-1 rounded-full transition-colors font-semibold text-[11px]"
+              href={getWhatsAppLink()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 max-w-[170px] flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] active:bg-[#128C7E] text-white px-3.5 py-1 rounded-full transition-colors font-semibold text-xs shadow-sm"
             >
-              <Mail className="w-3.5 h-3.5 flex-shrink-0" />
-              Email
+              <WAIcon />
+              <span>WhatsApp</span>
             </a>
-
-            <span className="hidden sm:flex items-center gap-1 opacity-60 text-[10px]">
-              <MapPin className="w-3 h-3" />
-              Rewa, MP
-            </span>
           </div>
 
         </div>

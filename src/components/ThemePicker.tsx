@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Palette } from "lucide-react";
+import { IoColorPalette } from "react-icons/io5";
 import { motion, AnimatePresence } from "motion/react";
 import { THEMES, useTheme, type ThemeId } from "@/context/ThemeContext";
 
@@ -23,7 +23,10 @@ export default function ThemePicker({ mobileInline = false }: { mobileInline?: b
   if (mobileInline) {
     return (
       <div className="px-4 pt-2 pb-3 border-t border-gray-100 mt-1">
-        <p className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-2">Select Theme</p>
+        <p className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-2 flex items-center gap-1.5">
+          <IoColorPalette className="w-3.5 h-3.5" style={{ color: theme.vars["--c-primary"] }} />
+          Select Theme
+        </p>
         <div className="grid grid-cols-2 gap-2">
           {THEMES.map((t) => (
             <button
@@ -63,17 +66,19 @@ export default function ThemePicker({ mobileInline = false }: { mobileInline?: b
       <button
         onClick={() => setOpen((v) => !v)}
         title="Change Theme"
-        className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200 border-2 ${
-          open ? "shadow-md" : "border-gray-200 hover:border-gray-300 bg-white hover:bg-gray-50"
+        className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200 border-2 group ${
+          open ? "shadow-md scale-105" : "border-gray-200 hover:border-gray-300 bg-white hover:bg-gray-50 active:scale-95"
         }`}
         style={open ? {
           backgroundColor: theme.vars["--c-bg-soft"],
           borderColor: theme.vars["--c-primary"],
           color: theme.vars["--c-primary"],
-        } : {}}
+        } : {
+          color: theme.vars["--c-primary"],
+        }}
         aria-label="Change theme"
       >
-        <Palette className="w-4 h-4" />
+        <IoColorPalette className="w-5 h-5 transition-transform duration-300 group-hover:rotate-12" />
       </button>
 
       <AnimatePresence>
@@ -86,7 +91,8 @@ export default function ThemePicker({ mobileInline = false }: { mobileInline?: b
             className="absolute right-0 top-11 w-52 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-[999]"
           >
             {/* Header */}
-            <div className="px-4 py-3 border-b border-gray-50">
+            <div className="px-4 py-3 border-b border-gray-50 flex items-center gap-2">
+              <IoColorPalette className="w-4 h-4" style={{ color: theme.vars["--c-primary"] }} />
               <p className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Select Theme</p>
             </div>
 

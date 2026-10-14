@@ -1,9 +1,13 @@
+"use client";
+
 import { motion } from "motion/react";
 import Script from "next/script";
-import { Calendar, Clock, User, Phone, Mail, MessageSquare, CircleCheck, PartyPopper } from "lucide-react";
+import { Calendar, User, Phone, Mail, MessageSquare, CircleCheck, PartyPopper, CheckCircle2, Loader2 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
+import { queueOfflineInquiry } from "@/lib/cache/idb";
+import { useSettings } from "@/context/SettingsContext";
 
-// WhatsApp SVG icon (no extra package needed)
+// WhatsApp SVG icon
 const WhatsAppIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 md:w-6 md:h-6">
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
@@ -11,446 +15,451 @@ const WhatsAppIcon = () => (
   </svg>
 );
 
-export default function BookConsultation() {  
+interface TurnstileInstance {
+  render: (container: HTMLElement | string, options: Record<string, unknown>) => string;
+}
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
+declare global {
+  interface Window {
+    turnstile?: TurnstileInstance;
+    onTurnstileSuccess?: (token: string) => void;
+  }
+}
+
+export default function BookConsultation() {
+  const { phone, telLink, getWhatsAppLink, email } = useSettings();
   const captchaRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     date: "",
-    eventType: "",
+    eventType: "Wedding",
     message: "",
     captchaToken: "",
   });
-  
-  const [showFullForm, setShowFullForm] = useState(false);
+
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [isOfflineSubmission, setIsOfflineSubmission] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   useEffect(() => {
-    // Define callback function that will be called when user completes captcha
-    (window as any).onTurnstileSuccess = (token: string) => {
-      console.log("✅ Captcha verified! Token received:", token);
+    window.onTurnstileSuccess = (token: string) => {
       setFormData((prev) => ({ ...prev, captchaToken: token }));
     };
 
     return () => {
-      delete (window as any).onTurnstileSuccess;
+      delete window.onTurnstileSuccess;
     };
   }, []);
 
   const renderCaptcha = () => {
-    console.log("renderCaptcha called");
-    console.log("captchaRef.current:", captchaRef.current);
-    console.log("window.turnstile:", (window as any).turnstile);
-    console.log("SITEKEY:", process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY);
-    
-    if (captchaRef.current && (window as any).turnstile) {
-      // Check if already rendered to prevent duplicates
+    if (captchaRef.current && window.turnstile && process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) {
       if (captchaRef.current.innerHTML === "") {
         try {
-            console.log("Rendering Turnstile widget...");
-            (window as any).turnstile.render(captchaRef.current, {
+          window.turnstile.render(captchaRef.current, {
             sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
             callback: (token: string) => {
-              console.log("🎯 Inline callback triggered with token:", token);
-              (window as any).onTurnstileSuccess(token);
+              if (window.onTurnstileSuccess) window.onTurnstileSuccess(token);
             },
             theme: "light",
             appearance: "interaction-only",
-            });
-            console.log("Turnstile widget rendered successfully");
+          });
         } catch (error) {
-            console.error("Turnstile render error:", error);
+          console.error("Turnstile render error:", error);
         }
-      } else {
-        console.log("Captcha already rendered");
       }
-    } else {
-      console.log("Missing: ", !captchaRef.current ? "captchaRef" : "turnstile");
     }
   };
 
   useEffect(() => {
-    console.log("useEffect for Turnstile mounting...");
-    // Retry mechanism to ensure Turnstile loads
-    const intervalId = setInterval(() => {
-        if ((window as any).turnstile) {
-            console.log("Turnstile found, rendering...");
-            renderCaptcha();
-            clearInterval(intervalId);
-        } else {
-            console.log("Waiting for Turnstile...");
-        }
-    }, 100);
-
-    // Timeout after 5 seconds to stop checking
-    const timeoutId = setTimeout(() => {
-        console.log("Turnstile load timeout");
-        clearInterval(intervalId);
-    }, 5000);
-
-    return () => {
-        clearInterval(intervalId);
-        clearTimeout(timeoutId);
-    };
+    if (window.turnstile) {
+      renderCaptcha();
+    }
   }, []);
-  
-  const handleSubmit = async(e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.captchaToken) {
-      alert("Please complete the captcha verification.");
+    setSubmitError("");
+
+    if (!formData.name.trim() || !formData.phone.trim()) {
+      setSubmitError("Please fill in your name and phone number.");
       return;
     }
-    // Handle form submission
-         
 
-    try { 
-        
-        let request =    await fetch("/api/bookconsultation" ,{
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify(formData)
-                  })  ; 
-         
-                  console.log("response form submit" , request)
-                   
-    } catch (error) {
-         
-       console.log("error formsubmit" , error)
+    setSubmitting(true);
 
+    // If client is offline, queue into IndexedDB immediately
+    if (typeof window !== "undefined" && !navigator.onLine) {
+      try {
+        await queueOfflineInquiry({
+          name: formData.name.trim(),
+          phone: formData.phone.trim(),
+          email: formData.email.trim(),
+          date: formData.date,
+          eventType: formData.eventType,
+          message: formData.message,
+        });
+        setIsOfflineSubmission(true);
+        setSubmitted(true);
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          date: "",
+          eventType: "Wedding",
+          message: "",
+          captchaToken: "",
+        });
+      } catch (err) {
+        console.error("Error saving offline inquiry:", err);
+        setSubmitError("Failed to save offline. Please call us directly.");
+      } finally {
+        setSubmitting(false);
+      }
+      return;
     }
-  
 
+    try {
+      const response = await fetch("/api/bookconsultation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-                  
+      const result = await response.json();
 
+      if (response.ok && result.success) {
+        setIsOfflineSubmission(false);
+        setSubmitted(true);
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          date: "",
+          eventType: "Wedding",
+          message: "",
+          captchaToken: "",
+        });
+      } else {
+        setSubmitError(result.message || "Something went wrong. Please call us directly.");
+      }
+    } catch {
+      // Network failed during fetch -> queue in IndexedDB
+      try {
+        await queueOfflineInquiry({
+          name: formData.name.trim(),
+          phone: formData.phone.trim(),
+          email: formData.email.trim(),
+          date: formData.date,
+          eventType: formData.eventType,
+          message: formData.message,
+        });
+        setIsOfflineSubmission(true);
+        setSubmitted(true);
+      } catch {
+        setSubmitError(`Network error. Please call us directly at ${phone}.`);
+      }
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const benefits = [
-    "Personalized Event Planning",
-    "Expert Advice & Guidance",
-    "Budget Planning & Management",
-    // "Vendor Recommendations",
+    "100% Customized Event Decor & Mandap Planning",
+    "Expert Advice from Rewa Ground Team",
+    "Transparent Budgeting & Honest Vendor Rates",
   ];
 
   return (
     <>
+      {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
+        <Script
+          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+          async
+          defer
+          onLoad={renderCaptcha}
+        />
+      )}
 
-          <Script
-        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-        async
-        defer
-        onLoad={renderCaptcha}
-      />
+      <section
+        className="py-12 md:py-20 relative overflow-hidden"
+        id="consultation"
+        style={{
+          background: "linear-gradient(135deg, var(--c-bg-soft) 0%, var(--c-bg) 50%, var(--c-bg-soft) 100%)",
+        }}
+      >
+        {/* Decorative Elements */}
+        <div className="absolute top-0 left-0 w-96 h-96 bg-rose-200/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-200/20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none" />
 
-  
-    <section className="py-10 md:py-16 relative overflow-hidden" id="consultation"
-      style={{ background: "linear-gradient(135deg, var(--c-bg-soft) 0%, var(--c-bg) 50%, var(--c-bg-soft) 100%)" }}
-    >
-      {/* Decorative Elements */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-rose-200/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-200/20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-10 items-center max-w-7xl mx-auto">
+            {/* Left Side - Info */}
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+            >
+              <div className="flex flex-col gap-4">
+                <div>
+                  <div
+                    className="inline-block px-3.5 py-1 mb-3 rounded-full text-xs font-semibold tracking-wide shadow-sm"
+                    style={{ background: "var(--c-bg-soft)", color: "var(--c-primary)" }}
+                  >
+                    ✨ Start Your Wedding Journey
+                  </div>
 
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-8 items-center max-w-7xl mx-auto">
-          {/* Left Side - Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            {/* Mobile Improved Layout (Vertical Stack on Mobile) */}
-            <div className="flex flex-col gap-3 md:block md:space-y-0 h-full">
-              
-              {/* Left Column: Header + Benefits */}
-              <div className="w-full text-left md:text-left shrink-0">
-                 <div className="inline-block px-2 py-0.5 md:px-4 md:py-1.5 mb-1.5 md:mb-4 rounded-full text-[9px] md:text-xs font-medium tracking-wide shadow-sm whitespace-nowrap" style={{ background: "var(--c-bg-soft)", color: "var(--c-primary)" }}>
-                  ✨ Start Your Journey
-                </div>
-                
-                <h2 className="text-[1.35rem] md:text-3xl font-serif mb-1.5 md:mb-4 leading-tight" style={{ color: "var(--c-footer-from)" }}>
-                  Book Your <span style={{ color: "var(--c-primary)" }}>Free</span> Consultation
-                </h2>
-                
-                <p className="block text-[11px] md:text-lg text-gray-600 mb-3 md:mb-6 leading-relaxed font-medium line-clamp-2 md:line-clamp-none">
-                  Let's discuss your dream wedding and how we can make it a reality. Our expert planners are ready to bring your vision to life.
-                </p>
+                  <h2 className="text-2xl md:text-4xl font-serif mb-3 leading-tight" style={{ color: "var(--c-footer-from)" }}>
+                    Book Your <span style={{ color: "var(--c-primary)" }}>Free</span> Consultation
+                  </h2>
 
-               {/* Benefits (Compact List) */}
-                <div className="flex flex-col gap-1 md:block md:space-y-3 mb-0 md:mb-6">
-                  {benefits.map((benefit, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, delay: index * 0.1 }}
-                      className="flex items-start gap-1.5 md:align-center md:gap-3 bg-transparent md:bg-white/10 md:backdrop-blur-sm p-0 md:p-2 rounded-none md:rounded-lg"
-                    >
-                      <div className="w-3 h-3 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-rose-400 to-amber-400 flex items-center justify-center flex-shrink-0 shadow-sm mt-0.5 md:mt-0">
-                        <CircleCheck className="w-1.5 h-1.5 md:w-5 md:h-5 text-white" />
+                  <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-6 font-medium">
+                    Let&apos;s discuss your dream wedding and how we can make it a reality. Our expert planners in Rewa are ready to bring your vision to life.
+                  </p>
+
+                  {/* Benefits */}
+                  <div className="space-y-3 mb-6">
+                    {benefits.map((benefit, index) => (
+                      <div key={index} className="flex items-center gap-3">
+                        <div className="w-6 h-6 rounded-full bg-gradient-to-br from-rose-400 to-amber-400 flex items-center justify-center shrink-0 shadow-sm">
+                          <CircleCheck className="w-4 h-4 text-white" />
+                        </div>
+                        <span className="text-xs md:text-sm text-gray-700 font-medium">{benefit}</span>
                       </div>
-                      <span className="text-[10px] md:text-base text-gray-700 font-medium leading-tight">{benefit}</span>
-                    </motion.div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              {/* Contact Info Card — bigger on mobile, 3 items */}
-              <div className="w-full flex md:block self-stretch">
-                <div className="w-full bg-white/95 backdrop-blur-md p-3 md:p-5 shadow-sm border border-rose-100/50 rounded-xl md:rounded-2xl relative overflow-hidden flex flex-col gap-2 md:gap-4">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-rose-100/50 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 hidden md:block" />
-
+                {/* Contact Info Card */}
+                <div className="bg-white/95 backdrop-blur-md p-4 md:p-6 shadow-md border border-rose-100 rounded-2xl flex flex-col gap-3">
                   {/* Phone */}
-                  <a href="tel:9054718053"
-                    className="flex items-center gap-3 md:gap-4 p-2.5 md:p-3 rounded-xl hover:bg-rose-50/60 active:bg-rose-100 transition-colors border border-transparent hover:border-rose-100">
-                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-rose-50 flex items-center justify-center shrink-0">
-                      <Phone className="w-5 h-5 md:w-6 md:h-6 text-rose-500" />
+                  <a
+                    suppressHydrationWarning
+                    href={telLink}
+                    className="flex items-center gap-3.5 p-2 rounded-xl hover:bg-rose-50/70 transition-colors"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-rose-50 flex items-center justify-center shrink-0 text-rose-500">
+                      <Phone className="w-5 h-5" />
                     </div>
                     <div>
-                      <p className="text-[10px] md:text-xs text-gray-500 uppercase tracking-wide font-bold mb-0.5">Call Us</p>
-                      <span className="text-sm md:text-lg font-bold text-gray-900 leading-none">+91 90547 18053</span>
+                      <p className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">Call Us</p>
+                      <span suppressHydrationWarning className="text-sm md:text-base font-bold text-gray-900">{phone}</span>
                     </div>
                   </a>
 
                   {/* WhatsApp */}
-                  <a href="https://wa.me/919054718053?text=Hi%20Vindhya%20Events%2C%20I%20want%20to%20book%20a%20consultation!"
-                    target="_blank" rel="noopener noreferrer"
-                    className="flex items-center gap-3 md:gap-4 p-2.5 md:p-3 rounded-xl hover:bg-green-50/60 active:bg-green-100 transition-colors border border-transparent hover:border-green-200">
-                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-green-50 flex items-center justify-center shrink-0">
-                      <span className="text-green-500"><WhatsAppIcon /></span>
+                  <a
+                    suppressHydrationWarning
+                    href={getWhatsAppLink()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3.5 p-2 rounded-xl hover:bg-green-50/70 transition-colors"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center shrink-0 text-green-500">
+                      <WhatsAppIcon />
                     </div>
                     <div>
-                      <p className="text-[10px] md:text-xs text-gray-500 uppercase tracking-wide font-bold mb-0.5">WhatsApp</p>
-                      <span className="text-sm md:text-lg font-bold text-gray-900 leading-none">Chat with Us</span>
+                      <p className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">WhatsApp</p>
+                      <span className="text-sm md:text-base font-bold text-gray-900">Chat with Us Directly</span>
                     </div>
                   </a>
 
                   {/* Email */}
-                  <a href="mailto:vindhyaevent@gmail.com"
-                    className="flex items-center gap-3 md:gap-4 p-2.5 md:p-3 rounded-xl hover:bg-rose-50/60 active:bg-rose-100 transition-colors border border-transparent hover:border-rose-100">
-                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-rose-50 flex items-center justify-center shrink-0">
-                      <Mail className="w-5 h-5 md:w-6 md:h-6 text-rose-500" />
+                  <a
+                    href={`mailto:${email}`}
+                    className="flex items-center gap-3.5 p-2 rounded-xl hover:bg-rose-50/70 transition-colors"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-rose-50 flex items-center justify-center shrink-0 text-rose-500">
+                      <Mail className="w-5 h-5" />
                     </div>
-                    <div className="min-w-0">
-                      <p className="text-[10px] md:text-xs text-gray-500 uppercase tracking-wide font-bold mb-0.5">Email Us</p>
-                      <span className="text-xs md:text-base font-bold text-gray-900 leading-none break-all">vindhyaevent@gmail.com</span>
+                    <div>
+                      <p className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">Email</p>
+                      <span className="text-xs md:text-sm font-bold text-gray-900">{email}</span>
                     </div>
                   </a>
-
                 </div>
               </div>
-            </div>
-          </motion.div>
-          </motion.div>
+            </motion.div>
 
-          {/* Right Side - Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <div className="relative">
-              <div className="absolute -inset-1 bg-gradient-to-r from-rose-400 to-amber-400 rounded-2xl blur opacity-20" />
-              <div className="relative bg-white p-4 md:p-6 lg:p-8 shadow-2xl border border-gray-100 rounded-3xl">
-                <form onSubmit={handleSubmit} className="space-y-3 md:space-y-5">
-                  <div className="text-center mb-6">
-                    <h3 className="text-2xl font-serif text-gray-900 mb-2">Let's Plan Your Day</h3>
-                    <p className="text-gray-500 text-sm">Fill in the details below to get started</p>
+            {/* Right Side - Form */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+            >
+              <div className="bg-white p-6 md:p-8 shadow-2xl border border-rose-100 rounded-3xl relative">
+                {submitted ? (
+                  <div className="text-center py-10 space-y-4">
+                    <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
+                      <CheckCircle2 className="w-10 h-10" />
+                    </div>
+                    <h3 className="font-serif text-2xl font-bold text-gray-900">
+                      {isOfflineSubmission ? "Saved Offline! 📲" : "Thank You! 🎉"}
+                    </h3>
+                    <p className="text-gray-600 text-sm max-w-sm mx-auto leading-relaxed">
+                      {isOfflineSubmission
+                        ? "You are currently without internet connection. Your consultation request has been saved securely on your device (IndexedDB) and will automatically sync and submit as soon as your internet reconnects!"
+                        : "We have received your consultation request. One of our wedding specialists from RIWAJ will call you shortly."}
+                    </p>
+                    <button
+                      onClick={() => {
+                        setSubmitted(false);
+                        setIsOfflineSubmission(false);
+                      }}
+                      className="px-6 py-2.5 rounded-full text-xs font-bold text-white shadow-md hover:opacity-90 transition-opacity"
+                      style={{ background: "linear-gradient(to right, var(--c-primary), var(--c-primary-dark))" }}
+                    >
+                      Book Another Query
+                    </button>
                   </div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="text-center mb-6">
+                      <h3 className="text-2xl font-serif text-gray-900 mb-1">Let&apos;s Plan Your Day</h3>
+                      <p className="text-gray-500 text-xs">Fill in your details and our team will get in touch</p>
+                    </div>
 
-                  {/* Basic Info (Always Visible) */}
-                  <div className="grid grid-cols-1 gap-4">
-                    <div className="group">
-                      <label className="block text-sm font-medium text-gray-700 mb-1 ml-1 flex items-center gap-2 group-focus-within:text-rose-500 transition-colors">
-                        <User className="w-4 h-4" />
-                        Full Name
+                    {submitError && (
+                      <div className="p-3 bg-red-50 text-red-700 text-xs rounded-xl border border-red-200">
+                        {submitError}
+                      </div>
+                    )}
+
+                    {/* Name & Phone */}
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-700 mb-1 flex items-center gap-1.5">
+                        <User className="w-3.5 h-3.5 text-rose-500" />
+                        Full Name *
                       </label>
                       <input
                         type="text"
+                        required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full px-4 py-2 border border-gray-200/50 rounded-xl focus:border-rose-400 focus:ring-4 focus:ring-rose-100 transition-all duration-300 bg-white/50 backdrop-blur-sm hover:bg-white text-gray-800 placeholder:text-gray-400 text-sm"
+                        className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:border-rose-400 focus:ring-2 focus:ring-rose-100 transition-all text-sm"
                         placeholder="Your Name"
-                        required
                       />
                     </div>
 
-                    <div className="group">
-                      <label className="block text-sm font-medium text-gray-700 mb-1 ml-1 flex items-center gap-2 group-focus-within:text-rose-500 transition-colors">
-                        <Phone className="w-4 h-4" />
-                        Phone Number
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-700 mb-1 flex items-center gap-1.5">
+                        <Phone className="w-3.5 h-3.5 text-rose-500" />
+                        Phone Number *
                       </label>
                       <input
                         type="tel"
+                        required
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="w-full px-4 py-2 border border-gray-200/50 rounded-xl focus:border-rose-400 focus:ring-4 focus:ring-rose-100 transition-all duration-300 bg-white/50 backdrop-blur-sm hover:bg-white text-gray-800 placeholder:text-gray-400 text-sm"
-                        placeholder="+91 98765 43210"
-                        required
+                        className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:border-rose-400 focus:ring-2 focus:ring-rose-100 transition-all text-sm"
+                        placeholder="Enter 10-digit phone number"
                       />
                     </div>
-                  </div>
 
-                  {/* Toggle Button for Full Form */}
-                  {!showFullForm && (
-                     <motion.button
-                      type="button"
-                      onClick={() => setShowFullForm(true)}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full py-3 rounded-xl border-2 border-dashed border-rose-300 text-rose-500 font-medium hover:bg-rose-50 transition-colors flex items-center justify-center gap-2 mt-2"
-                    >
-                      <Calendar className="w-4 h-4" />
-                      Book Consultation with Customized Day
-                    </motion.button>
-                  )}
-
-                  {/* Full Fields (Hidden initially) */}
-                  <motion.div
-                    initial={false}
-                    animate={{ height: showFullForm ? "auto" : 0, opacity: showFullForm ? 1 : 0 }}
-                    transition={{ duration: 0.4, ease: "easeInOut" }}
-                    className="overflow-hidden space-y-4"
-                  >
-                     {/* Email */}
-                    <div className="group pt-1">
-                      <label className="block text-sm font-medium text-gray-700 mb-1 ml-1 flex items-center gap-2 group-focus-within:text-rose-500 transition-colors">
-                        <Mail className="w-4 h-4" />
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-700 mb-1 flex items-center gap-1.5">
+                        <Mail className="w-3.5 h-3.5 text-rose-500" />
                         Email Address
                       </label>
                       <input
                         type="email"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-4 py-2 border border-gray-200/50 rounded-xl focus:border-rose-400 focus:ring-4 focus:ring-rose-100 transition-all duration-300 bg-white/50 backdrop-blur-sm hover:bg-white text-gray-800 placeholder:text-gray-400 text-sm"
+                        className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:border-rose-400 focus:ring-2 focus:ring-rose-100 transition-all text-sm"
                         placeholder="hello@example.com"
-                        // required={showFullForm} // Only required if form is expanded
                       />
                     </div>
 
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-700 mb-1 flex items-center gap-1.5">
+                          <Calendar className="w-3.5 h-3.5 text-rose-500" />
+                          Event Date
+                        </label>
+                        <input
+                          type="date"
+                          value={formData.date}
+                          onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                          className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs"
+                        />
+                      </div>
 
-                  {/* Date & Type Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div className="group">
-                      <label className="block text-sm font-medium text-gray-700 mb-1.5 ml-1 flex items-center gap-2 group-focus-within:text-rose-500 transition-colors">
-                        <Calendar className="w-4 h-4" />
-                        Preferred Date
-                      </label>
-                      <input
-                        type="date"
-                        value={formData.date}
-                        onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                        className="w-full px-4 py-2 md:px-5 md:py-3 border border-gray-200/50 rounded-xl focus:border-rose-400 focus:ring-4 focus:ring-rose-100 transition-all duration-300 bg-white/50 backdrop-blur-sm hover:bg-white text-gray-800 placeholder:text-gray-400 text-sm md:text-base"
-                        required
-                      />
-                    </div>
-
-                    <div className="group">
-                      <label className="block text-sm font-medium text-gray-700 mb-1.5 ml-1 flex items-center gap-2 group-focus-within:text-rose-500 transition-colors">
-                        <PartyPopper className="w-4 h-4" />
-                        Event Type
-                      </label>
-                      <div className="relative">
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-700 mb-1 flex items-center gap-1.5">
+                          <PartyPopper className="w-3.5 h-3.5 text-rose-500" />
+                          Event Type
+                        </label>
                         <select
                           value={formData.eventType}
                           onChange={(e) => setFormData({ ...formData, eventType: e.target.value })}
-                          className="w-full px-4 py-2 md:px-5 md:py-3 border border-gray-200/50 rounded-xl focus:border-rose-400 focus:ring-4 focus:ring-rose-100 transition-all duration-300 bg-white/50 backdrop-blur-sm hover:bg-white text-gray-800 appearance-none cursor-pointer text-sm md:text-base"
-                          required
+                          className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs bg-white"
                         >
-                          <option value="" disabled>Select Event Type</option>
                           <option value="Wedding">Wedding</option>
                           <option value="Reception">Reception</option>
                           <option value="Engagement">Engagement</option>
                           <option value="Anniversary">Anniversary</option>
                           <option value="Birthday">Birthday Party</option>
                           <option value="Corporate">Corporate Event</option>
-                          <option value="Baby Shower">Baby Shower</option>
                           <option value="Pre Wedding">Pre Wedding</option>
                           <option value="Other">Other</option>
                         </select>
-                        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
-                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Message */}
-                  <div className="group">
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5 ml-1 flex items-center gap-2 group-focus-within:text-rose-500 transition-colors">
-                      <MessageSquare className="w-4 h-4" />
-                       Message
-                    </label>
-                    <textarea
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full px-4 py-2 md:px-5 md:py-3 border border-gray-200/50 rounded-xl focus:border-rose-400 focus:ring-4 focus:ring-rose-100 transition-all duration-300 bg-white/50 backdrop-blur-sm hover:bg-white text-gray-800 placeholder:text-gray-400 min-h-[80px] md:min-h-[100px] resize-none text-sm md:text-base"
-                      placeholder="Tell us a little about your dream event..."
-                    />
-                  </div>  
-                    
-                
-                  {/* Cloudflare Turnstile Captcha */}
-                  <div className="flex justify-center my-4">
-                    <div ref={captchaRef}></div>
-                  </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-700 mb-1 flex items-center gap-1.5">
+                        <MessageSquare className="w-3.5 h-3.5 text-rose-500" />
+                        Message / Vision
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={formData.message}
+                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                        className="w-full px-4 py-2 border border-gray-200 rounded-xl text-xs resize-none"
+                        placeholder="Tell us about your wedding venue or decor ideas..."
+                      />
+                    </div>
 
-                  {/* Submit Button */}
-                  <motion.button
-                    type="submit"
-                    disabled={!formData.captchaToken}
-                    whileHover={formData.captchaToken ? { scale: 1.02 } : {}}
-                    whileTap={formData.captchaToken ? { scale: 0.98 } : {}}
-                    className={`w-full py-3 md:py-4 rounded-full font-medium tracking-wide flex items-center justify-center gap-2 mt-2 md:mt-4 overflow-hidden relative transition-all duration-300 text-sm md:text-base ${
-                      formData.captchaToken
-                        ? "bg-gradient-to-r from-rose-500 via-rose-600 to-amber-500 text-white shadow-lg hover:shadow-2xl hover:shadow-rose-200 cursor-pointer group"
-                        : "bg-gray-100 text-gray-400 cursor-not-allowed grayscale"
-                    }`}
-                  >
-                     <span className="relative z-10 flex items-center gap-2">
-                      <Calendar className="w-5 h-5" />
-                      Reserve Consultation
-                    </span>
-                    {formData.captchaToken && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-rose-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    {/* Cloudflare Turnstile placeholder */}
+                    {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
+                      <div className="flex justify-center my-2">
+                        <div ref={captchaRef}></div>
+                      </div>
                     )}
-                  </motion.button>
-                  
-                </motion.div> { /* End of Expandable Section */ }
 
-                {/* Show simplified submit button if form is NOT expanded */}
-                {!showFullForm && (
-                   <motion.button
-                    type="submit"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full py-3 rounded-full text-white font-medium shadow-md flex items-center justify-center gap-2 mt-2" style={{ background: `linear-gradient(to right, var(--c-primary), var(--c-primary-dark))` }}
-                  >
-                    <Phone className="w-4 h-4" />
-                    Request Call Back
-                  </motion.button>
+                    <button
+                      type="submit"
+                      disabled={submitting}
+                      className="w-full py-3.5 rounded-full text-white font-bold tracking-wide shadow-lg hover:opacity-90 active:scale-[0.99] transition-all flex items-center justify-center gap-2 text-sm"
+                      style={{ background: "linear-gradient(to right, var(--c-primary), var(--c-primary-dark))" }}
+                    >
+                      {submitting ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <span>Submitting Consultation...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Calendar className="w-4 h-4" />
+                          <span>Reserve Free Consultation</span>
+                        </>
+                      )}
+                    </button>
+
+                    <p className="text-[11px] text-gray-400 text-center mt-3">
+                      Strictly confidential • No spam promise
+                    </p>
+                  </form>
                 )}
-
-                <p className="text-xs text-gray-500 text-center mt-2 font-medium">
-                  Strictly confidential & • No spam promise
-                </p>
-                </form>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
-      </div>
-    </section>
-      </>
+      </section>
+    </>
   );
 }

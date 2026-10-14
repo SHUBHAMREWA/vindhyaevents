@@ -6,16 +6,25 @@ import { motion, AnimatePresence } from "motion/react";
 import Image from "next/image";
 import { X, ZoomIn } from "lucide-react";
 import { galleryImages } from "@/data/staticData";
+import { useInstantContent } from "@/lib/cache/useInstantContent";
 
 const categories = ["All", "Ceremony", "Reception", "Outdoor", "Decor", "Details", "Bride"];
 
 export default function GalleryPage() {
+  const { content } = useInstantContent();
   const [selected, setSelected]   = useState("All");
-  const [lightbox, setLightbox]   = useState<typeof galleryImages[0] | null>(null);
+  const [lightbox, setLightbox]   = useState<any | null>(null);
+
+  const rawImages = content.gallery && content.gallery.length > 0 ? content.gallery : galleryImages;
+  const normalizedImages = rawImages.map((img: any) => ({
+    url: img.url || img.image?.url || "",
+    title: img.title || "Wedding Décor",
+    category: img.category || "Decor",
+  }));
 
   const filtered = selected === "All"
-    ? galleryImages
-    : galleryImages.filter(img => img.category === selected);
+    ? normalizedImages
+    : normalizedImages.filter((img: any) => img.category === selected);
 
   return (
     <PageLayout

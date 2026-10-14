@@ -1,62 +1,89 @@
-"use client";
-
-import dynamic from "next/dynamic";
-import { Suspense } from "react";
-import Link from "next/link";
-
-// ─── Critical (Above-the-fold) ────────────────────────────────
 import Navbar from "@/components/Navbar";
+import TopBanner from "@/components/TopBanner";
+import HeroSectionWrapper from "@/components/HeroSectionWrapper";
+import BookConsultation from "@/components/BookConsultation";
+import Services from "@/components/Services";
+import GalleryPreview from "@/components/GalleryPreview";
+import TestimonialsWrapper from "@/components/TestimonialsWrapper";
+import BlogPreview from "@/components/BlogPreview";
+import Footer from "@/components/Footer";
+import ClientWidgets from "@/components/ClientWidgets";
+import connectToDatabase from "@/lib/db";
+import { Blog, Testimonial } from "@/lib/models";
+import { getSiteSettings } from "@/lib/getSiteSettings";
 
-// ─── SSR OFF + Lazy loaded components ─────────────────────────
-const TopBanner = dynamic(() => import("@/components/TopBanner"), { ssr: false });
-const CustomCursor = dynamic(() => import("@/components/CustomCursor"), { ssr: false });
+export const dynamic = "force-dynamic";
 
-const HeroCarousel = dynamic(() => import("@/components/HeroCarousel"), {
-  ssr: false,
-  loading: () => (
-    <div style={{ height: "80vh", marginTop: "88px", background: "linear-gradient(135deg, #fff1f2, #fffbeb)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <div style={{ width: 64, height: 64, borderRadius: "50%", border: "4px solid #fda4af", borderTopColor: "transparent", animation: "spin 0.8s linear infinite" }} />
-    </div>
-  ),
-});
+async function getLatestBlogs() {
+  try {
+    await connectToDatabase();
+    const blogs = await Blog.find({ isPublished: true })
+      .sort({ publishedAt: -1, createdAt: -1 })
+      .limit(3)
+      .lean();
 
-const SectionSkeleton = () => (
-  <div style={{ padding: "5rem 0", display: "flex", alignItems: "center", justifyContent: "center" }}>
-    <div style={{
-      width: 48,
-      height: 48,
-      borderRadius: "50%",
-      border: "4px solid var(--c-border, #fecdd3)",
-      borderTopColor: "var(--c-primary, #f43f5e)",
-      animation: "spin 0.8s linear infinite",
-    }} />
-  </div>
-);
+    return blogs.map((b: any) => ({
+      _id: b._id.toString(),
+      title: b.title,
+      slug: b.slug,
+      excerpt: b.excerpt,
+      category: b.category || "Planning",
+      readTime: b.readTime || "5 min read",
+      author: b.author?.name || "RIWAJ Team",
+      coverImage: b.coverImage?.url || "/girlsimg.webp",
+      dateFormatted: new Date(b.publishedAt || b.createdAt).toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }),
+    }));
+  } catch (e) {
+    console.error("Home page getLatestBlogs error:", e);
+    return [];
+  }
+}
 
-const BookConsultation = dynamic(() => import("@/components/BookConsultation"), { ssr: false, loading: () => <SectionSkeleton /> });
-const Services         = dynamic(() => import("@/components/Services"),         { ssr: false, loading: () => <SectionSkeleton /> });
-const Testimonials     = dynamic(() => import("@/components/Testimonials"),     { ssr: false, loading: () => <SectionSkeleton /> });
-const Footer           = dynamic(() => import("@/components/Footer"),           { ssr: false, loading: () => <SectionSkeleton /> });
-const ChatbotWidget    = dynamic(() => import("@/components/ChatbotWidget"),    { ssr: false });
+async function getTestimonials() {
+  try {
+    await connectToDatabase();
+    const items = await Testimonial.find({ isActive: true })
+      .sort({ order: 1, createdAt: -1 })
+      .lean();
 
-// ─── Preview Cards for removed sections ───────────────────────
-const GalleryPreview   = dynamic(() => import("@/components/GalleryPreview"),  { ssr: false, loading: () => <SectionSkeleton /> });
-const BlogPreview      = dynamic(() => import("@/components/BlogPreview"),     { ssr: false, loading: () => <SectionSkeleton /> });
+    return items.map((t: any) => ({
+      _id: t._id.toString(),
+      name: t.coupleName,
+      image: t.image?.url || "",
+      review: t.reviewText,
+      rating: t.rating || 5,
+      weddingType: t.weddingType || "Royal Wedding Celebration",
+      location: t.location || "Rewa, MP",
+    }));
+  } catch (e) {
+    console.error("Home page getTestimonials error:", e);
+    return [];
+  }
+}
 
-export default function Home() {
+export default async function Home() {
+  const [latestBlogs, testimonials, siteSettings] = await Promise.all([
+    getLatestBlogs(),
+    getTestimonials(),
+    getSiteSettings(),
+  ]);
+
   return (
     <main className="min-h-screen bg-transparent overflow-x-hidden">
       <TopBanner />
       <Navbar />
-      <HeroCarousel />
-      <Suspense fallback={<SectionSkeleton />}><BookConsultation /></Suspense>
-      <Suspense fallback={<SectionSkeleton />}><Services /></Suspense>
-      <Suspense fallback={<SectionSkeleton />}><GalleryPreview /></Suspense>
-      <Suspense fallback={<SectionSkeleton />}><Testimonials /></Suspense>
-      <Suspense fallback={<SectionSkeleton />}><BlogPreview /></Suspense>
-      <Suspense fallback={<SectionSkeleton />}><Footer /></Suspense>
-      <ChatbotWidget />
-      <CustomCursor />
+      <HeroSectionWrapper slides={siteSettings?.heroSlides} />
+      <BookConsultation />
+      <Services />
+      <GalleryPreview />
+      <TestimonialsWrapper testimonials={testimonials} />
+      <BlogPreview blogs={latestBlogs} />
+      <Footer />
+      <ClientWidgets />
     </main>
   );
 }
