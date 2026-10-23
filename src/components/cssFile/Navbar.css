@@ -29,6 +29,7 @@
   align-items: center;
   white-space: nowrap;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
 }
 
 @media (min-width: 1024px) {
@@ -43,3 +44,16 @@
   }
 }
 
+/* Ensure cursor pointer on all interactive navbar and bottom navigation elements */
+.navbar-slide a,
+.navbar-slide button,
+.navbar-slide [role="button"],
+nav a,
+nav button,
+nav [role="button"],
+.nav-menu-item,
+.mobile-bottom-nav a,
+.mobile-bottom-nav button,
+.mobile-bottom-nav [role="button"] {
+  cursor: pointer;
+}

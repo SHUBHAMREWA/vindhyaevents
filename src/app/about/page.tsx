@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import PageLayout from "@/components/PageLayout";
 import { motion } from "motion/react";
 import Image from "next/image";
+import SafeImage from "@/components/SafeImage";
 import {
   Heart,
   Award,
@@ -18,6 +19,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useSettings } from "@/context/SettingsContext";
+import LocationMapBox from "@/components/LocationMapBox";
 
 interface TeamMemberItem {
   _id?: string;
@@ -32,45 +34,7 @@ interface TeamMemberItem {
   order?: number;
 }
 
-// Fallback initial team if DB is empty or loading
-const fallbackTeam: TeamMemberItem[] = [
-  {
-    name: "Shivam Patel",
-    role: "Founder & Event Director",
-    experience: "Started from Sound & DJ (2021)",
-    bio: "2021 mein DJ sounds se shuruat ki. Industry ko ground-level se samajhkar Vindhya Events ko leading wedding brand banaya.",
-    image: {
-      url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=75",
-    },
-  },
-  {
-    name: "Pooja Singh",
-    role: "Lead Wedding & Theme Designer",
-    experience: "4+ Years Experience",
-    bio: "Specializes in royal mandap setups, traditional aesthetics, flower decor, and personalized stage themes.",
-    image: {
-      url: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=75",
-    },
-  },
-  {
-    name: "Aman Tiwari",
-    role: "Technical, Audio & Lighting Head",
-    experience: "Since 2021 (Sound & FX)",
-    bio: "Expert in concert-grade DJ sound, ambient truss lighting, cold pyros, and dynamic sangeet production.",
-    image: {
-      url: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=75",
-    },
-  },
-  {
-    name: "Ritika Mishra",
-    role: "Client Coordination & Logistics",
-    experience: "3+ Years Experience",
-    bio: "Ensures flawless on-ground coordination between families, vendors, and management across Rewa & nearby cities.",
-    image: {
-      url: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=75",
-    },
-  },
-];
+
 
 const values = [
   {
@@ -90,8 +54,8 @@ const values = [
   },
   {
     icon: MapPin,
-    title: "Vindhya Region Reach",
-    desc: "Rewa ke alawa Satna, Maihar, Sidhi, Shahdol aur aas-paas ke shehron tak hamari team dedicated services deliver karti hai.",
+    title: "Rewa & MP Regional Reach",
+    desc: "Rewa ke alawa Satna, Maihar, Sidhi, Shahdol aur aas-paas ke shehron tak RIWAJ ki dedicated team royal services deliver karti hai.",
   },
 ];
 
@@ -128,7 +92,7 @@ const milestones = [
     year: "2025 - Present",
     title: "300+ Royal Celebrations & Trust",
     event:
-      "Aaj 300+ se zyada successful weddings ke sath Vindhya Events (RIWAJ) region ka ek highly trusted, all-in-one wedding planning & decor brand ban chuka hai.",
+      "Aaj 300+ se zyada successful weddings ke sath RIWAJ Weddings & Events region ka ek highly trusted, all-in-one wedding planning & decor brand ban chuka hai.",
     highlight: "Premier Brand",
   },
 ];
@@ -141,37 +105,41 @@ const aboutStats = [
 ];
 
 export default function AboutPage() {
-  const { siteName } = useSettings();
-  const brandTitle = siteName || "RIWAJ";
+  const { siteName, address } = useSettings();
+  const brandTitle = siteName && !siteName.toLowerCase().includes("vindhya") ? siteName : "RIWAJ Wedding & Events";
 
-  const [teamList, setTeamList] = useState<TeamMemberItem[]>(fallbackTeam);
+  const [teamList, setTeamList] = useState<TeamMemberItem[]>([]);
   const [loadingTeam, setLoadingTeam] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
     async function loadTeam() {
       try {
         const res = await fetch("/api/public/team");
         const data = await res.json();
-        if (data.success && Array.isArray(data.team) && data.team.length > 0) {
+        if (isMounted && data.success && Array.isArray(data.team)) {
           setTeamList(data.team);
         }
       } catch (err) {
-        console.error("Failed to fetch team, using fallback:", err);
+        console.error("Failed to fetch team from database:", err);
       } finally {
-        setLoadingTeam(false);
+        if (isMounted) setLoadingTeam(false);
       }
     }
     loadTeam();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
     <PageLayout
       badge="Hamari Kahani • Our Journey"
       title={`About ${brandTitle}`}
-      subtitle="2021 mein DJ sounds se lekar aaj pure Rewa aur Vindhya region mein Royal Weddings aur grand decor tak ka anokha safar."
+      subtitle="2021 mein DJ sounds se lekar aaj pure Rewa aur Madhya Pradesh mein RIWAJ Wedding & Events ke sath Royal Weddings aur grand decor tak ka anokha safar."
     >
       {/* ── Story Section ─────────────────────────────────── */}
-      <section className="py-16 md:py-24 bg-white relative overflow-hidden">
+      <section className="py-8 md:py-24 bg-white relative overflow-hidden">
         <div className="container mx-auto px-4 md:px-6 max-w-6xl">
           <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Visual Column */}
@@ -260,7 +228,7 @@ export default function AboutPage() {
                   Dhire-dhire humne sound ke sath-sath <strong>ambient lighting, stage setups, floral decor, traditional mandap aur complete wedding planning</strong> ko joda. Ground experience hone ki wajah se har vendor coordination aur execution hamare liye natural aur stress-free ban gaya.
                 </p>
                 <p>
-                  Aaj hum sirf Rewa hi nahi, balki <strong>Satna, Maihar, Sidhi, Shahdol</strong> aur poore Vindhya region ke shehron mein top-tier wedding and event decor services deliver kar rahe hain — <em>&ldquo;Aapke Reeti Riwaj Sajawat Ke Sath&rdquo;</em>.
+                  Aaj hum sirf Rewa hi nahi, balki <strong>Satna, Maihar, Sidhi, Shahdol</strong> aur poore Madhya Pradesh ke shehron mein <strong>RIWAJ Wedding & Events</strong> ke sath top-tier wedding and event decor services deliver kar rahe hain — <em>&ldquo;Aapke Reeti Riwaj Sajawat Ke Sath&rdquo;</em>.
                 </p>
               </div>
 
@@ -376,7 +344,7 @@ export default function AboutPage() {
               Our Journey (Humara Safar)
             </h2>
             <p className="text-gray-600 text-xs md:text-sm mt-2 max-w-xl mx-auto">
-              Started from sound and party audio in Rewa, growing step-by-step into a full-scale wedding decor & planning brand across Vindhya.
+              Started from sound and party audio in Rewa, growing step-by-step into a full-scale luxury wedding decor & planning brand — RIWAJ Wedding & Events.
             </p>
           </div>
 
@@ -467,62 +435,117 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            {teamList.map((member, i) => (
-              <motion.div
-                key={member._id || member.name}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group border border-gray-100 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="relative h-60 w-full overflow-hidden bg-gray-100">
-                    {member.image?.url ? (
-                      <Image
-                        src={member.image.url}
-                        alt={member.name}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        sizes="(max-width: 768px) 100vw, 25vw"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex flex-col items-center justify-center text-gray-400 bg-rose-50/50">
-                        <Users className="w-12 h-12 text-rose-300 mb-1" />
-                        <span className="text-xs font-semibold">{member.name}</span>
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </div>
-                  <div className="p-5 text-center">
-                    <h3
-                      className="font-serif text-lg font-bold"
-                      style={{ color: "var(--c-footer-from)" }}
-                    >
-                      {member.name}
-                    </h3>
-                    <p
-                      className="text-xs font-semibold mt-1"
-                      style={{ color: "var(--c-primary)" }}
-                    >
-                      {member.role}
-                    </p>
-                    {member.experience && (
-                      <span className="inline-block mt-2 px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-amber-50 text-amber-800 border border-amber-200/60">
-                        {member.experience}
-                      </span>
-                    )}
-                    {member.bio && (
-                      <p className="text-xs text-gray-500 mt-2.5 line-clamp-3 leading-relaxed">
-                        {member.bio}
-                      </p>
-                    )}
+          {loadingTeam ? (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+              {[1, 2, 3, 4].map((n) => (
+                <div
+                  key={n}
+                  className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 animate-pulse flex flex-col justify-between"
+                >
+                  <div className="h-60 w-full bg-gray-200" />
+                  <div className="p-5 text-center space-y-2.5">
+                    <div className="h-5 bg-gray-200 rounded-md w-3/4 mx-auto" />
+                    <div className="h-3.5 bg-gray-200 rounded-md w-1/2 mx-auto" />
+                    <div className="h-4 bg-gray-100 rounded-full w-24 mx-auto mt-2" />
+                    <div className="h-3 bg-gray-100 rounded-md w-full mx-auto" />
+                    <div className="h-3 bg-gray-100 rounded-md w-5/6 mx-auto" />
                   </div>
                 </div>
-              </motion.div>
-            ))}
+              ))}
+            </div>
+          ) : teamList.length > 0 ? (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+              {teamList.map((member, i) => (
+                <motion.div
+                  key={member._id || member.name}
+                  initial={{ opacity: 0, y: 25 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.1 }}
+                  className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group border border-gray-100 flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="relative h-60 w-full overflow-hidden bg-gray-100">
+                      {member.image?.url ? (
+                        <SafeImage
+                          src={member.image.url}
+                          alt={member.image?.alt || member.name}
+                          fallbackSrc="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=75"
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          sizes="(max-width: 768px) 100vw, 25vw"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex flex-col items-center justify-center text-gray-400 bg-rose-50/50">
+                          <Users className="w-12 h-12 text-rose-300 mb-1" />
+                          <span className="text-xs font-semibold">{member.name}</span>
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                    <div className="p-5 text-center">
+                      <h3
+                        className="font-serif text-lg font-bold"
+                        style={{ color: "var(--c-footer-from)" }}
+                      >
+                        {member.name}
+                      </h3>
+                      <p
+                        className="text-xs font-semibold mt-1"
+                        style={{ color: "var(--c-primary)" }}
+                      >
+                        {member.role}
+                      </p>
+                      {member.experience && (
+                        <span className="inline-block mt-2 px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-amber-50 text-amber-800 border border-amber-200/60">
+                          {member.experience}
+                        </span>
+                      )}
+                      {member.bio && (
+                        <p className="text-xs text-gray-500 mt-2.5 line-clamp-3 leading-relaxed">
+                          {member.bio}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center text-gray-500 max-w-md mx-auto shadow-xs">
+              <Users className="w-10 h-10 text-rose-300 mx-auto mb-2 opacity-60" />
+              <p className="font-semibold text-gray-700 text-sm">Team profiles updating soon</p>
+              <p className="text-xs text-gray-400 mt-1">Our expert planners and technical heads are on-ground managing celebrations.</p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ── Studio Location & Map Section ── */}
+      <section className="py-12 md:py-16 bg-white border-t border-gray-100">
+        <div className="container mx-auto px-4 md:px-6 max-w-4xl">
+          <div className="bg-gradient-to-br from-rose-50/50 via-amber-50/40 to-orange-50/30 rounded-3xl p-6 sm:p-10 border border-rose-100 shadow-sm flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="space-y-3 max-w-md">
+              <span className="inline-block px-3.5 py-1 rounded-full text-xs font-bold bg-white text-rose-700 border border-rose-200 shadow-2xs uppercase tracking-wider">
+                Our Headquarters
+              </span>
+              <h3 className="font-serif font-black text-2xl sm:text-3xl text-gray-900 leading-snug">
+                Meet Us at Our Rewa Studio
+              </h3>
+              <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
+                Rewa ke heart me located hamara office & design studio wedding decor themes, stage mockups, aur personal event planning meetings ke liye open hai.
+              </p>
+              <div className="flex items-center gap-2 text-xs text-gray-700 font-semibold pt-1">
+                <MapPin className="w-4 h-4 text-rose-600 shrink-0" />
+                <span suppressHydrationWarning>{address || "Rewa, Madhya Pradesh — 486001, India"}</span>
+              </div>
+            </div>
+
+            {/* OLX-Style Square Location Box */}
+            <div className="w-full max-w-[280px] shrink-0">
+              <LocationMapBox variant="card" className="w-full shadow-md" />
+            </div>
           </div>
         </div>
       </section>

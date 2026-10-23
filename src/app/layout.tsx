@@ -3,6 +3,7 @@ import "@/styles/index.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 import Script from "next/script";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
+import ClientWidgets from "@/components/ClientWidgets";
 
 // ─── Site-wide default metadata (overridden per page) ─────────
 export const metadata: Metadata = {
@@ -167,6 +168,7 @@ export default async function RootLayout({
               sameAs: [
                 settings.socialLinks?.instagram || "https://instagram.com/vindhyaevents",
                 settings.socialLinks?.facebook || "https://facebook.com/vindhyaevents",
+                settings.socialLinks?.youtube || "",
               ].filter(Boolean),
               aggregateRating: {
                 "@type": "AggregateRating",
@@ -181,6 +183,7 @@ export default async function RootLayout({
         <ThemeProvider>
           <SettingsProvider initialSettings={settings}>
             {children}
+            <ClientWidgets />
             <ServiceWorkerRegister />
           </SettingsProvider>
         </ThemeProvider>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Mail, Phone, MapPin, Instagram, Facebook, Twitter, Youtube, Sparkles } from "lucide-react";
 import { useSettings } from "@/context/SettingsContext";
+import LocationMapBox from "./LocationMapBox";
 
 const quickLinks = [
   { label: "Home", href: "/" },
@@ -36,7 +37,7 @@ const corporateLinks = [
 ];
 
 export default function Footer() {
-  const { siteName, phone, telLink, email, address, socialLinks } = useSettings();
+  const { siteName, phone, telLink, email, address, socialLinks, googleMapUrl } = useSettings();
 
   return (
     <footer
@@ -57,11 +58,16 @@ export default function Footer() {
                   className="object-cover"
                 />
               </div>
-              <div>
-                <span className="text-white font-serif text-2xl font-bold tracking-wider block leading-tight">
-                  RIWAJ Events
-                </span>
-                <span className="text-[10px] text-amber-300/90 tracking-widest uppercase font-semibold block">
+              <div className="flex flex-col justify-center">
+                <div className="relative h-8 sm:h-9 w-24 sm:w-28 group-hover:scale-105 transition-transform duration-200">
+                  <Image
+                    src="/riwaj-text-logo.png"
+                    alt="RIWAJ Events"
+                    fill
+                    className="object-contain object-left"
+                  />
+                </div>
+                <span className="text-[10px] text-amber-300/90 tracking-widest uppercase font-semibold block -mt-0.5">
                   Weddings & Celebrations
                 </span>
               </div>
@@ -159,33 +165,57 @@ export default function Footer() {
                 <Mail className="w-4 h-4 mt-0.5 shrink-0" style={{ color: "var(--c-accent, #fb7185)" }} />
                 <span suppressHydrationWarning>{email}</span>
               </a>
-              <div className="flex items-start gap-2.5 text-white/70">
-                <MapPin className="w-4 h-4 mt-0.5 shrink-0" style={{ color: "var(--c-accent, #fb7185)" }} />
-                <span suppressHydrationWarning>{address}</span>
-              </div>
+              <a
+                href={googleMapUrl || "https://maps.google.com/?q=Rewa+Madhya+Pradesh"}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Click to view on Google Maps"
+                className="flex items-start gap-2.5 text-white/70 hover:text-white transition-colors group"
+              >
+                <MapPin className="w-4 h-4 mt-0.5 shrink-0 group-hover:scale-110 transition-transform" style={{ color: "var(--c-accent, #fb7185)" }} />
+                <span suppressHydrationWarning className="group-hover:underline">{address}</span>
+              </a>
+            </div>
+
+            {/* OLX-Style Square Location Box in Footer */}
+            <div className="mt-4">
+              <LocationMapBox variant="footer" />
             </div>
 
             {/* Social Icons */}
             <div className="flex gap-2.5 mt-5">
               {[
-                { href: socialLinks?.instagram || "https://instagram.com/vindhyaevents", icon: Instagram, label: "Instagram" },
-                { href: socialLinks?.facebook || "https://facebook.com/vindhyaevents",   icon: Facebook,  label: "Facebook"  },
-                { href: socialLinks?.twitter || "https://twitter.com",                    icon: Twitter,   label: "Twitter"   },
-                { href: socialLinks?.youtube || "",                                      icon: Youtube,   label: "YouTube"   },
-              ].filter(item => item.href).map(({ href, icon: Icon, label }) => (
+                { href: socialLinks?.instagram || "https://instagram.com/vindhyaevents", icon: Instagram, label: "Instagram", hoverClass: "hover:bg-gradient-to-tr hover:from-amber-500 hover:to-rose-600" },
+                { href: socialLinks?.facebook || "https://facebook.com/vindhyaevents",   icon: Facebook,  label: "Facebook",  hoverClass: "hover:bg-[#1877F2]" },
+                { href: socialLinks?.twitter || "https://twitter.com",                    icon: Twitter,   label: "Twitter",   hoverClass: "hover:bg-[#1DA1F2]" },
+                { href: socialLinks?.youtube || "",                                      icon: Youtube,   label: "YouTube",   hoverClass: "hover:bg-[#FF0000]" },
+              ].filter(item => item.href).map(({ href, icon: Icon, label, hoverClass }) => (
                 <a
                   key={label}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110"
+                  className={`w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110 text-white/80 hover:text-white ${hoverClass}`}
                   style={{ background: "rgba(255,255,255,0.12)" }}
                 >
-                  <Icon className="w-3.5 h-3.5 text-white/80" />
+                  <Icon className="w-3.5 h-3.5" />
                 </a>
               ))}
             </div>
+
+            {/* YouTube Channel Button */}
+            {socialLinks?.youtube && (
+              <a
+                href={socialLinks.youtube}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 mt-4 px-3.5 py-1.5 rounded-xl bg-[#FF0000] hover:bg-[#d90000] text-white text-xs font-bold shadow-md shadow-red-900/30 hover:scale-105 transition-all group"
+              >
+                <Youtube className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
+                <span>Watch on YouTube</span>
+              </a>
+            )}
           </div>
         </div>
 

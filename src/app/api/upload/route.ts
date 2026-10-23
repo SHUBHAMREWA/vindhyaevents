@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAdminFromRequest } from "@/lib/auth";
-import { uploadToCloudinary } from "@/lib/cloudinary";
+import { uploadToCloudinary, safeDeleteCloudinaryImage } from "@/lib/cloudinary";
 
 export async function POST(req: NextRequest) {
   try {
@@ -67,6 +67,49 @@ export async function POST(req: NextRequest) {
     console.error("Upload API error:", error);
     return NextResponse.json(
       { success: false, message: (error as Error).message || "Failed to upload image" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const admin = await getAdminFromRequest(req);
+    if (!admin) {
+      return NextResponse.json(
+        { success: false, message: "Unauthorized. Admin login required." },
+        { status: 401 }
+      );
+    }
+
+    const { searchParams } = new URL(req.url);
+    let public_id = searchParams.get("public_id");
+    let url = searchParams.get("url");
+
+    if (!public_id && !url) {
+      try {
+        const body = await req.json();
+        public_id = body.public_id;
+        url = body.url;
+      } catch {
+        // no body
+      }
+    }
+
+    const target = public_id || url;
+    if (!target) {
+      return NextResponse.json(
+        { success: false, message: "public_id or url is required." },
+        { status: 400 }
+      );
+    }
+
+    const deleted = await safeDeleteCloudinaryImage(target);
+    return NextResponse.json({ success: true, deleted, message: "Image deletion processed" });
+  } catch (error: unknown) {
+    console.error("Delete image error:", error);
+    return NextResponse.json(
+      { success: false, message: (error as Error).message || "Failed to delete image" },
       { status: 500 }
     );
   }

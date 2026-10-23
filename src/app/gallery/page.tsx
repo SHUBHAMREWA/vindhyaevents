@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import PageLayout from "@/components/PageLayout";
 import { motion, AnimatePresence } from "motion/react";
 import Image from "next/image";
@@ -8,23 +8,52 @@ import { X, ZoomIn } from "lucide-react";
 import { galleryImages } from "@/data/staticData";
 import { useInstantContent } from "@/lib/cache/useInstantContent";
 
-const categories = ["All", "Ceremony", "Reception", "Outdoor", "Decor", "Details", "Bride"];
+const DEFAULT_GALLERY_CATEGORIES = ["All", "Ceremony", "Reception", "Outdoor", "Decor", "Details", "Bride"];
 
 export default function GalleryPage() {
   const { content } = useInstantContent();
-  const [selected, setSelected]   = useState("All");
-  const [lightbox, setLightbox]   = useState<any | null>(null);
+  const [selected, setSelected] = useState("All");
+  const [lightbox, setLightbox] = useState<any | null>(null);
 
   const rawImages = content.gallery && content.gallery.length > 0 ? content.gallery : galleryImages;
-  const normalizedImages = rawImages.map((img: any) => ({
-    url: img.url || img.image?.url || "",
-    title: img.title || "Wedding Décor",
-    category: img.category || "Decor",
-  }));
+  const normalizedImages = useMemo(() => {
+    return rawImages.map((img: any) => ({
+      url: img.url || img.image?.url || "",
+      title: img.title || "Wedding Décor",
+      category: img.category || "Decor",
+    }));
+  }, [rawImages]);
+
+  // Dynamically compute all categories from uploaded photos + standard defaults
+  const categories = useMemo(() => {
+    const customCats = new Set<string>();
+    normalizedImages.forEach((img: any) => {
+      const cat = img.category;
+      if (cat && typeof cat === "string" && cat.trim()) {
+        customCats.add(cat.trim());
+      }
+    });
+
+    const result = ["All"];
+    DEFAULT_GALLERY_CATEGORIES.forEach((defCat) => {
+      if (defCat !== "All" && !result.some((c) => c.toLowerCase() === defCat.toLowerCase())) {
+        result.push(defCat);
+      }
+    });
+
+    // Append any admin-created custom categories dynamically
+    customCats.forEach((customCat) => {
+      if (!result.some((c) => c.toLowerCase() === customCat.toLowerCase())) {
+        result.push(customCat);
+      }
+    });
+
+    return result;
+  }, [normalizedImages]);
 
   const filtered = selected === "All"
     ? normalizedImages
-    : normalizedImages.filter((img: any) => img.category === selected);
+    : normalizedImages.filter((img: any) => img.category?.toLowerCase() === selected.toLowerCase());
 
   return (
     <PageLayout
@@ -32,11 +61,11 @@ export default function GalleryPage() {
       title="Our Wedding Gallery"
       subtitle="A glimpse into the beautiful weddings and events we've had the privilege to create"
     >
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-6">
+      <section className="py-6 md:py-16 bg-gray-50">
+        <div className="container mx-auto px-4 md:px-6">
 
           {/* Category Filter */}
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
+          <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-6 md:mb-12">
             {categories.map(cat => (
               <button key={cat} onClick={() => setSelected(cat)}
                 className="px-5 py-2 rounded-full text-sm font-medium transition-all duration-300"
@@ -53,26 +82,33 @@ export default function GalleryPage() {
           {/* Grid */}
           <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             <AnimatePresence>
-              {filtered.map((img, i) => (
-                <motion.div key={img.url}
-                  layout
-                  initial={{ opacity: 0, scale: 0.92 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.92 }}
-                  transition={{ duration: 0.4, delay: i * 0.04 }}
-                  className="relative aspect-[4/3] rounded-2xl overflow-hidden group cursor-pointer shadow-md hover:shadow-2xl"
-                  onClick={() => setLightbox(img)}
-                >
-                  <Image src={img.url} alt={img.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700" sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 25vw" loading="lazy" />
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300"
-                    style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 100%)" }}>
-                    <ZoomIn className="w-8 h-8 text-white mb-2" />
-                    <p className="text-white font-semibold text-sm">{img.title}</p>
-                    <span className="text-white/70 text-xs mt-1">{img.category}</span>
-                  </div>
-                </motion.div>
-              ))}
+              {filtered.length === 0 ? (
+                <div className="col-span-full py-16 text-center text-gray-400">
+                  <p className="text-base font-serif text-gray-600">No photos available in &quot;{selected}&quot; yet</p>
+                  <p className="text-xs text-gray-400 mt-1">Select another category above to view our portfolio.</p>
+                </div>
+              ) : (
+                filtered.map((img, i) => (
+                  <motion.div key={img.url + i}
+                    layout
+                    initial={{ opacity: 0, scale: 0.92 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.92 }}
+                    transition={{ duration: 0.4, delay: i * 0.04 }}
+                    className="relative aspect-[4/3] rounded-2xl overflow-hidden group cursor-pointer shadow-md hover:shadow-2xl"
+                    onClick={() => setLightbox(img)}
+                  >
+                    <Image src={img.url} alt={img.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700" sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 25vw" loading="lazy" />
+                    {/* Hover overlay */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300"
+                      style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 100%)" }}>
+                      <ZoomIn className="w-8 h-8 text-white mb-2" />
+                      <p className="text-white font-semibold text-sm">{img.title}</p>
+                      <span className="text-white/70 text-xs mt-1">{img.category}</span>
+                    </div>
+                  </motion.div>
+                ))
+              )}
             </AnimatePresence>
           </motion.div>
         </div>

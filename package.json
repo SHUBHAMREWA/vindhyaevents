@@ -9,6 +9,7 @@
     "dev:clean": "npm run clean && next dev --webpack",
     "build": "next build --webpack",
     "build:turbo": "next build --turbopack",
+    "seed:services": "node scripts/seed-services.mjs",
     "start": "next start",
     "lint": "eslint"
   },

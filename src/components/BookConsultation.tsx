@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import Script from "next/script";
-import { Calendar, User, Phone, Mail, MessageSquare, CircleCheck, PartyPopper, CheckCircle2, Loader2 } from "lucide-react";
+import { Calendar, User, Phone, Mail, MessageSquare, CircleCheck, PartyPopper, CheckCircle2, Loader2, MapPin, ExternalLink } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { queueOfflineInquiry } from "@/lib/cache/idb";
 import { useSettings } from "@/context/SettingsContext";
@@ -26,8 +26,12 @@ declare global {
   }
 }
 
-export default function BookConsultation() {
-  const { phone, telLink, getWhatsAppLink, email } = useSettings();
+interface BookConsultationProps {
+  formOnly?: boolean;
+}
+
+export default function BookConsultation({ formOnly = false }: BookConsultationProps = {}) {
+  const { phone, telLink, getWhatsAppLink, email, address, googleMapUrl } = useSettings();
   const captchaRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState({
     name: "",
@@ -58,13 +62,15 @@ export default function BookConsultation() {
     if (captchaRef.current && window.turnstile && process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) {
       if (captchaRef.current.innerHTML === "") {
         try {
+          const isNarrow = typeof window !== "undefined" && window.innerWidth < 350;
           window.turnstile.render(captchaRef.current, {
             sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
             callback: (token: string) => {
               if (window.onTurnstileSuccess) window.onTurnstileSuccess(token);
             },
             theme: "light",
-            appearance: "interaction-only",
+            size: isNarrow ? "compact" : "flexible",
+            appearance: "always",
           });
         } catch (error) {
           console.error("Turnstile render error:", error);
@@ -172,6 +178,190 @@ export default function BookConsultation() {
     "Transparent Budgeting & Honest Vendor Rates",
   ];
 
+  const formCard = (
+    <div className="bg-white p-3.5 sm:p-6 md:p-8 shadow-2xl border border-rose-100 rounded-2xl sm:rounded-3xl relative w-full max-w-full overflow-hidden box-border">
+      {submitted ? (
+        <div className="text-center py-6 sm:py-8 space-y-3 sm:space-y-4">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
+            <CheckCircle2 className="w-7 h-7 sm:w-8 sm:h-8" />
+          </div>
+          <h3 className="font-serif text-xl sm:text-2xl font-bold text-gray-900">
+            {isOfflineSubmission ? "Saved Offline! 📲" : "Thank You! 🎉"}
+          </h3>
+          <p className="text-gray-600 text-xs sm:text-sm max-w-sm mx-auto leading-relaxed">
+            {isOfflineSubmission
+              ? "You are currently without internet connection. Your consultation request has been saved securely on your device (IndexedDB) and will automatically sync and submit as soon as your internet reconnects!"
+              : "We have received your consultation request. One of our wedding specialists from RIWAJ will call you shortly."}
+          </p>
+          <button
+            onClick={() => {
+              setSubmitted(false);
+              setIsOfflineSubmission(false);
+            }}
+            className="px-6 py-2.5 rounded-full text-xs font-bold text-white shadow-md hover:opacity-90 transition-opacity"
+            style={{ background: "linear-gradient(to right, var(--c-primary), var(--c-primary-dark))" }}
+          >
+            Book Another Query
+          </button>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-2 sm:space-y-3.5 w-full max-w-full">
+          <div className="text-center mb-2 sm:mb-4">
+            <h3 className="text-lg sm:text-2xl font-serif text-gray-900 mb-0.5">Let&apos;s Plan Your Day</h3>
+            <p className="text-gray-500 text-[10px] sm:text-xs">Fill in your details and our team will get in touch</p>
+          </div>
+
+          {submitError && (
+            <div className="p-2 bg-red-50 text-red-700 text-xs rounded-xl border border-red-200">
+              {submitError}
+            </div>
+          )}
+
+          {/* Name & Phone */}
+          <div className="w-full">
+            <label className="block text-[11px] sm:text-xs font-semibold text-gray-700 mb-0.5 sm:mb-1 flex items-center gap-1.5">
+              <User className="w-3.5 h-3.5 text-rose-500 shrink-0" />
+              Full Name *
+            </label>
+            <input
+              type="text"
+              required
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              className="w-full px-3 py-1.5 sm:py-2 border border-gray-200 rounded-xl focus:border-rose-400 focus:ring-2 focus:ring-rose-100 transition-all text-xs sm:text-sm"
+              placeholder="Your Name"
+            />
+          </div>
+
+          <div className="w-full">
+            <label className="block text-[11px] sm:text-xs font-semibold text-gray-700 mb-0.5 sm:mb-1 flex items-center gap-1.5">
+              <Phone className="w-3.5 h-3.5 text-rose-500 shrink-0" />
+              Phone Number *
+            </label>
+            <input
+              type="tel"
+              required
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              className="w-full px-3 py-1.5 sm:py-2 border border-gray-200 rounded-xl focus:border-rose-400 focus:ring-2 focus:ring-rose-100 transition-all text-xs sm:text-sm"
+              placeholder="Enter 10-digit phone number"
+            />
+          </div>
+
+          <div className="w-full">
+            <label className="block text-[11px] sm:text-xs font-semibold text-gray-700 mb-0.5 sm:mb-1 flex items-center gap-1.5">
+              <Mail className="w-3.5 h-3.5 text-rose-500 shrink-0" />
+              Email Address
+            </label>
+            <input
+              type="email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              className="w-full px-3 py-1.5 sm:py-2 border border-gray-200 rounded-xl focus:border-rose-400 focus:ring-2 focus:ring-rose-100 transition-all text-xs sm:text-sm"
+              placeholder="hello@example.com"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-2 sm:gap-3 w-full min-w-0">
+            <div className="min-w-0 overflow-hidden">
+              <label className="block text-[11px] sm:text-xs font-semibold text-gray-700 mb-0.5 sm:mb-1 flex items-center gap-1.5 truncate">
+                <Calendar className="w-3.5 h-3.5 text-rose-500 shrink-0" />
+                Event Date
+              </label>
+              <input
+                type="date"
+                value={formData.date}
+                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                className="w-full min-w-0 max-w-full px-2 py-1.5 border border-gray-200 rounded-xl text-xs bg-white"
+              />
+            </div>
+
+            <div className="min-w-0 overflow-hidden">
+              <label className="block text-[11px] sm:text-xs font-semibold text-gray-700 mb-0.5 sm:mb-1 flex items-center gap-1.5 truncate">
+                <PartyPopper className="w-3.5 h-3.5 text-rose-500 shrink-0" />
+                Event Type
+              </label>
+              <select
+                value={formData.eventType}
+                onChange={(e) => setFormData({ ...formData, eventType: e.target.value })}
+                className="w-full min-w-0 max-w-full px-2 py-1.5 border border-gray-200 rounded-xl text-xs bg-white truncate"
+              >
+                <option value="Wedding">Wedding</option>
+                <option value="Reception">Reception</option>
+                <option value="Engagement">Engagement</option>
+                <option value="Anniversary">Anniversary</option>
+                <option value="Birthday">Birthday Party</option>
+                <option value="Corporate">Corporate Event</option>
+                <option value="Pre Wedding">Pre Wedding</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[11px] sm:text-xs font-semibold text-gray-700 mb-0.5 sm:mb-1 flex items-center gap-1.5">
+              <MessageSquare className="w-3.5 h-3.5 text-rose-500" />
+              Message / Vision
+            </label>
+            <textarea
+              rows={2}
+              value={formData.message}
+              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+              className="w-full px-3 py-1.5 border border-gray-200 rounded-xl text-xs resize-none"
+              placeholder="Tell us about your wedding venue or decor ideas..."
+            />
+          </div>
+
+          {/* Cloudflare Turnstile placeholder with layout-shift prevention */}
+          {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
+            <div className="turnstile-wrapper my-1 w-full overflow-hidden flex items-center justify-center">
+              <div ref={captchaRef} className="turnstile-container"></div>
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={submitting}
+            className="w-full py-2.5 sm:py-3.5 rounded-full text-white font-bold tracking-wide shadow-lg hover:opacity-90 active:scale-[0.99] transition-all flex items-center justify-center gap-2 text-xs sm:text-sm"
+            style={{ background: "linear-gradient(to right, var(--c-primary), var(--c-primary-dark))" }}
+          >
+            {submitting ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span>Submitting Consultation...</span>
+              </>
+            ) : (
+              <>
+                <Calendar className="w-4 h-4" />
+                <span>Reserve Free Consultation</span>
+              </>
+            )}
+          </button>
+
+          <p className="text-[9px] sm:text-[10px] text-gray-400 text-center mt-1">
+            Strictly confidential • No spam promise
+          </p>
+        </form>
+      )}
+    </div>
+  );
+
+  if (formOnly) {
+    return (
+      <>
+        {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
+          <Script
+            src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+            async
+            defer
+            onLoad={renderCaptcha}
+          />
+        )}
+        {formCard}
+      </>
+    );
+  }
+
   return (
     <>
       {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
@@ -184,7 +374,7 @@ export default function BookConsultation() {
       )}
 
       <section
-        className="py-12 md:py-20 relative overflow-hidden"
+        className="py-8 md:py-20 relative overflow-hidden"
         id="consultation"
         style={{
           background: "linear-gradient(135deg, var(--c-bg-soft) 0%, var(--c-bg) 50%, var(--c-bg-soft) 100%)",
@@ -194,59 +384,60 @@ export default function BookConsultation() {
         <div className="absolute top-0 left-0 w-96 h-96 bg-rose-200/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-200/20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none" />
 
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-10 items-center max-w-7xl mx-auto">
-            {/* Left Side - Info */}
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start max-w-7xl mx-auto">
+            {/* Left Side - Info & Google Map */}
             <motion.div
-              initial={{ opacity: 0, x: -40 }}
+              initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
+              transition={{ duration: 0.6 }}
+              className="order-2 lg:order-1 block"
             >
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-3.5">
                 <div>
                   <div
-                    className="inline-block px-3.5 py-1 mb-3 rounded-full text-xs font-semibold tracking-wide shadow-sm"
+                    className="inline-block px-3.5 py-1 mb-2 rounded-full text-xs font-semibold tracking-wide shadow-xs"
                     style={{ background: "var(--c-bg-soft)", color: "var(--c-primary)" }}
                   >
                     ✨ Start Your Wedding Journey
                   </div>
 
-                  <h2 className="text-2xl md:text-4xl font-serif mb-3 leading-tight" style={{ color: "var(--c-footer-from)" }}>
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif mb-2 leading-tight" style={{ color: "var(--c-footer-from)" }}>
                     Book Your <span style={{ color: "var(--c-primary)" }}>Free</span> Consultation
                   </h2>
 
-                  <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-6 font-medium">
+                  <p className="text-gray-600 text-xs sm:text-sm leading-relaxed mb-3.5 font-medium">
                     Let&apos;s discuss your dream wedding and how we can make it a reality. Our expert planners in Rewa are ready to bring your vision to life.
                   </p>
 
                   {/* Benefits */}
-                  <div className="space-y-3 mb-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-2 mb-3.5">
                     {benefits.map((benefit, index) => (
-                      <div key={index} className="flex items-center gap-3">
-                        <div className="w-6 h-6 rounded-full bg-gradient-to-br from-rose-400 to-amber-400 flex items-center justify-center shrink-0 shadow-sm">
-                          <CircleCheck className="w-4 h-4 text-white" />
+                      <div key={index} className="flex items-center gap-2">
+                        <div className="w-5 h-5 rounded-full bg-gradient-to-br from-rose-400 to-amber-400 flex items-center justify-center shrink-0 shadow-xs">
+                          <CircleCheck className="w-3.5 h-3.5 text-white" />
                         </div>
-                        <span className="text-xs md:text-sm text-gray-700 font-medium">{benefit}</span>
+                        <span className="text-xs text-gray-700 font-medium leading-tight">{benefit}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* Contact Info Card */}
-                <div className="bg-white/95 backdrop-blur-md p-4 md:p-6 shadow-md border border-rose-100 rounded-2xl flex flex-col gap-3">
+                {/* Compact Contact Info Card */}
+                <div className="bg-white/95 backdrop-blur-md p-3 sm:p-3.5 shadow-sm border border-rose-100 rounded-2xl grid grid-cols-1 sm:grid-cols-3 gap-2">
                   {/* Phone */}
                   <a
                     suppressHydrationWarning
                     href={telLink}
-                    className="flex items-center gap-3.5 p-2 rounded-xl hover:bg-rose-50/70 transition-colors"
+                    className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-rose-50/70 transition-colors group"
                   >
-                    <div className="w-10 h-10 rounded-full bg-rose-50 flex items-center justify-center shrink-0 text-rose-500">
-                      <Phone className="w-5 h-5" />
+                    <div className="w-8 h-8 rounded-lg bg-rose-50 flex items-center justify-center shrink-0 text-rose-500 group-hover:scale-105 transition-transform">
+                      <Phone className="w-4 h-4" />
                     </div>
-                    <div>
-                      <p className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">Call Us</p>
-                      <span suppressHydrationWarning className="text-sm md:text-base font-bold text-gray-900">{phone}</span>
+                    <div className="min-w-0">
+                      <p className="text-[9px] text-gray-400 uppercase tracking-wider font-bold">Call Us</p>
+                      <span suppressHydrationWarning className="text-xs font-bold text-gray-900 truncate block">{phone}</span>
                     </div>
                   </a>
 
@@ -256,206 +447,74 @@ export default function BookConsultation() {
                     href={getWhatsAppLink()}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3.5 p-2 rounded-xl hover:bg-green-50/70 transition-colors"
+                    className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-emerald-50/70 transition-colors group"
                   >
-                    <div className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center shrink-0 text-green-500">
+                    <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0 text-emerald-600 group-hover:scale-105 transition-transform">
                       <WhatsAppIcon />
                     </div>
-                    <div>
-                      <p className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">WhatsApp</p>
-                      <span className="text-sm md:text-base font-bold text-gray-900">Chat with Us Directly</span>
+                    <div className="min-w-0">
+                      <p className="text-[9px] text-gray-400 uppercase tracking-wider font-bold">WhatsApp</p>
+                      <span className="text-xs font-bold text-emerald-600 truncate block">Chat Directly →</span>
                     </div>
                   </a>
 
                   {/* Email */}
                   <a
                     href={`mailto:${email}`}
-                    className="flex items-center gap-3.5 p-2 rounded-xl hover:bg-rose-50/70 transition-colors"
+                    className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-rose-50/70 transition-colors group"
                   >
-                    <div className="w-10 h-10 rounded-full bg-rose-50 flex items-center justify-center shrink-0 text-rose-500">
-                      <Mail className="w-5 h-5" />
+                    <div className="w-8 h-8 rounded-lg bg-rose-50 flex items-center justify-center shrink-0 text-rose-500 group-hover:scale-105 transition-transform">
+                      <Mail className="w-4 h-4" />
                     </div>
-                    <div>
-                      <p className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">Email</p>
-                      <span className="text-xs md:text-sm font-bold text-gray-900">{email}</span>
+                    <div className="min-w-0">
+                      <p className="text-[9px] text-gray-400 uppercase tracking-wider font-bold">Email</p>
+                      <span className="text-xs font-bold text-gray-900 truncate block">{email}</span>
                     </div>
                   </a>
+                </div>
+
+                {/* Compact Google Map Card */}
+                <div className="relative w-full h-[165px] sm:h-[185px] rounded-2xl overflow-hidden border border-rose-100 shadow-sm bg-gray-100 group">
+                  <iframe
+                    title="Google Map Location - RIWAJ Events Rewa"
+                    src={`https://maps.google.com/maps?q=${encodeURIComponent(address || "Rewa, Madhya Pradesh")}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
+                    className="w-full h-full border-0 pointer-events-auto"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+
+                  {/* Top-Right "Open in Maps" Floating Pill */}
+                  <a
+                    href={googleMapUrl || "https://maps.google.com/?q=Rewa+Madhya+Pradesh"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="absolute top-2.5 right-2.5 z-10 px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/95 text-rose-600 border border-rose-200/80 shadow-md backdrop-blur-md flex items-center gap-1 hover:bg-rose-600 hover:text-white transition-all group/btn"
+                  >
+                    <span>Open in Maps</span>
+                    <ExternalLink className="w-2.5 h-2.5 group-hover/btn:translate-x-0.5 transition-transform" />
+                  </a>
+
+                  {/* Bottom Location Overlay Bar */}
+                  <div className="absolute bottom-0 inset-x-0 px-3 py-1.5 bg-gradient-to-t from-black/85 via-black/60 to-transparent flex items-center justify-between pointer-events-none">
+                    <span className="text-white text-[10px] font-medium flex items-center gap-1.5 truncate">
+                      <MapPin className="w-3 h-3 text-rose-400 shrink-0" />
+                      <span className="truncate">{address || "Rewa, Madhya Pradesh — 486001"}</span>
+                    </span>
+                    <span className="text-amber-300 text-[10px] font-bold shrink-0 ml-2">Directions ↗</span>
+                  </div>
                 </div>
               </div>
             </motion.div>
 
             {/* Right Side - Form */}
             <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
+              transition={{ duration: 0.5 }}
+              className="w-full max-w-lg mx-auto min-w-0 order-1 lg:order-2"
             >
-              <div className="bg-white p-6 md:p-8 shadow-2xl border border-rose-100 rounded-3xl relative">
-                {submitted ? (
-                  <div className="text-center py-10 space-y-4">
-                    <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
-                      <CheckCircle2 className="w-10 h-10" />
-                    </div>
-                    <h3 className="font-serif text-2xl font-bold text-gray-900">
-                      {isOfflineSubmission ? "Saved Offline! 📲" : "Thank You! 🎉"}
-                    </h3>
-                    <p className="text-gray-600 text-sm max-w-sm mx-auto leading-relaxed">
-                      {isOfflineSubmission
-                        ? "You are currently without internet connection. Your consultation request has been saved securely on your device (IndexedDB) and will automatically sync and submit as soon as your internet reconnects!"
-                        : "We have received your consultation request. One of our wedding specialists from RIWAJ will call you shortly."}
-                    </p>
-                    <button
-                      onClick={() => {
-                        setSubmitted(false);
-                        setIsOfflineSubmission(false);
-                      }}
-                      className="px-6 py-2.5 rounded-full text-xs font-bold text-white shadow-md hover:opacity-90 transition-opacity"
-                      style={{ background: "linear-gradient(to right, var(--c-primary), var(--c-primary-dark))" }}
-                    >
-                      Book Another Query
-                    </button>
-                  </div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="text-center mb-6">
-                      <h3 className="text-2xl font-serif text-gray-900 mb-1">Let&apos;s Plan Your Day</h3>
-                      <p className="text-gray-500 text-xs">Fill in your details and our team will get in touch</p>
-                    </div>
-
-                    {submitError && (
-                      <div className="p-3 bg-red-50 text-red-700 text-xs rounded-xl border border-red-200">
-                        {submitError}
-                      </div>
-                    )}
-
-                    {/* Name & Phone */}
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-700 mb-1 flex items-center gap-1.5">
-                        <User className="w-3.5 h-3.5 text-rose-500" />
-                        Full Name *
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:border-rose-400 focus:ring-2 focus:ring-rose-100 transition-all text-sm"
-                        placeholder="Your Name"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-700 mb-1 flex items-center gap-1.5">
-                        <Phone className="w-3.5 h-3.5 text-rose-500" />
-                        Phone Number *
-                      </label>
-                      <input
-                        type="tel"
-                        required
-                        value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:border-rose-400 focus:ring-2 focus:ring-rose-100 transition-all text-sm"
-                        placeholder="Enter 10-digit phone number"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-700 mb-1 flex items-center gap-1.5">
-                        <Mail className="w-3.5 h-3.5 text-rose-500" />
-                        Email Address
-                      </label>
-                      <input
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:border-rose-400 focus:ring-2 focus:ring-rose-100 transition-all text-sm"
-                        placeholder="hello@example.com"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <label className="block text-xs font-semibold text-gray-700 mb-1 flex items-center gap-1.5">
-                          <Calendar className="w-3.5 h-3.5 text-rose-500" />
-                          Event Date
-                        </label>
-                        <input
-                          type="date"
-                          value={formData.date}
-                          onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                          className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-xs font-semibold text-gray-700 mb-1 flex items-center gap-1.5">
-                          <PartyPopper className="w-3.5 h-3.5 text-rose-500" />
-                          Event Type
-                        </label>
-                        <select
-                          value={formData.eventType}
-                          onChange={(e) => setFormData({ ...formData, eventType: e.target.value })}
-                          className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs bg-white"
-                        >
-                          <option value="Wedding">Wedding</option>
-                          <option value="Reception">Reception</option>
-                          <option value="Engagement">Engagement</option>
-                          <option value="Anniversary">Anniversary</option>
-                          <option value="Birthday">Birthday Party</option>
-                          <option value="Corporate">Corporate Event</option>
-                          <option value="Pre Wedding">Pre Wedding</option>
-                          <option value="Other">Other</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-700 mb-1 flex items-center gap-1.5">
-                        <MessageSquare className="w-3.5 h-3.5 text-rose-500" />
-                        Message / Vision
-                      </label>
-                      <textarea
-                        rows={3}
-                        value={formData.message}
-                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        className="w-full px-4 py-2 border border-gray-200 rounded-xl text-xs resize-none"
-                        placeholder="Tell us about your wedding venue or decor ideas..."
-                      />
-                    </div>
-
-                    {/* Cloudflare Turnstile placeholder */}
-                    {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
-                      <div className="flex justify-center my-2">
-                        <div ref={captchaRef}></div>
-                      </div>
-                    )}
-
-                    <button
-                      type="submit"
-                      disabled={submitting}
-                      className="w-full py-3.5 rounded-full text-white font-bold tracking-wide shadow-lg hover:opacity-90 active:scale-[0.99] transition-all flex items-center justify-center gap-2 text-sm"
-                      style={{ background: "linear-gradient(to right, var(--c-primary), var(--c-primary-dark))" }}
-                    >
-                      {submitting ? (
-                        <>
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                          <span>Submitting Consultation...</span>
-                        </>
-                      ) : (
-                        <>
-                          <Calendar className="w-4 h-4" />
-                          <span>Reserve Free Consultation</span>
-                        </>
-                      )}
-                    </button>
-
-                    <p className="text-[11px] text-gray-400 text-center mt-3">
-                      Strictly confidential • No spam promise
-                    </p>
-                  </form>
-                )}
-              </div>
+              {formCard}
             </motion.div>
           </div>
         </div>

@@ -1,7 +1,8 @@
 import bcrypt from "bcryptjs";
 import connectToDatabase from "./db";
-import { AdminUser, Blog, GalleryItem, Service, SiteSetting, Testimonial, TeamMember } from "./models";
+import { AdminUser, Blog, GalleryItem, Service, SiteSetting, Testimonial, TeamMember, Vendor, SubCategory } from "./models";
 import { galleryImages, stats } from "@/data/staticData";
+import { ALL_EVENTS } from "@/data/eventRoutes";
 
 export async function seedDatabaseIfEmpty() {
   await connectToDatabase();
@@ -34,75 +35,87 @@ export async function seedDatabaseIfEmpty() {
   if (serviceCount === 0) {
     const defaultServices = [
       {
-        title: "Full Wedding Planning",
+        title: "Full Wedding Planning & Coordination",
         slug: "full-wedding-planning",
-        shortDescription: "Comprehensive planning from start to finish. We handle every detail so you can enjoy your engagement stress-free.",
+        shortDescription: "Comprehensive planning from Roka to Vidai. Complete budget management, royal venue styling, vendor negotiation, and flawless day-of coordination.",
         iconName: "Calendar",
         category: "Planning",
-        features: ["Budget management", "Vendor negotiation", "Day-of coordination", "Timeline management"],
+        features: ["Custom 12-month wedding timeline & rasam checklist", "Venue selection & contract negotiations across Rewa & MP", "Dedicated lead wedding coordinator on event day", "Guest RSVP, hotel room allocations & welcome hampers"],
         order: 1,
+        isActive: true,
         coverImage: {
-          url: "https://images.unsplash.com/photo-1682802142549-b72576d31d5e?w=800&q=75",
+          url: "https://images.unsplash.com/photo-1724847664960-5060a1ae8259?auto=format&fit=crop&w=1200&q=80",
+          alt: "Royal Indian Wedding Planning & Coordination",
         },
       },
       {
-        title: "Mandap & Floral Décor",
+        title: "Floral & Mandap Stage Décor",
         slug: "mandap-floral-decor",
-        shortDescription: "Custom floral arrangements, grand stage designs, and mesmerizing mandaps that bring your dream aesthetic to life.",
+        shortDescription: "Mesmerizing royal mandap setups, marigold and red rose cascades, illuminated entrance walkways, and majestic VIP stage seating.",
         iconName: "Flower2",
         category: "Decor",
-        features: ["Theme conceptualization", "Exotic floral arrangements", "Custom stage lighting", "Entrance gate styling"],
+        features: ["Traditional Shahi & modern pastel theme mandap setups", "Fresh exotic orchids, desi genda & red rose arrangements", "Intelligent warm LED chandeliers & fairy light ambience", "Thematic photobooths, selfie zones & floral arches"],
         order: 2,
+        isActive: true,
         coverImage: {
-          url: "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?w=800&q=75",
+          url: "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=1200&q=80",
+          alt: "Royal Indian Wedding Mandap & Stage Decor",
         },
       },
       {
-        title: "Photography & Cinematography",
+        title: "Photography & Cinematic Videography",
         slug: "photography-cinematography",
-        shortDescription: "Top wedding cinematographers to capture candid emotions, royal portraits, and cinematic teaser films.",
+        shortDescription: "Top-tier Indian wedding photography capturing raw candid emotions, bridal portraits, drone aerial coverage, and Bollywood-style cinematic trailers.",
         iconName: "Camera",
         category: "Media",
-        features: ["Drone 4K aerial shots", "Traditional & candid", "Pre-wedding shoot", "Same-day edit trailers"],
+        features: ["Royal bridal portraits & candid emotional ceremony moments", "4K cinematic wedding trailer & full documentary films", "Pre-wedding shoot at scenic heritage spots in Rewa & MP", "Luxury velvet & leather-bound customized photo albums"],
         order: 3,
+        isActive: true,
         coverImage: {
-          url: "https://images.unsplash.com/photo-1628221482312-439eb2f3367d?w=800&q=75",
+          url: "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=1200&q=80",
+          alt: "Indian Bride and Wedding Photography",
         },
       },
       {
-        title: "Entertainment & Sangeet",
+        title: "Sangeet, DJ & Live Entertainment",
         slug: "entertainment-sangeet",
-        shortDescription: "Curated live artists, celebrity DJs, sound engineering, choreographers, and theme lighting.",
+        shortDescription: "Concert-grade line array sound systems, dynamic truss lighting, celebrity DJs, family dance choreographers, and traditional energetic Punjabi Dhol troupes.",
         iconName: "Music",
         category: "Entertainment",
-        features: ["Live band & Sufi singers", "Celebrity DJ setups", "Dance choreography", "Cold pyro & special effects"],
+        features: ["Bollywood choreographers for family sangeet performances", "Concert-style LED stage walls & intelligent beam lighting", "Cold pyros, dry ice low fog & celebratory paper blast effects", "Traditional energetic Shehnai & Dhol Tasha teams"],
         order: 4,
+        isActive: true,
         coverImage: {
-          url: "https://images.unsplash.com/photo-1766113483422-7c871de23591?w=800&q=75",
+          url: "https://images.unsplash.com/photo-1766113483422-7c871de23591?auto=format&fit=crop&w=1200&q=80",
+          alt: "Indian Sangeet Night and Dance Celebration",
         },
       },
       {
-        title: "Royal Catering & Hospitality",
+        title: "Royal Catering & Gourmet Banquets",
         slug: "royal-catering-hospitality",
-        shortDescription: "Multi-cuisine gourmet experiences, traditional royal thalis, live counters, and high-standard hygiene.",
+        shortDescription: "Authentic Indian wedding feasts crafted by master chefs — Bundelkhandi royal delicacies, live chaat stalls, North Indian curries, and gourmet dessert counters.",
         iconName: "Utensils",
         category: "Catering",
-        features: ["Traditional MP royal cuisine", "Global live food stations", "Custom mocktail bars", "Uniformed service staff"],
+        features: ["100% pure vegetarian & customized royal gourmet menus", "Authentic Bundelkhandi, Awadhi & Mughlai royal delicacies", "Live chaat counters, tandoori breads, mocktail bars & mithai", "Gleaming copper chafing dishes & trained white-glove staff"],
         order: 5,
+        isActive: true,
         coverImage: {
-          url: "https://images.unsplash.com/photo-1732259495388-af40b972c311?w=800&q=75",
+          url: "https://images.unsplash.com/photo-1732259495388-af40b972c311?auto=format&fit=crop&w=1200&q=80",
+          alt: "Royal Indian Wedding Catering and Feast",
         },
       },
       {
-        title: "Venue & Guest Logistics",
+        title: "Royal Baraat & Vintage Hospitality",
         slug: "venue-guest-logistics",
-        shortDescription: "Seamless guest pickup, hospitality desks at hotels, RSVP management, and luxury vintage car baraats.",
+        shortDescription: "Make the groom's entry legendary with vintage convertibles, royal decorated chariots, synchronized brass bands, and royal aarti guest reception.",
         iconName: "Sparkles",
         category: "Logistics",
-        features: ["Baraat management", "Airport & station shuttles", "Hotel check-in desks", "Gift hamper distributions"],
+        features: ["Vintage open cars & decorated royal chariot / horse setups", "Synchronized royal brass band & percussion musicians", "Traditional aarti, ittar spray & flower shower swagat team", "Custom royal safa & pagdi tying masters for all baratis"],
         order: 6,
+        isActive: true,
         coverImage: {
-          url: "https://images.unsplash.com/photo-1763553113332-800519753e40?w=800&q=75",
+          url: "https://images.unsplash.com/photo-1754782921197-ba8514594184?auto=format&fit=crop&w=1200&q=80",
+          alt: "Royal Indian Baraat Procession and Hospitality",
         },
       },
     ];
@@ -343,4 +356,137 @@ export async function seedDefaultTeamIfEmpty() {
     await TeamMember.insertMany(defaultTeam);
     console.log("Team members seeded");
   }
+
+  // 8. Seed Vendors if empty
+  const vendorCount = await Vendor.countDocuments();
+  if (vendorCount === 0) {
+    const defaultVendors = [
+      {
+        name: "Ramesh Sound & DJ System",
+        phone: "9826123456",
+        whatsappNumber: "9826123456",
+        state: "Madhya Pradesh",
+        city: "Rewa",
+        address: "Sirmour Chowk, Rewa",
+        services: ["DJ & Sounds", "Stage Lighting", "Generator Setup"],
+        rateEstimate: "₹12,000 / event",
+        rating: 5,
+        experienceYears: 6,
+        upiId: "rameshsound@upi",
+        notes: "Owns JBL line-array speakers, sharpy lights, and heavy generator. Very punctual for Baraat & Sangeet.",
+        isActive: true,
+        totalEventsDone: 34,
+      },
+      {
+        name: "Shree Krishna Royal Caterers",
+        phone: "9425198765",
+        whatsappNumber: "9425198765",
+        state: "Madhya Pradesh",
+        city: "Rewa",
+        address: "Kothi Road, Rewa",
+        services: ["Catering & Food", "Live Food Counters", "Uniformed Staff"],
+        rateEstimate: "₹380 - ₹550 / plate",
+        rating: 5,
+        experienceYears: 10,
+        upiId: "krishnacaterers@upi",
+        notes: "Best for MP royal thali, multi-cuisine counters, chaat stalls. High hygiene standards.",
+        isActive: true,
+        totalEventsDone: 52,
+      },
+      {
+        name: "Vindhya Royal Safa & Turban House",
+        phone: "7000123987",
+        whatsappNumber: "7000123987",
+        state: "Madhya Pradesh",
+        city: "Rewa",
+        address: "Venkat Road, Rewa",
+        services: ["Safa Tying", "Baggi & Horse Entry", "Atishbaji & Cold Pyro"],
+        rateEstimate: "₹70 / safa, ₹15,000 / Baggi",
+        rating: 4.9,
+        experienceYears: 8,
+        upiId: "royalsafa@upi",
+        notes: "Expert Jodhpuri & Banarasi safa tying for 200+ guests. Provides decorated vintage baggi & cold pyros.",
+        isActive: true,
+        totalEventsDone: 45,
+      },
+      {
+        name: "Cinematic Lens Wedding Studio",
+        phone: "9111456789",
+        whatsappNumber: "9111456789",
+        state: "Madhya Pradesh",
+        city: "Satna",
+        address: "Circuit House Road, Satna",
+        services: ["Photography & Video", "Drone 4K Shoots"],
+        rateEstimate: "₹35,000 / 2-day wedding",
+        rating: 4.8,
+        experienceYears: 5,
+        upiId: "cinematiclens@upi",
+        notes: "Sony FX3 cameras, 4K DJI drone, candid specialists with fast 7-day teaser delivery.",
+        isActive: true,
+        totalEventsDone: 28,
+      },
+    ];
+    await Vendor.insertMany(defaultVendors);
+    console.log("Default vendors seeded");
+  }
+
+  // 9. Seed Navbar SubCategories if empty
+  await seedSubCategoriesIfEmpty();
 }
+
+export async function seedSubCategoriesIfEmpty() {
+  await connectToDatabase();
+  const count = await SubCategory.countDocuments();
+  if (count === 0) {
+    const docs = ALL_EVENTS.map((event, index) => ({
+      slug: event.slug,
+      category: event.category,
+      menuTitle: event.menuTitle,
+      title: event.title,
+      badge: event.badge || "",
+      mainImage: {
+        url: event.heroImage,
+        public_id: "",
+        alt: `${event.title} - RIWAJ Events`,
+      },
+      relevantImages: (event.galleryImages || []).map((url, i) => ({
+        url,
+        public_id: "",
+        alt: `${event.menuTitle} Real Event Setup ${i + 1} - RIWAJ Events`,
+      })),
+      isActive: true,
+      order: index + 1,
+    }));
+
+    await SubCategory.insertMany(docs);
+    console.log(`Seeded ${docs.length} navbar subcategories into MongoDB.`);
+  } else {
+    // If any event from ALL_EVENTS is not in DB, add it
+    for (const [index, event] of ALL_EVENTS.entries()) {
+      const exists = await SubCategory.exists({ slug: event.slug });
+      if (!exists) {
+        await SubCategory.create({
+          slug: event.slug,
+          category: event.category,
+          menuTitle: event.menuTitle,
+          title: event.title,
+          badge: event.badge || "",
+          mainImage: {
+            url: event.heroImage,
+            public_id: "",
+            alt: `${event.title} - RIWAJ Events`,
+          },
+          relevantImages: (event.galleryImages || []).map((url, i) => ({
+            url,
+            public_id: "",
+            alt: `${event.menuTitle} Real Event Setup ${i + 1} - RIWAJ Events`,
+          })),
+          isActive: true,
+          order: index + 1,
+        });
+      }
+    }
+  }
+}
+
+
