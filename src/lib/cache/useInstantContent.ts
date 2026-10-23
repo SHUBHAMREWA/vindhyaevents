@@ -13,7 +13,7 @@ import { DEFAULT_SITE_SETTINGS } from "@/lib/settingsDefaults";
 const defaultContent: PublicContentData = {
   services: [],
   blogs: [],
-  gallery: galleryImages,
+  gallery: [],
   settings: {
     siteName: DEFAULT_SITE_SETTINGS.siteName,
     tagline: DEFAULT_SITE_SETTINGS.tagline,

@@ -25,7 +25,7 @@ export async function GET() {
       success: true,
       services: services.length ? services : [],
       blogs: blogs || [],
-      gallery: gallery.length ? gallery : galleryImages,
+      gallery: gallery || [],
       settings: settings || DEFAULT_SITE_SETTINGS,
       testimonials: testimonials || [],
     });
@@ -36,7 +36,7 @@ export async function GET() {
       fallback: true,
       services: [],
       blogs: [],
-      gallery: galleryImages,
+      gallery: [],
       testimonials: [],
       settings: DEFAULT_SITE_SETTINGS,
     });
