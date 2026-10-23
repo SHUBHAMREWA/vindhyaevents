@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Mail, Phone, MapPin, Instagram, Facebook, Twitter, Youtube, Sparkles } from "lucide-react";
 import { useSettings } from "@/context/SettingsContext";
 import LocationMapBox from "./LocationMapBox";
+import FooterPwaDownload from "./FooterPwaDownload";
 
 const quickLinks = [
   { label: "Home", href: "/" },
@@ -80,6 +81,9 @@ export default function Footer() {
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
               <span>300+ Events Planned</span>
             </div>
+
+            {/* PWA Mobile App Download Card (hidden if already downloaded/installed) */}
+            <FooterPwaDownload />
           </div>
 
           {/* 2. Wedding Services */}

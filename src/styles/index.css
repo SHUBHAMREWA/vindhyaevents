@@ -238,23 +238,23 @@ button:disabled,
   }
 }
 
-/* ─── Default Brand Theme Variables (Royal Preset) ─────────────────────── */
+/* ─── Default Brand Theme Variables (Rose Preset - Default) ─────────────────────── */
 :root {
-  --c-primary:        #800000;
-  --c-primary-dark:   #600000;
-  --c-primary-light:  #d4a0a0;
-  --c-secondary:      #D4AF37;
-  --c-accent:         #c9a227;
-  --c-bg:             #F8F4E3;
-  --c-bg-soft:        #f3edcf;
-  --c-surface:        #fffdf5;
-  --c-text:           #2c1a0e;
-  --c-text-muted:     #7a5c40;
-  --c-border:         #e8d5a3;
-  --c-banner-from:    #600000;
-  --c-banner-to:      #9b2226;
-  --c-footer-from:    #3d0000;
-  --c-footer-to:      #1a0000;
+  --c-primary:        #f43f5e;
+  --c-primary-dark:   #e11d48;
+  --c-primary-light:  #fda4af;
+  --c-secondary:      #f59e0b;
+  --c-accent:         #fb7185;
+  --c-bg:             #ffffff;
+  --c-bg-soft:        #fff1f2;
+  --c-surface:        #ffffff;
+  --c-text:           #1c1917;
+  --c-text-muted:     #6b7280;
+  --c-border:         #fecdd3;
+  --c-banner-from:    #e11d48;
+  --c-banner-to:      #f43f5e;
+  --c-footer-from:    #881337;
+  --c-footer-to:      #4c0519;
 }
 
 /* ─── Hero slide text animation ─── */
