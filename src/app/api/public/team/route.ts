@@ -8,7 +8,6 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     await connectToDatabase();
-    await seedDefaultTeamIfEmpty();
     const team = await TeamMember.find({ isActive: true })
       .sort({ order: 1, createdAt: -1 })
       .lean();

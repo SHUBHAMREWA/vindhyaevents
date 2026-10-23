@@ -417,43 +417,25 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── Meet Our Team ─────────────────────────────────── */}
-      <section className="py-16 md:py-24" style={{ background: "var(--c-bg-soft)" }}>
-        <div className="container mx-auto px-4 md:px-6 max-w-6xl">
-          <div className="text-center mb-12">
-            <span
-              className="inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3 shadow-xs"
-              style={{ background: "var(--c-bg)", color: "var(--c-primary)" }}
-            >
-              Humari Team
-            </span>
-            <h2 className="text-2xl md:text-4xl font-serif font-bold" style={{ color: "var(--c-footer-from)" }}>
-              Meet Our Team
-            </h2>
-            <p className="text-gray-600 text-xs md:text-sm mt-2 max-w-xl mx-auto">
-              The passionate professionals, technical heads, and creative planners behind every memorable celebration in Rewa.
-            </p>
-          </div>
-
-          {loadingTeam ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-              {[1, 2, 3, 4].map((n) => (
-                <div
-                  key={n}
-                  className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 animate-pulse flex flex-col justify-between"
-                >
-                  <div className="h-60 w-full bg-gray-200" />
-                  <div className="p-5 text-center space-y-2.5">
-                    <div className="h-5 bg-gray-200 rounded-md w-3/4 mx-auto" />
-                    <div className="h-3.5 bg-gray-200 rounded-md w-1/2 mx-auto" />
-                    <div className="h-4 bg-gray-100 rounded-full w-24 mx-auto mt-2" />
-                    <div className="h-3 bg-gray-100 rounded-md w-full mx-auto" />
-                    <div className="h-3 bg-gray-100 rounded-md w-5/6 mx-auto" />
-                  </div>
-                </div>
-              ))}
+      {/* ── Meet Our Team (Rendered only when real team members exist) ── */}
+      {teamList.length > 0 && (
+        <section className="py-16 md:py-24" style={{ background: "var(--c-bg-soft)" }}>
+          <div className="container mx-auto px-4 md:px-6 max-w-6xl">
+            <div className="text-center mb-12">
+              <span
+                className="inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3 shadow-xs"
+                style={{ background: "var(--c-bg)", color: "var(--c-primary)" }}
+              >
+                Humari Team
+              </span>
+              <h2 className="text-2xl md:text-4xl font-serif font-bold" style={{ color: "var(--c-footer-from)" }}>
+                Meet Our Team
+              </h2>
+              <p className="text-gray-600 text-xs md:text-sm mt-2 max-w-xl mx-auto">
+                The passionate professionals, technical heads, and creative planners behind every memorable celebration in Rewa.
+              </p>
             </div>
-          ) : teamList.length > 0 ? (
+
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
               {teamList.map((member, i) => (
                 <motion.div
@@ -465,21 +447,23 @@ export default function AboutPage() {
                   className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group border border-gray-100 flex flex-col justify-between"
                 >
                   <div>
-                    <div className="relative h-60 w-full overflow-hidden bg-gray-100">
+                    <div className="relative h-60 w-full overflow-hidden bg-rose-50/50 flex items-center justify-center">
                       {member.image?.url ? (
                         <SafeImage
                           src={member.image.url}
                           alt={member.image?.alt || member.name}
-                          fallbackSrc="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=75"
+                          fallbackSrc=""
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-500"
                           sizes="(max-width: 768px) 100vw, 25vw"
                           loading="lazy"
                         />
                       ) : (
-                        <div className="w-full h-full flex flex-col items-center justify-center text-gray-400 bg-rose-50/50">
-                          <Users className="w-12 h-12 text-rose-300 mb-1" />
-                          <span className="text-xs font-semibold">{member.name}</span>
+                        <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 bg-gradient-to-br from-rose-50 to-amber-50">
+                          <div className="w-16 h-16 rounded-full bg-white shadow-xs flex items-center justify-center text-rose-600 font-serif font-bold text-xl mb-1 border border-rose-100">
+                            {member.name ? member.name.charAt(0).toUpperCase() : "R"}
+                          </div>
+                          <span className="text-xs font-semibold text-gray-700">{member.name}</span>
                         </div>
                       )}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -512,15 +496,9 @@ export default function AboutPage() {
                 </motion.div>
               ))}
             </div>
-          ) : (
-            <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center text-gray-500 max-w-md mx-auto shadow-xs">
-              <Users className="w-10 h-10 text-rose-300 mx-auto mb-2 opacity-60" />
-              <p className="font-semibold text-gray-700 text-sm">Team profiles updating soon</p>
-              <p className="text-xs text-gray-400 mt-1">Our expert planners and technical heads are on-ground managing celebrations.</p>
-            </div>
-          )}
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
 
       {/* ── Studio Location & Map Section ── */}
       <section className="py-12 md:py-16 bg-white border-t border-gray-100">

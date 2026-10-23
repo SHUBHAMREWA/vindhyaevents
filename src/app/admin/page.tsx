@@ -213,6 +213,31 @@ export default function AdminDashboardPage() {
   const [isCreatingNewCategory, setIsCreatingNewCategory] = useState(false);
   const [adminGalleryCategoryFilter, setAdminGalleryCategoryFilter] = useState("all");
 
+  const [cleaningDemo, setCleaningDemo] = useState(false);
+
+  const handleCleanDemoData = async () => {
+    const confirmed = confirm(
+      "Are you sure you want to remove all predefined demo data?\n\nThis will permanently delete:\n- Demo team members (with stock photos)\n- Demo client reviews\n- Demo blogs\n- Demo vendors\n- Demo gallery items\n\nYour real content will stay intact."
+    );
+    if (!confirmed) return;
+
+    setCleaningDemo(true);
+    try {
+      const res = await fetch("/api/admin/clean-demo-data", { method: "POST" });
+      const data = await res.json();
+      setCleaningDemo(false);
+      if (data.success) {
+        alert("Predefined demo data has been cleaned successfully!");
+        fetchAdminAndData();
+      } else {
+        alert(data.message || "Failed to clean demo data");
+      }
+    } catch (err: any) {
+      setCleaningDemo(false);
+      alert("Error cleaning demo data: " + err.message);
+    }
+  };
+
   const handleCopy = (text: string, label: string) => {
     if (!text) return;
     try {
@@ -1383,6 +1408,18 @@ export default function AdminDashboardPage() {
             <span className="sm:hidden">Live Site</span>
             <ExternalLink className="w-3.5 h-3.5" />
           </Link>
+
+          <button
+            type="button"
+            onClick={handleCleanDemoData}
+            disabled={cleaningDemo}
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border border-amber-200 bg-amber-50 text-amber-800 hover:bg-amber-100 text-xs font-semibold transition-colors disabled:opacity-50 cursor-pointer"
+            title="Permanently remove predefined demo data (team, reviews, blogs, vendors, gallery)"
+          >
+            <Trash2 className="w-3.5 h-3.5 text-amber-600" />
+            <span className="hidden sm:inline">{cleaningDemo ? "Cleaning..." : "Clear Demo Data"}</span>
+            <span className="sm:hidden">Clean</span>
+          </button>
 
           <div className="hidden sm:block h-6 w-px bg-gray-200" />
 
@@ -3216,24 +3253,37 @@ export default function AdminDashboardPage() {
                     Manage team members, roles, experience, and bios shown on the About page. Photos are automatically compressed, converted to WebP, and removed from Cloudinary on update or delete.
                   </p>
                 </div>
-                <button
-                  onClick={() => {
-                    setModalData({
-                      name: "",
-                      role: "Lead Wedding & Theme Designer",
-                      experience: "Since 2021",
-                      bio: "",
-                      order: team.length + 1,
-                      isActive: true,
-                      image: { url: "", public_id: "", alt: "" },
-                    });
-                    setShowModal("teamMember");
-                  }}
-                  className="px-4 py-2.5 bg-gradient-to-r from-rose-500 to-amber-500 text-white text-xs font-bold rounded-xl shadow-md hover:opacity-90 transition-all flex items-center gap-2 self-start sm:self-auto"
-                >
-                  <Plus className="w-4 h-4" />
-                  <span>+ Add Team Member</span>
-                </button>
+                <div className="flex items-center gap-2 self-start sm:self-auto flex-wrap">
+                  {team.some((m) => m.image?.url?.includes("unsplash.com") || ["Shivam Patel", "Pooja Singh", "Aman Tiwari", "Ritika Mishra"].includes(m.name)) && (
+                    <button
+                      type="button"
+                      onClick={handleCleanDemoData}
+                      disabled={cleaningDemo}
+                      className="px-3 py-2.5 bg-rose-50 text-rose-700 hover:bg-rose-100 text-xs font-bold rounded-xl border border-rose-200 transition-colors flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <Trash2 className="w-3.5 h-3.5 text-rose-500" />
+                      <span>{cleaningDemo ? "Purging..." : "Remove Demo Team"}</span>
+                    </button>
+                  )}
+                  <button
+                    onClick={() => {
+                      setModalData({
+                        name: "",
+                        role: "Lead Wedding & Theme Designer",
+                        experience: "Since 2021",
+                        bio: "",
+                        order: team.length + 1,
+                        isActive: true,
+                        image: { url: "", public_id: "", alt: "" },
+                      });
+                      setShowModal("teamMember");
+                    }}
+                    className="px-4 py-2.5 bg-gradient-to-r from-rose-500 to-amber-500 text-white text-xs font-bold rounded-xl shadow-md hover:opacity-90 transition-all flex items-center gap-2 cursor-pointer"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>+ Add Team Member</span>
+                  </button>
+                </div>
               </div>
 
               {team.length === 0 ? (

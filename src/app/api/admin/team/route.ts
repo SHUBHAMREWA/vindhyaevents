@@ -27,7 +27,6 @@ export async function GET(req: NextRequest) {
     }
 
     await connectToDatabase();
-    await seedDefaultTeamIfEmpty();
     const team = await TeamMember.find().sort({ order: 1, createdAt: -1 });
     return NextResponse.json({ success: true, team });
   } catch (error: unknown) {
