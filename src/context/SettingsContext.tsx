@@ -11,6 +11,7 @@ interface SettingsContextValue {
   whatsAppNumber: string;
   email: string;
   address: string;
+  googleMapUrl: string;
   siteName: string;
   taglineHindi: string;
   bannerText: string;
@@ -38,6 +39,7 @@ const SettingsContext = createContext<SettingsContextValue>({
   whatsAppNumber: DEFAULT_SITE_SETTINGS.whatsAppNumber,
   email: DEFAULT_SITE_SETTINGS.primaryEmail,
   address: DEFAULT_SITE_SETTINGS.address,
+  googleMapUrl: DEFAULT_SITE_SETTINGS.googleMapUrl || "https://maps.google.com/?q=Rewa+Madhya+Pradesh",
   siteName: DEFAULT_SITE_SETTINGS.siteName,
   taglineHindi: DEFAULT_SITE_SETTINGS.taglineHindi || "✨ आपके रीति रिवाज सजावट के साथ ✨",
   bannerText: DEFAULT_SITE_SETTINGS.bannerText || "🎉 Welcome to RIWAJ Events — Weddings & Celebrations",
@@ -124,6 +126,7 @@ export function SettingsProvider({
       whatsAppNumber: active.whatsAppNumber || DEFAULT_SITE_SETTINGS.whatsAppNumber,
       email: active.primaryEmail || DEFAULT_SITE_SETTINGS.primaryEmail,
       address: active.address || DEFAULT_SITE_SETTINGS.address,
+      googleMapUrl: active.googleMapUrl || DEFAULT_SITE_SETTINGS.googleMapUrl || "https://maps.google.com/?q=Rewa+Madhya+Pradesh",
       siteName: active.siteName || DEFAULT_SITE_SETTINGS.siteName,
       taglineHindi: active.taglineHindi || DEFAULT_SITE_SETTINGS.taglineHindi || "",
       bannerText: active.bannerText || DEFAULT_SITE_SETTINGS.bannerText || "",

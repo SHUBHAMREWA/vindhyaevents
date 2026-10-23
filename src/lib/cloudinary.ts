@@ -78,4 +78,63 @@ export async function deleteFromCloudinary(publicId: string): Promise<boolean> {
   }
 }
 
+/**
+ * Safely extract public_id from Cloudinary URL or public_id string.
+ * Returns null if the URL is external (Unsplash, local, etc.).
+ */
+export function extractCloudinaryPublicId(urlOrPublicId?: string): string | null {
+  if (!urlOrPublicId || typeof urlOrPublicId !== "string") return null;
+  const trimmed = urlOrPublicId.trim();
+  if (!trimmed) return null;
+
+  // If it doesn't look like an HTTP URL, treat it as a direct public_id
+  if (!trimmed.startsWith("http://") && !trimmed.startsWith("https://")) {
+    return trimmed;
+  }
+
+  // If it's an external link (Unsplash, Pexels, local /images, etc.), it's not Cloudinary
+  if (!trimmed.includes("cloudinary.com")) {
+    return null;
+  }
+
+  try {
+    const parts = trimmed.split("/upload/");
+    if (parts.length < 2) return null;
+    let afterUpload = parts[1];
+    // Remove transformations if present (e.g. w_500,c_fill/)
+    const versionIndex = afterUpload.search(/v\d+\//);
+    if (versionIndex !== -1) {
+      afterUpload = afterUpload.substring(versionIndex).replace(/^v\d+\//, "");
+    }
+    // Remove query params or hash if any
+    afterUpload = afterUpload.split("?")[0].split("#")[0];
+    // Remove file extension (e.g. .webp, .jpg, .png)
+    const dotIdx = afterUpload.lastIndexOf(".");
+    if (dotIdx > 0) {
+      afterUpload = afterUpload.substring(0, dotIdx);
+    }
+    return afterUpload || null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Safely delete an image from Cloudinary without throwing errors.
+ * If the image is not on Cloudinary (e.g., Unsplash, external link) or deletion fails,
+ * it safely ignores and returns false, preventing any API failure.
+ */
+export async function safeDeleteCloudinaryImage(urlOrPublicId?: string): Promise<boolean> {
+  if (!urlOrPublicId) return false;
+  try {
+    const publicId = extractCloudinaryPublicId(urlOrPublicId);
+    if (!publicId) return false; // Non-Cloudinary link (Unsplash etc.), skip silently
+    const res = await cloudinary.uploader.destroy(publicId);
+    return res.result === "ok";
+  } catch (error) {
+    console.warn("Cloudinary safe delete notice (ignored):", error);
+    return false;
+  }
+}
+
 export default cloudinary;

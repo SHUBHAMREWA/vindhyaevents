@@ -98,10 +98,10 @@ export default function BlogListClient({
   }
 
   return (
-    <section className="py-16 bg-gradient-to-b from-white via-gray-50/50 to-white">
-      <div className="container mx-auto px-6 max-w-7xl">
+    <section className="py-6 md:py-16 bg-gradient-to-b from-white via-gray-50/50 to-white">
+      <div className="container mx-auto px-4 md:px-6 max-w-7xl">
         {/* Search + Filter */}
-        <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-12">
+        <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-center justify-between mb-6 md:mb-12">
           <div className="relative w-full md:w-96">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input

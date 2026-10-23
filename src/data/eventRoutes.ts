@@ -13,7 +13,7 @@ export interface EventFAQ {
 
 export interface EventDetail {
   slug: string;
-  category: "wedding" | "corporate";
+  category: "wedding" | "corporate" | "catering" | "decoration";
   menuTitle: string;
   badge: string;
   title: string;
@@ -32,6 +32,1771 @@ export interface EventDetail {
   packages: EventPackage[];
   faqs: EventFAQ[];
 }
+
+export const CATERING_EVENTS: EventDetail[] = [
+  {
+    "slug": "wedding-catering",
+    "category": "catering",
+    "menuTitle": "Wedding Catering",
+    "badge": "Royal Shahi Dawat & Feasts",
+    "title": "Grand Wedding Catering & Royal Shahi Dawat in Rewa & MP",
+    "subtitle": "50+ authentic delicacies, royal Mughlai & Awadhi curries, live tandoor stations aur 5-star hospitality ke sath yaadgar bhojan.",
+    "heroImage": "https://images.unsplash.com/photo-1732259495388-af40b972c311?auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "number": "500+",
+        "label": "Weddings Catered"
+      },
+      {
+        "number": "100%",
+        "label": "Hygiene Certified"
+      },
+      {
+        "number": "50+",
+        "label": "Master Chefs"
+      },
+      {
+        "number": "Custom",
+        "label": "Menu Tailoring"
+      }
+    ],
+    "overview": "Shaadi me aane wale mehmaan sabse zyada bhojan ke swad ko yaad rakhte hain. RIWAJ Catering team Shahi Rajputana, Awadhi, aur Contemporary Global cuisines ko traditional hospitality ke sath serve karti hai.",
+    "features": [
+      {
+        "title": "Grand Live Cooking Counters",
+        "desc": "Live pasta, chaat, dosa, and sizzling tandoori items prepared fresh in front of guests."
+      },
+      {
+        "title": "Royal Chafing & Silverware Styling",
+        "desc": "Heavy brass & antique chafing dishes with elegant buffet counters and floral styling."
+      },
+      {
+        "title": "Trained White-Glove Stewards",
+        "desc": "Uniformed, polite and highly trained service staff ensuring VIP hospitality for all guests."
+      },
+      {
+        "title": "Pure Ingredients & Shuddh Ghee",
+        "desc": "Top-grade spices, farm-fresh vegetables and pure desi ghee preparation guarantee."
+      }
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1630409346824-4f0e7b080087?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1680993032090-1ef7ea9b51e5?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1593701461250-d7b22dfd3a77?auto=format&fit=crop&w=800&q=75"
+    ],
+    "packages": [
+      {
+        "name": "Shahi Wedding Feast",
+        "price": "\u20b9650 / Plate",
+        "tagline": "Complete Traditional Multi-Course Menu",
+        "features": [
+          "2 Welcome Drinks",
+          "4 Starters",
+          "Main Course with 4 Gravies",
+          "Dal Makhani & Shahi Pulao",
+          "3 Indian Sweets & Ice Cream",
+          "Live Tandoori Breads"
+        ]
+      },
+      {
+        "name": "Imperial Royal Banquet",
+        "price": "\u20b91,050 / Plate",
+        "popular": true,
+        "tagline": "Ultra Luxury Wedding Spread",
+        "features": [
+          "4 Welcome Mocktails",
+          "6 Live Starters",
+          "Italian & Pan-Asian Live Counters",
+          "5 Premium Curries with Paneer/Kofta",
+          "Live Jalebi & Rabri Station",
+          "Uniformed White-Glove Service"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Kya hum food tasting session arrange kar sakte hain?",
+        "a": "Ji haan! Booking se pehle hum couple aur family ke liye complete menu tasting session arrange karte hain."
+      },
+      {
+        "q": "Minimum kitne guests ke liye catering available hai?",
+        "a": "Hum minimum 100 guests se lekar 5,000+ guests tak ke grand wedding gatherings successfully handle karte hain."
+      }
+    ]
+  },
+  {
+    "slug": "corporate-catering",
+    "category": "catering",
+    "menuTitle": "Corporate Catering",
+    "badge": "Punctual & Executive Dining",
+    "title": "Executive Corporate Catering & Conference Dining Services",
+    "subtitle": "Boardroom lunch boxes, high-tea snacks, coffee breaks aur annual gala dinner spreads with 100% punctuality.",
+    "heroImage": "https://images.unsplash.com/photo-1680993032090-1ef7ea9b51e5?auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "number": "300+",
+        "label": "Corporate Meets"
+      },
+      {
+        "number": "100%",
+        "label": "On-Time Service"
+      },
+      {
+        "number": "GST",
+        "label": "Compliant Billing"
+      },
+      {
+        "number": "Custom",
+        "label": "Packed Meals"
+      }
+    ],
+    "overview": "Official meetings aur business conferences me khana samay par, swadisht aur neat presentation ke sath milna chahiye. RIWAJ Corporate Catering provides seamless dining solutions.",
+    "features": [
+      {
+        "title": "Continuous Fresh Coffee & Hi-Tea",
+        "desc": "Artisanal espresso machines, premium cookies and hot regional snacks throughout the event."
+      },
+      {
+        "title": "Hygienic Executive Packed Lunches",
+        "desc": "Spill-proof, eco-friendly segmented meal boxes for swift business lunches."
+      },
+      {
+        "title": "Corporate Buffet with Food Warmers",
+        "desc": "Elegantly labeled executive buffet with low-oil, nutritious and delicious options."
+      },
+      {
+        "title": "Corporate Protocol & Billing",
+        "desc": "Disciplined uniform staff, non-intrusive service and GST compliant invoices."
+      }
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1732259495388-af40b972c311?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1732519970445-8f2d6998961f?auto=format&fit=crop&w=800&q=75"
+    ],
+    "packages": [
+      {
+        "name": "Conference Hi-Tea & Lunch",
+        "price": "\u20b9450 / Delegate",
+        "popular": true,
+        "tagline": "Complete Business Day Catering",
+        "features": [
+          "Morning & Evening Tea/Coffee with 2 Cookies",
+          "Buffet Lunch with 2 Sabzi, Dal, Rice & Roti",
+          "Dessert of the day",
+          "Packaged Mineral Water"
+        ]
+      },
+      {
+        "name": "Corporate Gala Dinner",
+        "price": "\u20b9850 / Delegate",
+        "tagline": "Executive Annual Celebration",
+        "features": [
+          "Welcome Mocktails & Starters",
+          "Multi-Cuisine Continental & Indian Buffet",
+          "Live Dessert Counter",
+          "VIP Table Service"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Kya outstation corporate conferences me catering ho sakti hai?",
+        "a": "Ji haan, hum resorts aur outstation conclave locations par bhi mobile kitchen ke sath complete catering provide karte hain."
+      }
+    ]
+  },
+  {
+    "slug": "birthday-party-catering",
+    "category": "catering",
+    "menuTitle": "Birthday Party Catering",
+    "badge": "Kids & Family Fun Treats",
+    "title": "Delightful Birthday Party Catering & Interactive Food Stalls",
+    "subtitle": "Kids-friendly pizza, pasta, burger sliders, colorful mocktail punch bowls, live chaat aur delicious dessert stations.",
+    "heroImage": "https://images.unsplash.com/photo-1732519970445-8f2d6998961f?auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "number": "250+",
+        "label": "Birthdays Hosted"
+      },
+      {
+        "number": "Kids",
+        "label": "Special Menu"
+      },
+      {
+        "number": "Live",
+        "label": "Fun Stalls"
+      },
+      {
+        "number": "100%",
+        "label": "Fresh & Tasty"
+      }
+    ],
+    "overview": "Bachhon aur family ke birthday parties me fun, tasty aur colorful food sabse zaroori hota hai. RIWAJ party catering banata hai har birthday party ko super exciting.",
+    "features": [
+      {
+        "title": "Live Wood-Fired Pizza & Pasta",
+        "desc": "Cheesy personal pizzas and made-to-order pastas with kids' favorite toppings."
+      },
+      {
+        "title": "Mini Sliders & Finger Foods",
+        "desc": "Crispy french fries, potato wedges, paneer nuggets and colorful burger sliders."
+      },
+      {
+        "title": "Artisanal Mocktail Punch Bar",
+        "desc": "Fruity lemonades, bubble drinks and smoking mocktails that kids absolutely love."
+      },
+      {
+        "title": "Dessert & Waffle Station",
+        "desc": "Fresh Belgian waffles, chocolate fountain with marshmallows and premium ice creams."
+      }
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1666190092159-3171cf0fbb12?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1743615467204-8fdaa85ff2db?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=75"
+    ],
+    "packages": [
+      {
+        "name": "Kids Fun Treat",
+        "price": "\u20b9350 / Child",
+        "popular": true,
+        "tagline": "Perfect for Birthday Celebrations",
+        "features": [
+          "Pizza slices & Burger sliders",
+          "French Fries with Cheese Dip",
+          "Live Pasta Counter",
+          "Chocolate Fountain & Ice Cream",
+          "Fresh Mocktail Punch"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Kya thematic customized birthday cake bhi arrange karte hain?",
+        "a": "Ji haan, designer fondant aur photo cakes theme ke hisab se customize kiye jaate hain."
+      }
+    ]
+  },
+  {
+    "slug": "engagement-catering",
+    "category": "catering",
+    "menuTitle": "Engagement Catering",
+    "badge": "Sophisticated Ring Ceremony Bites",
+    "title": "Elegant Engagement & Ring Ceremony High-Tea & Dinner",
+    "subtitle": "Gourmet cocktail appetizers, live tandoor tikka counters, fusion desserts aur sophisticated banquet setup.",
+    "heroImage": "https://images.unsplash.com/photo-1630409346824-4f0e7b080087?auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "number": "350+",
+        "label": "Engagements Done"
+      },
+      {
+        "number": "Gourmet",
+        "label": "Appetizers"
+      },
+      {
+        "number": "Live",
+        "label": "Cocktail Bar"
+      },
+      {
+        "number": "5\u2605",
+        "label": "Service Quality"
+      }
+    ],
+    "overview": "Ring ceremony intimate aur prestigious function hota hai jisme do parivar aapas me milte hain. RIWAJ catering team sophisticated presentation ke sath classy dining experience create karti hai.",
+    "features": [
+      {
+        "title": "Floating Hors d'Oeuvres",
+        "desc": "Bite-sized gourmet starters served continuously to seated guests."
+      },
+      {
+        "title": "Live Charcoal Tandoor Stalls",
+        "desc": "Paneer tikka, soya chaap, and sizzling kebabs served straight from the clay oven."
+      },
+      {
+        "title": "Fusion Dessert Cups & Shots",
+        "desc": "Gulab jamun cheesecake, rabri shots, and artisanal pastries."
+      },
+      {
+        "title": "VIP Senior Family Table Service",
+        "desc": "Dedicated stewards for elderly guests so they never have to stand in buffet queues."
+      }
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1732259495388-af40b972c311?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1593701461250-d7b22dfd3a77?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1727280376746-b89107a5b0df?auto=format&fit=crop&w=800&q=75"
+    ],
+    "packages": [
+      {
+        "name": "Elegance Engagement Feast",
+        "price": "\u20b9550 / Plate",
+        "popular": true,
+        "tagline": "High-Tea & Dinner Combo",
+        "features": [
+          "Welcome Fruit Sangrias",
+          "4 Floating Starters",
+          "Main Course with 3 Gravies",
+          "Dal Makhani & Jeera Rice",
+          "2 Live Desserts"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Kya evening high-tea aur dinner dono shamil kar sakte hain?",
+        "a": "Ji haan, hum function ke duration ke hisab se customized multi-course schedule plan karte hain."
+      }
+    ]
+  },
+  {
+    "slug": "reception-catering",
+    "category": "catering",
+    "menuTitle": "Reception Catering",
+    "badge": "Mega Banquet & Multi-Cuisine",
+    "title": "Grand Wedding Reception Feast & Mega Banquet Catering",
+    "subtitle": "Large-scale opulent dinner spreads for 500 to 5000+ guests with multiple buffet stations and zero waiting time.",
+    "heroImage": "https://images.unsplash.com/photo-1732259495388-af40b972c311?auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "number": "700+",
+        "label": "Receptions Managed"
+      },
+      {
+        "number": "5000+",
+        "label": "Capacity per Night"
+      },
+      {
+        "number": "Multi",
+        "label": "Station Buffets"
+      },
+      {
+        "number": "0",
+        "label": "Waiting Time"
+      }
+    ],
+    "overview": "Reception night me shehar ke sabhi khas mehmaan aate hain. Heavy rush ke dauran bhi khana garam, fresh aur presentation top-notch rakhna RIWAJ Catering ki specialty hai.",
+    "features": [
+      {
+        "title": "Multi-Zone Island Buffets",
+        "desc": "Symmetrical food counters avoiding crowd congestion and long queues."
+      },
+      {
+        "title": "Signature Gravies & Dum Pulaos",
+        "desc": "Rich Mughlai, Shahi Paneer, Dal Bukhara and fragrant saffron biryanis."
+      },
+      {
+        "title": "Grand Halwai Sweet Pavilion",
+        "desc": "Live hot jalebi with lachha rabri, malpua, and traditional regional mithais."
+      },
+      {
+        "title": "Cleanliness & Waste Management",
+        "desc": "Instant table bussing, clean plates replacement and strict hygiene protocols."
+      }
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1630409346824-4f0e7b080087?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1680993032090-1ef7ea9b51e5?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1666190092159-3171cf0fbb12?auto=format&fit=crop&w=800&q=75"
+    ],
+    "packages": [
+      {
+        "name": "Imperial Reception Gala",
+        "price": "\u20b9750 / Plate",
+        "popular": true,
+        "tagline": "Recommended for 500+ Guests",
+        "features": [
+          "8 Live Starters",
+          "4 Regional Live Counters",
+          "5 Main Gravies",
+          "Full Breads & Rice Section",
+          "4 Premium Desserts",
+          "Live Mukhwas & Pan Counter"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Bade crowd me khana khatam hone ka risk to nahi hota?",
+        "a": "Bilkul nahi! Hamare paas 20% backup buffer stock aur real-time kitchen restocking team hoti hai."
+      }
+    ]
+  },
+  {
+    "slug": "outdoor-catering",
+    "category": "catering",
+    "menuTitle": "Outdoor Catering",
+    "badge": "Lawn & Destination Feasts",
+    "title": "Outdoor Lawn & Destination Catering in Rewa & MP",
+    "subtitle": "Open-lawn mobile kitchens, live barbecue setups, canopy food stalls aur nature ke beech royal dining ka anubhav.",
+    "heroImage": "https://images.unsplash.com/photo-1727280376746-b89107a5b0df?auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "number": "400+",
+        "label": "Lawn Events"
+      },
+      {
+        "number": "Full",
+        "label": "Mobile Kitchen Setup"
+      },
+      {
+        "number": "All-Weather",
+        "label": "Warm Food Guarantee"
+      },
+      {
+        "number": "Eco",
+        "label": "Friendly Crockery"
+      }
+    ],
+    "overview": "Open lawn ya resort me catering karna ek art hai. Hawa, mausam aur duriyan sabhi ko dhyaan me rakhkar RIWAJ team garam aur lajawab khana deliver karti hai.",
+    "features": [
+      {
+        "title": "Complete Mobile Field Kitchen",
+        "desc": "Self-contained cooking units with heavy gas setups and cold storages."
+      },
+      {
+        "title": "Canopy & Pergola Food Stalls",
+        "desc": "Thematic wooden and floral food huts blending with outdoor scenery."
+      },
+      {
+        "title": "Wind-Resistant Chafing Systems",
+        "desc": "Enclosed flameless food warmers keeping dishes steaming hot in open breezes."
+      },
+      {
+        "title": "Eco-Friendly Waste Protocol",
+        "desc": "Clean venue handover with zero litter and 100% biodegradable disposal."
+      }
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1732519970445-8f2d6998961f?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1732259495388-af40b972c311?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1630409346824-4f0e7b080087?auto=format&fit=crop&w=800&q=75"
+    ],
+    "packages": [
+      {
+        "name": "Outdoor Lawn Special",
+        "price": "\u20b9600 / Plate",
+        "popular": true,
+        "tagline": "For Open Farmhouses & Lawns",
+        "features": [
+          "Live BBQ & Tandoor",
+          "3 Street Food Live Huts",
+          "Main Course with 4 Gravies",
+          "Clay Oven Naan & Roti",
+          "Live Hot Desserts"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Kya farmhouse ya private garden me kitchen setup kar sakte hain?",
+        "a": "Ji haan, hamari team paani aur bijli ke connectivity ke sath self-sustained kitchen setup kar leti hai."
+      }
+    ]
+  },
+  {
+    "slug": "veg-catering",
+    "category": "catering",
+    "menuTitle": "Veg Catering",
+    "badge": "100% Shuddh Shakahari",
+    "title": "Pure Vegetarian Shuddh Shakahari Catering Excellence",
+    "subtitle": "Desi ghee ki mehak, sattvic & Jain preparations, no onion-garlic options aur traditional Indian culinary heritage.",
+    "heroImage": "https://images.unsplash.com/photo-1680993032090-1ef7ea9b51e5?auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "number": "100%",
+        "label": "Pure Vegetarian"
+      },
+      {
+        "number": "Desi Ghee",
+        "label": "Specialty"
+      },
+      {
+        "number": "Jain",
+        "label": "Food Available"
+      },
+      {
+        "number": "500+",
+        "label": "Pure Veg Events"
+      }
+    ],
+    "overview": "Hamari pure vegetarian catering me pavitrata aur swad ka perfect milan hai. Har rasoi 100% vegetarian hoti hai jisme traditional recipes ko modern flair ke sath banaya jata hai.",
+    "features": [
+      {
+        "title": "Dedicated 100% Pure Veg Setup",
+        "desc": "No meat, separate processing units and verified purity standards."
+      },
+      {
+        "title": "Jain & Sattvic Options",
+        "desc": "Delicious no-onion, no-garlic menus that sacrifice zero flavor."
+      },
+      {
+        "title": "Shahi Desi Ghee Curries",
+        "desc": "Paneer Lababdar, Malai Kofta, Dal Tadka and royal rich gravies."
+      },
+      {
+        "title": "Authentic Dry Fruit Sweets",
+        "desc": "Kaju Katli, Moong Dal Halwa, Rabri and assorted traditional Indian desserts."
+      }
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1743615467204-8fdaa85ff2db?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1593701461250-d7b22dfd3a77?auto=format&fit=crop&w=800&q=75"
+    ],
+    "packages": [
+      {
+        "name": "Shuddh Shakahari Thaal",
+        "price": "\u20b9500 / Plate",
+        "popular": true,
+        "tagline": "Traditional Pure Veg Banquet",
+        "features": [
+          "Shahi Paneer & Seasonal Sabzi",
+          "Dal Makhani & Pulao",
+          "Assorted Naan & Roti",
+          "Gulab Jamun & Ice Cream",
+          "Salad & Raita Bar"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Kya Jain mehmaano ke liye alag se counter ban sakta hai?",
+        "a": "Ji bilkul, Jain guests ke liye hum alag se labeled counter maintain karte hain."
+      }
+    ]
+  },
+  {
+    "slug": "buffet-live-counters",
+    "category": "catering",
+    "menuTitle": "Buffet & Live Counters",
+    "badge": "Live Cooking Theatres",
+    "title": "Interactive Buffet & Live Cooking Counters",
+    "subtitle": "Live Chaat, Wood-Fired Pizza, Mongolian Wok, South Indian Appam, Tandoor aur Liquid Nitrogen dessert stalls.",
+    "heroImage": "https://images.unsplash.com/photo-1732519970445-8f2d6998961f?auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "number": "25+",
+        "label": "Live Stalls Options"
+      },
+      {
+        "number": "Live",
+        "label": "Chef Interactions"
+      },
+      {
+        "number": "Fresh",
+        "label": "Made on Order"
+      },
+      {
+        "number": "Popular",
+        "label": "Guest Attraction"
+      }
+    ],
+    "overview": "Live food counters event me excitement aur interactive charm laate hain. Guests apni aankhon ke samne customized fresh dishes bante dekhte hain.",
+    "features": [
+      {
+        "title": "Banaras & Delhi Ki Mashhoor Chaat",
+        "desc": "Aloo tikki, golgappe with 5 flavored waters, papdi chaat and dahi bhalla."
+      },
+      {
+        "title": "Italian Pizza & Pasta Theatre",
+        "desc": "Choice of sauces (Alfredo, Arrabbiata, Pesto) and wood-fired thin crust pizzas."
+      },
+      {
+        "title": "Pan-Asian Wok Station",
+        "desc": "Live noodles, dimsums and stir-fried exotic veggies with authentic sauces."
+      },
+      {
+        "title": "Live Dessert & Jalebi Station",
+        "desc": "Crispy hot jalebis dipped in sugar syrup served with thickened saffron rabri."
+      }
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1743615467204-8fdaa85ff2db?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1727280376746-b89107a5b0df?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1666190092159-3171cf0fbb12?auto=format&fit=crop&w=800&q=75"
+    ],
+    "packages": [
+      {
+        "name": "Live Counter Fiesta",
+        "price": "\u20b9450 / Guest",
+        "popular": true,
+        "tagline": "Add-on to Any Event",
+        "features": [
+          "4 Custom Live Counters of your choice",
+          "Live Chefs & Assistants",
+          "Thematic Stall Styling & Lighting",
+          "Continuous 3-Hour Service"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Kitne live counters arrange karna recommended hai?",
+        "a": "Wedding ke liye 4 se 6 live counters guests ko variety aur engagement dene ke liye perfect hote hain."
+      }
+    ]
+  },
+  {
+    "slug": "regional-cuisines",
+    "category": "catering",
+    "menuTitle": "Regional Cuisines",
+    "badge": "Vindhya, Awadh & Marwar",
+    "title": "Authentic Regional Indian Cuisines (MP, Awadh, Marwar & South)",
+    "subtitle": "Rewa ke local Bagheli swad, Rajasthani Dal Baati Churma, Lucknowi Awadhi handi aur South Indian delicacies.",
+    "heroImage": "https://images.unsplash.com/photo-1680993032090-1ef7ea9b51e5?auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "number": "10+",
+        "label": "State Cuisines"
+      },
+      {
+        "number": "Local",
+        "label": "Bagheli Flavors"
+      },
+      {
+        "number": "Clay Pot",
+        "label": "Cooking"
+      },
+      {
+        "number": "100%",
+        "label": "Traditional Spices"
+      }
+    ],
+    "overview": "Desi mitti ki khushbu aur regional recipes ka maza alag hi hota hai. RIWAJ events Rewa, Bundelkhand, Rajasthan aur Awadh ke traditional taste ko wedding banquet me le aata hai.",
+    "features": [
+      {
+        "title": "Local Bagheli Specialties",
+        "desc": "Authentic Baghelkhandi kadhi, indori poha-jalebi, and local seasonal favorites."
+      },
+      {
+        "title": "Rajasthani Dal Baati Churma",
+        "desc": "Traditional bati baked over cow dung cakes served with pure ghee and panchmel dal."
+      },
+      {
+        "title": "Awadhi Dum Cooking",
+        "desc": "Slow-cooked handi curries and aromatic gravies from the royal kitchens of Lucknow."
+      },
+      {
+        "title": "Authentic Clay Pot Presentation",
+        "desc": "Food served in traditional earthen pots with brass ladles and vintage styling."
+      }
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1630409346824-4f0e7b080087?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1743615467204-8fdaa85ff2db?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=75"
+    ],
+    "packages": [
+      {
+        "name": "Desi Heritage Thaal",
+        "price": "\u20b9600 / Plate",
+        "popular": true,
+        "tagline": "True Taste of Heritage India",
+        "features": [
+          "Rajasthani / Bagheli Theme Stall",
+          "Desi Ghee Bati & Churma (3 types)",
+          "Royal Awadhi Paneer",
+          "Live Clay Tawa Rotis",
+          "Jaggery Sweets & Kulfi"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Kya local village traditional cooks bulaye jaate hain?",
+        "a": "Ji haan, authentic taste ke liye hum specific regional master cooks ke sath coordinate karte hain."
+      }
+    ]
+  },
+  {
+    "slug": "premium-catering",
+    "category": "catering",
+    "menuTitle": "Premium Catering",
+    "badge": "5-Star Culinary Luxury",
+    "title": "Ultra-Luxury 5-Star Gourmet Catering & Plated Dinners",
+    "subtitle": "Master chefs, gold-rimmed chinaware, customized menu cards, white-glove butler service aur international gourmet cuisines.",
+    "heroImage": "https://images.unsplash.com/photo-1732259495388-af40b972c311?auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "number": "5-Star",
+        "label": "Executive Chefs"
+      },
+      {
+        "number": "White Glove",
+        "label": "Butler Service"
+      },
+      {
+        "number": "Imported",
+        "label": "Artisanal Tableware"
+      },
+      {
+        "number": "Bespoke",
+        "label": "Curated Menus"
+      }
+    ],
+    "overview": "Jab aap chahte hain ki aapki shaadi me aane wale dignitaries aur high-profile guests international level ki hospitality dekhein, tab RIWAJ Premium Catering aati hai.",
+    "features": [
+      {
+        "title": "White-Glove Butler Table Service",
+        "desc": "Dedicated personal butlers for VIP tables with formal silver service etiquette."
+      },
+      {
+        "title": "Imported Chinaware & Cutlery",
+        "desc": "Gold-plated cutlery, crystal goblets and fine bone china presentation."
+      },
+      {
+        "title": "Global Culinary Stations",
+        "desc": "Sushi bar, artisanal cheese grazing table, and French patisserie dessert spread."
+      },
+      {
+        "title": "Personal Executive Chef Consultation",
+        "desc": "Direct menu curation with our celebrity culinary director."
+      }
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1630409346824-4f0e7b080087?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1727280376746-b89107a5b0df?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1593701461250-d7b22dfd3a77?auto=format&fit=crop&w=800&q=75"
+    ],
+    "packages": [
+      {
+        "name": "Imperial 5-Star Experience",
+        "price": "\u20b91,450 / Plate",
+        "popular": true,
+        "tagline": "Ultra Luxury Curated Banqueting",
+        "features": [
+          "Unlimited International Live Theatres",
+          "Grazing Cheese & Fruit Table",
+          "White-Glove Silver Table Service",
+          "Molecular Gastronomy Desserts",
+          "Gold & Crystal Dinnerware Setup"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Kya guests ke liye personalized printed menu card milte hain?",
+        "a": "Ji haan, har VIP table par couple ke monogram aur gold foil print ke sath menu booklet rakhi jaati hai."
+      }
+    ]
+  },
+  {
+    "slug": "budget-catering",
+    "category": "catering",
+    "menuTitle": "Budget Catering",
+    "badge": "Smart & Transparent Value",
+    "title": "Affordable & Value-for-Money Event Catering Packages",
+    "subtitle": "Shandar swad aur budget-friendly per-plate rates \u2014 Zero hidden costs, fresh ingredients aur generous portions.",
+    "heroImage": "https://images.unsplash.com/photo-1680993032090-1ef7ea9b51e5?auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "number": "Save 20%",
+        "label": "Through Smart Planning"
+      },
+      {
+        "number": "Fixed",
+        "label": "Transparent Rates"
+      },
+      {
+        "number": "Unlimited",
+        "label": "Refills Guarantee"
+      },
+      {
+        "number": "Zero",
+        "label": "Hidden Charges"
+      }
+    ],
+    "overview": "Budget kam hone par swad se compromise karne ki zaroorat nahi hai. RIWAJ Budget Catering smart seasonal menu planning ke sath premium look aur shandar taste provide karti hai.",
+    "features": [
+      {
+        "title": "Smart Seasonal Sourcing",
+        "desc": "Local fresh seasonal produce direct from wholesale markets keeping costs low."
+      },
+      {
+        "title": "Crowd-Pleaser Core Dishes",
+        "desc": "Dishes that everyone loves: Paneer butter masala, mixed veg, dal tadka, jeera rice."
+      },
+      {
+        "title": "Neat & Clean Buffet Stations",
+        "desc": "Sparkling clean food counters with warming burners and paper/cloth napkins."
+      },
+      {
+        "title": "Written Transparent Bill",
+        "desc": "No last minute surprise charges \u2014 complete clarity on plates, staff and fuel."
+      }
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1732519970445-8f2d6998961f?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1593701461250-d7b22dfd3a77?auto=format&fit=crop&w=800&q=75"
+    ],
+    "packages": [
+      {
+        "name": "Value Family Buffet",
+        "price": "\u20b9380 / Plate",
+        "popular": true,
+        "tagline": "High Quality at Honest Price",
+        "features": [
+          "1 Welcome Drink",
+          "2 Starters",
+          "2 Main Sabzi (Paneer + Seasonal)",
+          "Dal Fry & Jeera Rice",
+          "Poori & Tawa Roti",
+          "1 Sweet (Gulab Jamun)"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Kya budget package me food quantity limit hoti hai?",
+        "a": "Katai nahi! Hamara buffet unlimited refills ke sath chalta hai jab tak sabhi mehmaan satisfy na ho jayein."
+      }
+    ]
+  }
+];
+
+export const DECORATION_EVENTS: EventDetail[] = [
+  {
+    "slug": "wedding-decoration",
+    "category": "decoration",
+    "menuTitle": "Wedding Decoration",
+    "badge": "Grand Venue Artistry",
+    "title": "Royal Wedding Decoration & Complete Venue Styling",
+    "subtitle": "Grand palace entrance arches, illuminated walkways, majestic mandaps aur bespoke floral setups.",
+    "heroImage": "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "number": "800+",
+        "label": "Weddings Styled"
+      },
+      {
+        "number": "3D",
+        "label": "Design Renders"
+      },
+      {
+        "number": "100%",
+        "label": "Custom Themes"
+      },
+      {
+        "number": "Rewa & MP",
+        "label": "Top Rated"
+      }
+    ],
+    "overview": "Shaadi ka decor aisa hona chahiye jo sabhi mehmaano ke dil me bas jaye. RIWAJ team ordinary lawn ya banquet ko royal wonderland me transform kar deti hai.",
+    "features": [
+      {
+        "title": "Grand Royal Entrance Gateway",
+        "desc": "Multi-tiered floral arches with chandelier drops and red carpet walkway."
+      },
+      {
+        "title": "Centerpiece Mandap & Stage",
+        "desc": "Customized architectural columns, cascading imported blooms and royal sofa."
+      },
+      {
+        "title": "Complete Venue Illumination",
+        "desc": "Trees, walkways, boundaries and dining area wrapped in warm fairy glow."
+      },
+      {
+        "title": "VIP Lounge & Dining Styling",
+        "desc": "Thematic fabric shamianas with chandeliers and luxury round table seating."
+      }
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1600428853876-fb3179bec3b2?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1752857015591-c1b85c01c461?auto=format&fit=crop&w=800&q=75"
+    ],
+    "packages": [
+      {
+        "name": "Royal Grand Wedding",
+        "price": "\u20b91,80,000",
+        "popular": true,
+        "tagline": "Complete Venue Transformation",
+        "features": [
+          "50ft Stage Backdrop",
+          "Traditional Mandap with Fresh Flowers",
+          "Entrance Tunnel & Fairy Light Illumination",
+          "Couple Sofa & VIP Seating",
+          "Dining Area Styling"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Kya 3D visualization dekhne ko milti hai booking se pehle?",
+        "a": "Ji haan, hum venue ke actual dimensions ke sath 3D render show karte hain."
+      }
+    ]
+  },
+  {
+    "slug": "stage-decoration",
+    "category": "decoration",
+    "menuTitle": "Stage Decoration",
+    "badge": "Mesmerizing Backdrops",
+    "title": "Magnificent Wedding Stage Decoration & Backdrop Artistry",
+    "subtitle": "40-60ft wide designer stages, golden pillars, cascading floral arches aur photographer-friendly studio lighting.",
+    "heroImage": "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "number": "1000+",
+        "label": "Stages Designed"
+      },
+      {
+        "number": "60ft",
+        "label": "Max Stage Width"
+      },
+      {
+        "number": "HD",
+        "label": "LED Backdrops"
+      },
+      {
+        "number": "Studio",
+        "label": "Lighting"
+      }
+    ],
+    "overview": "Wedding ke 80% photos main stage par click hote hain. RIWAJ events ka stage decor ensure karta hai ki dulha-dulhan aur family har tasveer me royal lagein.",
+    "features": [
+      {
+        "title": "Geometric & Floral Grand Backdrops",
+        "desc": "Carved golden columns, floral mesh walls and neon initial highlights."
+      },
+      {
+        "title": "Flicker-Free Balanced Lighting",
+        "desc": "Warm ambient wash with no harsh facial shadows for flawless photography."
+      },
+      {
+        "title": "Plush Velvet Royal Sofa",
+        "desc": "Chesterfield and Maharaja throne sofas tailored to the wedding theme."
+      },
+      {
+        "title": "Stage Carpeting & Ramps",
+        "desc": "High gloss non-slip red/white carpets with floral side runners."
+      }
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1600428853876-fb3179bec3b2?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1760669343328-d84fbde15b65?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=800&q=75"
+    ],
+    "packages": [
+      {
+        "name": "Imperial Floral Stage",
+        "price": "\u20b965,000",
+        "popular": true,
+        "tagline": "High-Impact Centerpiece",
+        "features": [
+          "35x15ft Grand Backdrop",
+          "Full Fresh Floral Arches",
+          "Royal Sofa Set + Carpet",
+          "Intelligent Uplighters (8 pcs)"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Kya stage me custom couple monogram lag sakta hai?",
+        "a": "Ji haan, metallic acrylic ya LED neon me couple name monogram stage par lagaya jata hai."
+      }
+    ]
+  },
+  {
+    "slug": "mandap-decoration",
+    "category": "decoration",
+    "menuTitle": "Mandap Decoration",
+    "badge": "Sacred & Royal Saat Phere",
+    "title": "Sacred & Royal Wedding Mandap Decoration",
+    "subtitle": "Vedic traditional rajwadi mandaps, glass water pool mandaps, hanging floral bells aur auspicious hawan setups.",
+    "heroImage": "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "number": "600+",
+        "label": "Mandaps Executed"
+      },
+      {
+        "number": "100%",
+        "label": "Vedic Principles"
+      },
+      {
+        "number": "Fresh",
+        "label": "Auspicious Flowers"
+      },
+      {
+        "number": "Safe",
+        "label": "Hawan Kund Setup"
+      }
+    ],
+    "overview": "Saat pheron ki pavitra rasam ke liye mandap ka design sanskriti aur shahi shaan ka prateek hota hai. RIWAJ creates temple architecture, glass mandaps and royal domes.",
+    "features": [
+      {
+        "title": "Temple Dome & Pillar Architecture",
+        "desc": "Carved rajwadi pillars with sacred kalash and auspicious Vedic elements."
+      },
+      {
+        "title": "Hanging Lotus & Marigold Chandeliers",
+        "desc": "Cascading floral strings creating a spiritual and heavenly ceiling."
+      },
+      {
+        "title": "Safe Hawankund & Seating",
+        "desc": "Proper ventilation and comfortable wooden bajot seating for panditji and family."
+      },
+      {
+        "title": "360-Degree Guest Sightlines",
+        "desc": "Open mandap design ensuring all relatives can clearly witness the vows."
+      }
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1680490961937-e933bf1ef920?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1771992228552-4cf49506dd7b?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75"
+    ],
+    "packages": [
+      {
+        "name": "Rajwadi Temple Mandap",
+        "price": "\u20b975,000",
+        "popular": true,
+        "tagline": "Authentic & Royal Setup",
+        "features": [
+          "4-Pillar Carved Dome Mandap",
+          "Fresh Marigold & Jasmine Florals",
+          "Brass Hawan Kund with Bajots",
+          "Mandap Walkway with Floral Urli"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Hawan ke dhuen ke liye kya safety arrangement hota hai?",
+        "a": "Hum specialized exhaust stands aur smokeless samagri guide karte hain taaki mandap me suffocation na ho."
+      }
+    ]
+  },
+  {
+    "slug": "haldi-mehendi-decor",
+    "category": "decoration",
+    "menuTitle": "Haldi & Mehendi Decor",
+    "badge": "Vibrant Yellow & Boho Colors",
+    "title": "Vibrant Haldi & Mehendi Thematic D\u00e9cor",
+    "subtitle": "Marigold floral curtains, traditional brass urlis, colorful cabanas, dreamcatchers aur bohemian photo swings.",
+    "heroImage": "https://images.unsplash.com/photo-1607861716497-e65ab29fc7ac?auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "number": "500+",
+        "label": "Haldi Setups"
+      },
+      {
+        "number": "Bright",
+        "label": "Yellow & Orange Drapes"
+      },
+      {
+        "number": "Fun",
+        "label": "Photo Booths"
+      },
+      {
+        "number": "100%",
+        "label": "Fresh Blooms"
+      }
+    ],
+    "overview": "Haldi aur Mehendi functions me rang, dhol aur masti sabse ahem hoti hai. RIWAJ decor team create karti hai photogenic vibrant setups jo social media par trending banein.",
+    "features": [
+      {
+        "title": "Giant Brass Urli Seating",
+        "desc": "Traditional brass urlis filled with rose petals and marigolds for bride and groom."
+      },
+      {
+        "title": "Floral Jhula Swings",
+        "desc": "Decorated wooden swings with lush green leaves and marigold chains."
+      },
+      {
+        "title": "Boho Mehendi Cabanas",
+        "desc": "Colorful tents with floor cushions, rugs, and dreamcatchers for bridesmaids."
+      },
+      {
+        "title": "Interactive Photobooth with Props",
+        "desc": "Rickshaws, cycle props, sunglasses, and quirky neon quotes."
+      }
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1771992228552-4cf49506dd7b?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1756483510767-35245638c057?auto=format&fit=crop&w=800&q=75"
+    ],
+    "packages": [
+      {
+        "name": "Marigold Masti Setup",
+        "price": "\u20b935,000",
+        "popular": true,
+        "tagline": "Complete Haldi Rasam Decor",
+        "features": [
+          "Genda Phool Backdrop",
+          "Brass Urli + Yellow Cushions",
+          "Floral Jhula Swing",
+          "Welcome Signage & Photo Props"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Kya flower jewellery bhi decor package me add hoti hai?",
+        "a": "Ji haan, bride aur family ke liye fresh flower jewellery add-on ke roop me provide ki jaati hai."
+      }
+    ]
+  },
+  {
+    "slug": "reception-decoration",
+    "category": "decoration",
+    "menuTitle": "Reception Decoration",
+    "badge": "Glamorous & Imperial Nights",
+    "title": "Glamorous Wedding Reception Stage & Ballroom D\u00e9cor",
+    "subtitle": "Opulent chandeliers, high-gloss mirror walkway, cascading white floral arches aur ambient mood lighting.",
+    "heroImage": "https://images.unsplash.com/photo-1600428853876-fb3179bec3b2?auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "number": "650+",
+        "label": "Ballrooms Styled"
+      },
+      {
+        "number": "Crystal",
+        "label": "Chandeliers"
+      },
+      {
+        "number": "Mirror",
+        "label": "Ramps & Walkways"
+      },
+      {
+        "number": "Grand",
+        "label": "Photo Moments"
+      }
+    ],
+    "overview": "Reception party ka look formal aur luxurious hona chahiye. RIWAJ reception decoration team champagne, blush pink aur golden lighting ke sath standard set karti hai.",
+    "features": [
+      {
+        "title": "Massive Chandelier Ceilings",
+        "desc": "Overhead box trussing with sparkling crystal chandeliers and floral drops."
+      },
+      {
+        "title": "High-Gloss Mirror Aisles",
+        "desc": "Reflective white mirror runway with cold pyros and floral side borders."
+      },
+      {
+        "title": "Bespoke Royal Backdrops",
+        "desc": "Tufted velvet panels, golden fretwork and imported rose installations."
+      },
+      {
+        "title": "Ambient Banquet Illumination",
+        "desc": "Intelligent moving lights creating a warm candle-lit evening vibe."
+      }
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1752857015591-c1b85c01c461?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=75"
+    ],
+    "packages": [
+      {
+        "name": "Imperial Ballroom Setup",
+        "price": "\u20b91,20,000",
+        "popular": true,
+        "tagline": "High-End Reception Styling",
+        "features": [
+          "45ft Luxury Stage Backdrop",
+          "Overhead Chandelier Canopy",
+          "Mirror Walkway with Cold Pyros",
+          "VIP Table Clusters Styling"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Cold pyro sparklers indoor me safe hain?",
+        "a": "Bilkul! Hum smokeless, odorless certified cold sparklers use karte hain jo indoor banquet me safe hote hain."
+      }
+    ]
+  },
+  {
+    "slug": "engagement-decoration",
+    "category": "decoration",
+    "menuTitle": "Engagement Decoration",
+    "badge": "Modern Romantic Arches",
+    "title": "Romantic Engagement & Ring Ceremony Stage D\u00e9cor",
+    "subtitle": "Geometric golden frames, pastel floral rings, neon initial lettering ('Better Together') aur magical dry ice fog.",
+    "heroImage": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "number": "400+",
+        "label": "Sagai Setups"
+      },
+      {
+        "number": "Neon",
+        "label": "Signage Highlights"
+      },
+      {
+        "number": "Pastel",
+        "label": "Floral Colorways"
+      },
+      {
+        "number": "Dry Ice",
+        "label": "Fog Effects"
+      }
+    ],
+    "overview": "Engagement decor me romance aur modern aesthetics ka balance hona chahiye. RIWAJ engagement setups pastel blooms aur fairy lights ke sath fairytale look create karte hain.",
+    "features": [
+      {
+        "title": "Geometric Circular & Hex Arch",
+        "desc": "Gilded metallic rings covered in imported blush roses and eucalyptus."
+      },
+      {
+        "title": "Custom Neon Glow Signage",
+        "desc": "Quotes like 'Happily Ever After' or customized initials in glowing LED neon."
+      },
+      {
+        "title": "Dramatic Ring Exchange Moment",
+        "desc": "Low-lying dry ice clouds and cold pyros as the couple exchanges rings."
+      },
+      {
+        "title": "Romantic Cake Table Setup",
+        "desc": "Pedestals with fairy lights and floral garlands for the celebratory cake."
+      }
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1600428853876-fb3179bec3b2?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75"
+    ],
+    "packages": [
+      {
+        "name": "Fairytale Sagai Setup",
+        "price": "\u20b945,000",
+        "popular": true,
+        "tagline": "Most Loved Engagement D\u00e9cor",
+        "features": [
+          "Pastel Floral Ring Stage",
+          "Neon Quote Light",
+          "Couple Sofa & Carpeting",
+          "Ring Exchange Cold Pyros (4 pcs)"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Kya indoor banquet aur outdoor lawn dono me setup ho sakta hai?",
+        "a": "Ji haan, hum venue type ke mutabiq frames aur lighting scale karte hain."
+      }
+    ]
+  },
+  {
+    "slug": "floral-decoration",
+    "category": "decoration",
+    "menuTitle": "Floral Decoration",
+    "badge": "Exotic Natural Blooms",
+    "title": "Exotic Fresh Floral Styling & Natural Bloom Installations",
+    "subtitle": "Imported Dutch roses, orchids, carnations, hydrangeas, baby's breath aur desi genda phool ki khushbudaar sajawat.",
+    "heroImage": "https://images.unsplash.com/photo-1752857015591-c1b85c01c461?auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "number": "100%",
+        "label": "Fresh Farm Flowers"
+      },
+      {
+        "number": "10+",
+        "label": "Exotic Varieties"
+      },
+      {
+        "number": "Master",
+        "label": "Floral Architects"
+      },
+      {
+        "number": "Eco",
+        "label": "Floral Disposal"
+      }
+    ],
+    "overview": "Phoolon ki taazgi kisi bhi shubh karyakram ko pavitra aur sundar bana deti hai. RIWAJ floral design team Bangalore aur Pune ke fresh farms se direct blooms source karti hai.",
+    "features": [
+      {
+        "title": "Exotic Imported Floral Canopies",
+        "desc": "Lush ceilings draped with orchids, gypsophila (baby's breath) and hydrangeas."
+      },
+      {
+        "title": "Traditional Desi Floral Curtains",
+        "desc": "Cascading yellow and orange marigold strings for rituals and entryways."
+      },
+      {
+        "title": "Fragrant Jasmine & Rajnigandha Accents",
+        "desc": "Natural sweet scents filling the mandap and VIP seating areas."
+      },
+      {
+        "title": "Hydrated Long-Lasting Blooms",
+        "desc": "Special water-tubed stems ensuring blooms stay crisp and fresh throughout the function."
+      }
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1771992228552-4cf49506dd7b?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=800&q=75"
+    ],
+    "packages": [
+      {
+        "name": "Pure Flora Celebration",
+        "price": "\u20b955,000",
+        "popular": true,
+        "tagline": "100% Fresh Flowers Package",
+        "features": [
+          "Main Stage Floral Work",
+          "Entry Arch with Fresh Blooms",
+          "Mandap Floral Accents",
+          "Couple Garlands (Jaimala) Included"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Kya wedding ke baad flowers ka eco-friendly disposal hota hai?",
+        "a": "Ji haan, hum waste flowers ko organic compost ya dhoop-batti manufacturing units me recycle karte hain."
+      }
+    ]
+  },
+  {
+    "slug": "royal-luxury-decor",
+    "category": "decoration",
+    "menuTitle": "Royal & Luxury Decor",
+    "badge": "Heritage Rajwadi Grandeur",
+    "title": "Royal Rajwadi & Heritage Palace Wedding D\u00e9cor",
+    "subtitle": "Intricately carved jharokhas, velvet shamianas, vintage lanterns, golden pillars aur royal court aesthetics.",
+    "heroImage": "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "number": "150+",
+        "label": "Palace Setups"
+      },
+      {
+        "number": "Handcrafted",
+        "label": "Jharokhas & Pillars"
+      },
+      {
+        "number": "Velvet",
+        "label": "Drapes & Shamianas"
+      },
+      {
+        "number": "Heritage",
+        "label": "MP Excellence"
+      }
+    ],
+    "overview": "Rewa aur Central India ka itihaas shahi shaan se bhara hai. RIWAJ luxury team mahal jaisa darbar tayyar karti hai jisme traditional Rajputana aur Mughal grandeur live ho uthta hai.",
+    "features": [
+      {
+        "title": "Handcrafted Royal Jharokha Sets",
+        "desc": "Architectural palace courtyards with carved stone-finish arches."
+      },
+      {
+        "title": "Deep Velvet & Zari Draping",
+        "desc": "Maroon, royal blue and emerald velvet fabrics with golden border trims."
+      },
+      {
+        "title": "Vintage Mashaal & Lantern Walkways",
+        "desc": "Brass floor lanterns, oil lamps and flame light effects creating regal charm."
+      },
+      {
+        "title": "Elephant & Peacock Art Installations",
+        "desc": "Artisanal topiary sculptures welcoming guests at the palace entrance."
+      }
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=800&q=75"
+    ],
+    "packages": [
+      {
+        "name": "Maharaja Royal Court",
+        "price": "\u20b92,20,000",
+        "popular": true,
+        "tagline": "Ultra Luxury Heritage Styling",
+        "features": [
+          "Full Palace Architecture Set",
+          "Handcrafted Jharokhas & Golden Pillars",
+          "Velvet Shamiana with Royal Seating",
+          "Traditional Shehnai Welcome Stalls"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Kya normal ground ko mahal jaisa transform kiya ja sakta hai?",
+        "a": "Ji haan! Hum complete fabrication aur structural facades lagakar open lawns ko royal palace bana dete hain."
+      }
+    ]
+  },
+  {
+    "slug": "modern-minimalist-decor",
+    "category": "decoration",
+    "menuTitle": "Modern Minimalist Decor",
+    "badge": "Contemporary Elegance",
+    "title": "Contemporary Chic & Modern Minimalist Event D\u00e9cor",
+    "subtitle": "Clean geometric lines, monochrome palettes, subtle ambient lighting, Pampas grass aur understated elegance.",
+    "heroImage": "https://images.unsplash.com/photo-1760669343328-d84fbde15b65?auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "number": "200+",
+        "label": "Chic Setups"
+      },
+      {
+        "number": "Sleek",
+        "label": "Matte Finishes"
+      },
+      {
+        "number": "Neutral",
+        "label": "Beige & White Tones"
+      },
+      {
+        "number": "Modern",
+        "label": "Aesthetics"
+      }
+    ],
+    "overview": "Less is more. Modern couples jo over-the-top glitter ke bajaye sophisticated, classy aur chic visual look chahte hain, unke liye RIWAJ minimalist design perfection provide karta hai.",
+    "features": [
+      {
+        "title": "Dried Florals & Pampas Grass",
+        "desc": "Earthy bohemian textures, wheat stalks and dried palm leaves."
+      },
+      {
+        "title": "Sleek Matte Black & Gold Metallic Arches",
+        "desc": "Clean geometric structures without cluttered fabrics."
+      },
+      {
+        "title": "Warm Edison Bulb Chandeliers",
+        "desc": "Industrial chic hanging filaments and delicate fairy lights."
+      },
+      {
+        "title": "Monochrome Linen & High Cocktail Tables",
+        "desc": "Crisp white, ivory and grey palettes with minimalist florals."
+      }
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1600428853876-fb3179bec3b2?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1752857015591-c1b85c01c461?auto=format&fit=crop&w=800&q=75"
+    ],
+    "packages": [
+      {
+        "name": "Nordic Minimalist Chic",
+        "price": "\u20b965,000",
+        "popular": true,
+        "tagline": "Sleek & Understated",
+        "features": [
+          "Pampas & Neutral Floral Arch",
+          "Matte Gold Geometric Frames",
+          "Edison Warm Bulb Lighting",
+          "Cocktail High Tables Styling"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Kya evening cocktail parties ke liye minimalist decor best hai?",
+        "a": "Bilkul! Evening cocktails aur intimate gatherings me minimalist lighting aur chic furniture sabse premium lagta hai."
+      }
+    ]
+  },
+  {
+    "slug": "destination-wedding-decor",
+    "category": "decoration",
+    "menuTitle": "Destination Wedding Decor",
+    "badge": "Resort & Scenic Landscapes",
+    "title": "Resort & Destination Wedding D\u00e9cor Across Central India",
+    "subtitle": "Poolside haldi cabanas, lakeside mandaps, sunset lawn setups, jungle lodge themes aur seamless multi-day transitions.",
+    "heroImage": "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "number": "100+",
+        "label": "Destination Weddings"
+      },
+      {
+        "number": "Resort",
+        "label": "Specialists"
+      },
+      {
+        "number": "Multi-Day",
+        "label": "Theme Flow"
+      },
+      {
+        "number": "Weather",
+        "label": "Proof Fabrication"
+      }
+    ],
+    "overview": "Bandhavgarh jungle resorts, Khajuraho heritage hotels ya Rewa ke scenic lakeside properties me destination wedding decor nature ke sath blend hona chahiye. RIWAJ delivers magic.",
+    "features": [
+      {
+        "title": "Floating Poolside Floral Mandaps",
+        "desc": "Stunning water reflections with floating floral diyas and mandap structures."
+      },
+      {
+        "title": "Sunset Lawn Backdrops",
+        "desc": "Low-profile archways that showcase the natural horizon and sunset skies."
+      },
+      {
+        "title": "Multi-Day Theme Transformation",
+        "desc": "Day 1 Boho Mehendi to Day 2 Royal Sangeet to Day 3 Grand Wedding Mandap."
+      },
+      {
+        "title": "Wind & Weather Resistant Setups",
+        "desc": "Heavy engineered rigging safe against open resort winds and sudden rain."
+      }
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1682802142549-b72576d31d5e?auto=format&fit=crop&w=800&q=75"
+    ],
+    "packages": [
+      {
+        "name": "Resort Destination 3-Day Decor",
+        "price": "Custom Quote",
+        "popular": true,
+        "tagline": "End-to-End Resort Takeover",
+        "features": [
+          "Poolside Haldi Decor",
+          "Concert Sangeet Stage with LED",
+          "Grand Scenic Wedding Mandap",
+          "Guest Welcome Desk & Room Decor"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Kya outstation resorts me permissions aur setup aap manage karte hain?",
+        "a": "Ji haan, resort management ke sath coordination aur advance rigging hamari dedicated team sambhalti hai."
+      }
+    ]
+  },
+  {
+    "slug": "birthday-theme-parties",
+    "category": "decoration",
+    "menuTitle": "Birthday & Theme Parties",
+    "badge": "Exciting 3D Kids Themes",
+    "title": "Exciting Kids & Adult Themed Birthday Party D\u00e9cor",
+    "subtitle": "Pastel organic balloon arches, jungle safari, superhero, princess castle ya retro neon nightclub setups.",
+    "heroImage": "https://images.unsplash.com/photo-1760669343328-d84fbde15b65?auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "number": "300+",
+        "label": "Theme Birthdays"
+      },
+      {
+        "number": "Custom",
+        "label": "3D Character Cutouts"
+      },
+      {
+        "number": "Organic",
+        "label": "Balloon Garlands"
+      },
+      {
+        "number": "Neon",
+        "label": "Party Corners"
+      }
+    ],
+    "overview": "Har birthday par kuch naya aur colorful hona chahiye. RIWAJ decor team customized 3D backdrops aur durable premium balloons ke sath dream party create karti hai.",
+    "features": [
+      {
+        "title": "Organic Pastel & Chrome Balloon Arches",
+        "desc": "Non-popping high quality balloon garlands with foil starbursts."
+      },
+      {
+        "title": "3D Character Cutouts & Backdrop Panels",
+        "desc": "Customized cartoon, superhero, princess, or neon nightclub backdrops."
+      },
+      {
+        "title": "Cake Table Pedestal Clusters",
+        "desc": "Cylindrical pedestals with matching dessert stands and personalized name boards."
+      },
+      {
+        "title": "Illuminated Age LED Marquee Numbers",
+        "desc": "3ft tall glowing number lights (e.g. '1', '18', '50') for showstopper photos."
+      }
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1732519970445-8f2d6998961f?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1666190092159-3171cf0fbb12?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75"
+    ],
+    "packages": [
+      {
+        "name": "Theme Birthday Delight",
+        "price": "\u20b918,000",
+        "popular": true,
+        "tagline": "Complete Kids / Adult Theme",
+        "features": [
+          "15ft Organic Balloon Arch",
+          "Custom 3D Theme Backdrop",
+          "Pedestal Cake Table with Props",
+          "LED Number Lights",
+          "Personalized Welcome Board"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Kya balloons lambe samay tak fresh aur tight rehte hain?",
+        "a": "Ji haan, hum commercial-grade chrome aur matte latex balloons use karte hain jo 24+ ghante tak intact rehte hain."
+      }
+    ]
+  },
+  {
+    slug: "baby-shower",
+    category: "decoration",
+    menuTitle: "Baby Shower Decor",
+    badge: "Godh Bharai & Baby Shower Decor",
+    title: "Pyari Godh Bharai & Baby Shower Celebrations",
+    subtitle: "Pastel balloon arches, traditional godh bharai seating, customized cakes aur aane wale nanhe mehmaan ke liye warm blessings.",
+    heroImage: "https://images.unsplash.com/photo-1771992228552-4cf49506dd7b?auto=format&fit=crop&w=1200&q=80",
+    stats: [
+      { number: "180+", label: "Baby Showers Planned" },
+      { number: "Pastel", label: "Balloon & Floral Themes" },
+      { number: "100%", label: "Safe Non-Toxic Decors" },
+      { number: "Joy", label: "Mom-to-Be Comfort Priority" },
+    ],
+    overview: "Nanhe mehmaan ke aane ki khushi me mom-to-be ke liye ek relaxing aur khushnuma mahaul tayyar karna hamara aim hota hai.",
+    features: [
+      { title: "Dreamy Pastel Balloon Arches", desc: "Baby pink, pastel blue, peach aur metallic gold balloons ka grand arch." },
+      { title: "Comfortable Royal Mom-to-Be Chair", desc: "Extra cushioned floral throne chair taaki mom bilkul aaram se baith sakein." },
+      { title: "Fun Baby Games & Props", desc: "Guess the baby date, advice cards, sash aur mom-to-be tiara." },
+      { title: "Customized Cake Table Setup", desc: "Thematic dessert table, cupcake towers aur backdrop lettering." },
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1733937140732-2cc70a1d7017?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1666190092159-3171cf0fbb12?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1607861716497-e65ab29fc7ac?auto=format&fit=crop&w=800&q=75"
+    ],
+    packages: [
+      {
+        name: "Sweet Blessing",
+        price: "₹20,000",
+        tagline: "Intimate Home / Hall Godh Bharai",
+        features: ["Pastel balloon backdrop", "Baby shower neon sign", "Floral mom-to-be chair", "Props & Welcome board"],
+      },
+      {
+        name: "Royal Baby Shower",
+        price: "₹45,000",
+        popular: true,
+        tagline: "Grand Hotel & Banquet Setup",
+        features: ["Massive organic balloon & fresh flower installation", "Custom 3D character cutouts", "Designer cake table with pedestals", "Sound system & anchor for games"],
+      },
+    ],
+    faqs: [
+      { q: "Kya balloons high quality aur durable hote hain?", a: "Ji haan, hum premium quality non-toxic chrome aur matte latex balloons use karte hain jo lambe time tak fresh rehte hain." },
+    ],
+  },
+  {
+    slug: "kitty-party",
+    category: "decoration",
+    menuTitle: "Kitty Party Decor",
+    badge: "Fun & Thematic Party Décor",
+    title: "Exciting Theme Kitty Parties & Ladies Get-Together Décor",
+    subtitle: "Retro, Bollywood, Floral ya Hawaiian theme — Rewa ki ladies ke liye fun games, customized backdrops aur delicious snacks.",
+    heroImage: "https://images.unsplash.com/photo-1732519970445-8f2d6998961f?auto=format&fit=crop&w=1200&q=80",
+    stats: [
+      { number: "150+", label: "Kitty Parties Hosted" },
+      { number: "Creative", label: "Themes & Dress Codes" },
+      { number: "Fun", label: "Interactive Games & Prizes" },
+      { number: "Instant", label: "Photo Memories" },
+    ],
+    overview: "Monthly kitty party ko boring restaurant visit se badalkar ek exciting themed celebration banaiye RIWAJ ke creative planning ke sath.",
+    features: [
+      { title: "Theme Backdrops & Props", desc: "Bollywood retro, casino, pastel tea party ya floral garden setup." },
+      { title: "Fun Hosting & Games", desc: "Exciting tambola, funny quizzes aur customized props." },
+      { title: "Finger-Licking Hi-Tea Menu", desc: "Gourmet chaats, artisanal bakery items aur refreshing mocktails." },
+      { title: "Photobooth & Reel Corner", desc: "Instagram reels aur status photos ke liye well-lit selfie corner." },
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1666190092159-3171cf0fbb12?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1743615467204-8fdaa85ff2db?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=75"
+    ],
+    packages: [
+      {
+        name: "Fun Theme Kitty",
+        price: "₹15,000",
+        popular: true,
+        tagline: "Upto 25 Ladies Theme Party",
+        features: ["Customized Theme Backdrop", "Tambola & game kits", "Selfie booth with props", "Background music & host assistance"],
+      },
+    ],
+    faqs: [
+      { q: "Kya hum theme decide kar sakte hain?", a: "Bilkul, aap jo bhi theme bolein (e.g. Retro 80s, Pink Fairytale, Bollywood) hum wahi create kar denge." },
+    ],
+  },
+  {
+    "slug": "corporate-stage-backdrop",
+    "category": "decoration",
+    "menuTitle": "Corporate Stage & Backdrop",
+    "badge": "Executive Brand Styling",
+    "title": "Executive Corporate Stage, Backdrop & Exhibition D\u00e9cor",
+    "subtitle": "Custom brand logo media walls, modern speaker podiums, sleek aluminum LED frames aur professional lighting.",
+    "heroImage": "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "number": "400+",
+        "label": "Corporate Stages"
+      },
+      {
+        "number": "High Res",
+        "label": "Tension Fabric Walls"
+      },
+      {
+        "number": "P3 LED",
+        "label": "Display Integrations"
+      },
+      {
+        "number": "100%",
+        "label": "Brand Compliant"
+      }
+    ],
+    "overview": "Corporate events me brand identity aur sophistication sabse ahem hoti hai. RIWAJ corporate stage decor team wrinkle-free media walls, professional podiums aur stage aesthetics provide karti hai.",
+    "features": [
+      {
+        "title": "Wrinkle-Free Tension Fabric Backdrops",
+        "desc": "Perfect high-resolution corporate logo branding with zero creases."
+      },
+      {
+        "title": "Modern Acrylic & Wooden Podiums",
+        "desc": "Sleek presentation lecterns with branded logo fascia and microphone mounts."
+      },
+      {
+        "title": "LED Screen Framing & Stage Skirting",
+        "desc": "Clean aluminum trussing and dark stage masking for executive look."
+      },
+      {
+        "title": "Entrance Step-and-Repeat Media Wall",
+        "desc": "Red carpet photo wall for VIP delegates and keynote speakers."
+      }
+    ],
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=800&q=75"
+    ],
+    "packages": [
+      {
+        "name": "Corporate Summit Stage",
+        "price": "\u20b945,000",
+        "popular": true,
+        "tagline": "Executive Stage & Media Wall",
+        "features": [
+          "24x10ft Tension Fabric Backdrop",
+          "Branded Acrylic Podium",
+          "Red Carpet Media Photo Wall",
+          "Stage Spotlights & Framing"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Kya company ke branding guidelines aur color codes exact match hote hain?",
+        "a": "Ji haan! Hum Pantone / CMYK color codes ke sath digital proof approval ke baad hi print aur fabricate karte hain."
+      }
+    ]
+  }
+];
 
 export const WEDDING_EVENTS: EventDetail[] = [
   {
@@ -55,10 +1820,10 @@ export const WEDDING_EVENTS: EventDetail[] = [
       { title: "Phoolon Ki Holi & Props", desc: "Yellow goggles, flower jewellery aur fun props pure parivar ke photo session ke liye." },
       { title: "Live Dhol & Desi Music Setup", desc: "Haldi rasam me energy bharne ke liye energetic live dhol aur sound system." },
     ],
-    galleryImages: [
-      "https://images.unsplash.com/photo-1607861716497-e65ab29fc7ac?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=75",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1771992228552-4cf49506dd7b?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1733937140732-2cc70a1d7017?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -107,10 +1872,10 @@ export const WEDDING_EVENTS: EventDetail[] = [
       { title: "Top Mehendi Artists", desc: "Arabic, Marwari aur Portrait bridal mehendi ke trained artists jo fastest speed aur dark rang laate hain." },
       { title: "Evening Fairy Lighting", desc: "Shaam ke waqt glowing fairy lights, lanterns aur warm chandeliers ka jadoo." },
     ],
-    galleryImages: [
-      "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1607861716497-e65ab29fc7ac?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1600428853876-fb3179bec3b2?auto=format&fit=crop&w=800&q=75",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1628221482312-439eb2f3367d?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1756483510767-35245638c057?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1607861716497-e65ab29fc7ac?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -152,10 +1917,10 @@ export const WEDDING_EVENTS: EventDetail[] = [
       { title: "Cold Pyro & Sparkular Entry", desc: "Safe smokeless indoor cold pyros jab couple ek doosre ko ring pehnate hain." },
       { title: "Cinematic Stage Lighting", desc: "Warm ambient wash, moving beam lights aur spotlight couple portraits ke liye." },
     ],
-    galleryImages: [
-      "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=75",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1682802142549-b72576d31d5e?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1754782921197-ba8514594184?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -183,7 +1948,7 @@ export const WEDDING_EVENTS: EventDetail[] = [
     badge: "High-Energy Music & Concert Stage",
     title: "Dhamakedar Sangeet Night & Dance Stage Décor",
     subtitle: "Concert-style LED wall, truss lighting, professional DJ sound, energetic anchoring aur Bollywood style dance floor setup.",
-    heroImage: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1200&q=80",
+    heroImage: "https://images.unsplash.com/photo-1766113483422-7c871de23591?auto=format&fit=crop&w=1200&q=80",
     stats: [
       { number: "350+", label: "Rocking Sangeet Nights" },
       { number: "Top DJs", label: "Rewa & MP Region" },
@@ -197,10 +1962,10 @@ export const WEDDING_EVENTS: EventDetail[] = [
       { title: "Professional Wedding DJ & Sound", desc: "Line array speakers aur best Bollywood, Punjabi & regional tracks ki playlist." },
       { title: "Stage Floor & Couple Ramp", desc: "Non-slip high gloss dance stage jaha sabhi comfortably perform kar sakein." },
     ],
-    galleryImages: [
+    "galleryImages": [
       "https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1756483510767-35245638c057?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1682802142549-b72576d31d5e?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -228,7 +1993,7 @@ export const WEDDING_EVENTS: EventDetail[] = [
     badge: "Glamorous Evening & Lounge Soiree",
     title: "Glamorous Cocktail Night & Moody Bar Décor",
     subtitle: "Sleek modern lounge seating, neon glow lighting, signature mocktail/cocktail bars aur acoustic live band setup.",
-    heroImage: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=1200&q=80",
+    heroImage: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1200&q=80",
     stats: [
       { number: "200+", label: "Cocktail Parties Managed" },
       { number: "Chic", label: "Modern Lounge Themes" },
@@ -242,10 +2007,10 @@ export const WEDDING_EVENTS: EventDetail[] = [
       { title: "Neon Signages & Photo Corners", desc: "Catchy quotes neon signs (Drunk in Love, Pour Some Love) selfie points ke sath." },
       { title: "Acoustic / Live Saxophone Setup", desc: "Subtle background melodies jo party ke mahol ko ultra-luxurious banati hain." },
     ],
-    galleryImages: [
-      "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800&q=75",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1766113483422-7c871de23591?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1727280376746-b89107a5b0df?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1600428853876-fb3179bec3b2?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -287,10 +2052,10 @@ export const WEDDING_EVENTS: EventDetail[] = [
       { title: "Drone & Gimbal Videography", desc: "Bollywood teaser style video editing with trending background music." },
       { title: "Outfit Changes & Vanity Support", desc: "Portable changing vanity tents aur on-location stylist support." },
     ],
-    galleryImages: [
-      "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=75",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1754782921197-ba8514594184?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1682802142549-b72576d31d5e?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -312,96 +2077,13 @@ export const WEDDING_EVENTS: EventDetail[] = [
     ],
   },
   {
-    slug: "get-together",
-    category: "wedding",
-    menuTitle: "Get Together",
-    badge: "Family Bonding & Milni Functions",
-    title: "Warm Family Get-Together & Milni Celebrations",
-    subtitle: "Parivar ke sath hansi-khushi, khoobsurat sham, light music aur lajawab swadisht catering ka perfect intazaam.",
-    heroImage: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=80",
-    stats: [
-      { number: "250+", label: "Get Togethers Hosted" },
-      { number: "100%", label: "Cozy & Welcoming Vibe" },
-      { number: "Pure", label: "Traditional Hospitality" },
-      { number: "Rewa", label: "Indoor & Lawn Options" },
-    ],
-    overview: "Shaadi ke dauran jab do parivaron ke rishtedaar aate hain, toh ek casual aur comfortable milni zaroori hoti hai. RIWAJ team cozy seating aur family games ke sath isse yaadgar banati hai.",
-    features: [
-      { title: "Cozy Baithak & Shamiana", desc: "Comfortable low seating, bolsters, carpets aur warm lighting." },
-      { title: "Live Chaat & Snacks Counters", desc: "Rewa ke famous chaat, hot chai, coffee aur tandoor snacks." },
-      { title: "Acoustic Karaoke & Music", desc: "Old classical hits aur antakshari ke liye sound setup." },
-      { title: "Family Photo Souvenir Booth", desc: "Instant photo prints sabhi rishtedaaro ko gift karne ke liye." },
-    ],
-    galleryImages: [
-      "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=800&q=75",
-    ],
-    packages: [
-      {
-        name: "Cozy Milni",
-        price: "₹25,000",
-        tagline: "Upto 50 Guests Family Reunion",
-        features: ["Warm garden/terrace decor", "Acoustic music setup", "Chaat counter styling", "Family photo corner"],
-      },
-    ],
-    faqs: [
-      { q: "Kya hum ghar ke lawn ya terrace par kar sakte hain?", a: "Haan, hum residential spaces ko bhi bilkul luxury resort jaisa transform kar dete hain." },
-    ],
-  },
-  {
-    slug: "baby-shower",
-    category: "wedding",
-    menuTitle: "Baby Shower",
-    badge: "Godh Bharai Ki Shubh Shuruaat",
-    title: "Pyari Godh Bharai & Baby Shower Celebrations",
-    subtitle: "Pastel balloon arches, traditional godh bharai seating, customized cakes aur aane wale nanhe mehmaan ke liye warm blessings.",
-    heroImage: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1200&q=80",
-    stats: [
-      { number: "180+", label: "Baby Showers Planned" },
-      { number: "Pastel", label: "Balloon & Floral Themes" },
-      { number: "100%", label: "Safe Non-Toxic Decors" },
-      { number: "Joy", label: "Mom-to-Be Comfort Priority" },
-    ],
-    overview: "Nanhe mehmaan ke aane ki khushi me mom-to-be ke liye ek relaxing aur khushnuma mahaul tayyar karna hamara aim hota hai.",
-    features: [
-      { title: "Dreamy Pastel Balloon Arches", desc: "Baby pink, pastel blue, peach aur metallic gold balloons ka grand arch." },
-      { title: "Comfortable Royal Mom-to-Be Chair", desc: "Extra cushioned floral throne chair taaki mom bilkul aaram se baith sakein." },
-      { title: "Fun Baby Games & Props", desc: "Guess the baby date, advice cards, sash aur mom-to-be tiara." },
-      { title: "Customized Cake Table Setup", desc: "Thematic dessert table, cupcake towers aur backdrop lettering." },
-    ],
-    galleryImages: [
-      "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=800&q=75",
-    ],
-    packages: [
-      {
-        name: "Sweet Blessing",
-        price: "₹20,000",
-        tagline: "Intimate Home / Hall Godh Bharai",
-        features: ["Pastel balloon backdrop", "Baby shower neon sign", "Floral mom-to-be chair", "Props & Welcome board"],
-      },
-      {
-        name: "Royal Baby Shower",
-        price: "₹45,000",
-        popular: true,
-        tagline: "Grand Hotel & Banquet Setup",
-        features: ["Massive organic balloon & fresh flower installation", "Custom 3D character cutouts", "Designer cake table with pedestals", "Sound system & anchor for games"],
-      },
-    ],
-    faqs: [
-      { q: "Kya balloons high quality aur durable hote hain?", a: "Ji haan, hum premium quality non-toxic chrome aur matte latex balloons use karte hain jo lambe time tak fresh rehte hain." },
-    ],
-  },
-  {
     slug: "wedding-package",
     category: "wedding",
     menuTitle: "Wedding Package",
     badge: "All-in-One Wedding Solutions",
     title: "Complete All-in-One Shaadi Packages in Rewa & MP",
     subtitle: "Haldi se lekar Vidai tak — Mandap, Catering, Stage, DJ, Photography sab kuch ek hi transparent package me bina kisi jhanjhat ke.",
-    heroImage: "https://images.unsplash.com/photo-1519225429980-715cb0215aed?auto=format&fit=crop&w=1200&q=80",
+    heroImage: "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=1200&q=80",
     stats: [
       { number: "750+", label: "Weddings Executed" },
       { number: "All-In-One", label: "Single Vendor Solution" },
@@ -415,10 +2097,10 @@ export const WEDDING_EVENTS: EventDetail[] = [
       { title: "Complete Lighting & Ambience", desc: "Entire venue entrance, trees, walkways aur parking lighting." },
       { title: "Dedicated Event Director", desc: "Event day par ek senior event manager jo har minute ka coordination sambhalta hai." },
     ],
-    galleryImages: [
-      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=75",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1682802142549-b72576d31d5e?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1732259495388-af40b972c311?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -452,7 +2134,7 @@ export const WEDDING_EVENTS: EventDetail[] = [
     badge: "Zero-Stress Wedding Management",
     title: "Zero-Stress Complete Wedding Planning & Execution",
     subtitle: "Roka se lekar Vidai tak, har rasam ki zimmedari hamari — aap aur aapka parivar sirf khushiyan manaiye aur guest bane rahiye.",
-    heroImage: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80",
+    heroImage: "https://images.unsplash.com/photo-1682802142549-b72576d31d5e?auto=format&fit=crop&w=1200&q=80",
     stats: [
       { number: "100%", label: "Stress Free Execution" },
       { number: "24x7", label: "Wedding Helpline Support" },
@@ -466,10 +2148,10 @@ export const WEDDING_EVENTS: EventDetail[] = [
       { title: "Minute-to-Minute Timeline Management", desc: "Muhurat ke hisab se har function time par start aur complete karwana." },
       { title: "Guest Helpdesk & Room Allocation", desc: "Hotel rooms, welcome hampers aur out-of-town guests ka special khayal." },
     ],
-    galleryImages: [
-      "https://images.unsplash.com/photo-1519225429980-715cb0215aed?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=800&q=75",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1732259495388-af40b972c311?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1763553113332-800519753e40?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -491,7 +2173,7 @@ export const WEDDING_EVENTS: EventDetail[] = [
     badge: "Grand Royal Entrance & Stage",
     title: "Grand Wedding Reception & Stage Artistry in Rewa",
     subtitle: "Majestic floral arches, royal velvet walkway, grand LED backdrop stage aur premium couple seating jo sabhi guests ko mesmerize kar de.",
-    heroImage: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1200&q=80",
+    heroImage: "https://images.unsplash.com/photo-1754782921197-ba8514594184?auto=format&fit=crop&w=1200&q=80",
     stats: [
       { number: "700+", label: "Receptions Designed" },
       { number: "Mega", label: "Stage Installations" },
@@ -505,10 +2187,10 @@ export const WEDDING_EVENTS: EventDetail[] = [
       { title: "Dignitary & VIP Seating Section", desc: "Special round table sofa zones for senior family members and VIP guests." },
       { title: "Buffet & Dining Hall Illumination", desc: "Food area me appetizing warm lighting aur clean thematic presentation." },
     ],
-    galleryImages: [
-      "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=800&q=75",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1600428853876-fb3179bec3b2?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1682802142549-b72576d31d5e?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -550,10 +2232,10 @@ export const WEDDING_EVENTS: EventDetail[] = [
       { title: "White-Glove VIP Hospitality", desc: "Personal shadow coordinators har VIP family member aur outstation guests ke liye." },
       { title: "Gourmet Global Catering Concepts", desc: "Live chaat counters, regional delicacies aur international food stations." },
     ],
-    galleryImages: [
-      "https://images.unsplash.com/photo-1519225429980-715cb0215aed?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800&q=75",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1682802142549-b72576d31d5e?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -575,7 +2257,7 @@ export const WEDDING_EVENTS: EventDetail[] = [
     badge: "Exotic Forts & Heritage Resorts",
     title: "Dream Destination Weddings Across Heritage MP & Beyond",
     subtitle: "Bandhavgarh Jungle Resorts, Khajuraho Temple Backdrops, Orchha Palaces ya Varanasi Ghats — Hamare sath plan kijiye apna dream destination wedding.",
-    heroImage: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=1200&q=80",
+    heroImage: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1200&q=80",
     stats: [
       { number: "80+", label: "Destination Weddings" },
       { number: "Top", label: "Resort Tie-ups in MP" },
@@ -589,10 +2271,10 @@ export const WEDDING_EVENTS: EventDetail[] = [
       { title: "Multi-Day Thematic Celebrations", desc: "Poolside haldi, jungle safari theme sangeet aur royal palace mandap." },
       { title: "On-Site Command Center", desc: "Hotel me 24/7 helpdesk jo guests ki har zaroorat ka dhyan rakhti hai." },
     ],
-    galleryImages: [
-      "https://images.unsplash.com/photo-1519225429980-715cb0215aed?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1682802142549-b72576d31d5e?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -614,7 +2296,7 @@ export const WEDDING_EVENTS: EventDetail[] = [
     badge: "Affordable & Honest Pricing",
     title: "Budget-Friendly Wedding Planning — Smart & Grand",
     subtitle: "Kam kharche me bhi shandar dikhne wali shaadi — Smart vendor management, honest costing aur zero unnecessary commission.",
-    heroImage: "https://images.unsplash.com/photo-1600428853876-fb3179bec3b2?auto=format&fit=crop&w=1200&q=80",
+    heroImage: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80",
     stats: [
       { number: "400+", label: "Budget Weddings Managed" },
       { number: "Save 25%", label: "Through Smart Planning" },
@@ -628,10 +2310,10 @@ export const WEDDING_EVENTS: EventDetail[] = [
       { title: "High-Impact Stage Focus", desc: "Jaha sabhi photos click hoti hain us main stage aur mandap ko highlight karna." },
       { title: "Transparent Cost Breakdown", desc: "Har cheez ka written bill aur advance clear commitment." },
     ],
-    galleryImages: [
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1680993032090-1ef7ea9b51e5?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1607861716497-e65ab29fc7ac?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -646,45 +2328,6 @@ export const WEDDING_EVENTS: EventDetail[] = [
       { q: "Kya budget package me quality compromise hoti hai?", a: "Katai nahi! Hum design smartly optimize karte hain taaki look royal rahe aur cost control me ho." },
     ],
   },
-  {
-    slug: "kitty-party",
-    category: "wedding",
-    menuTitle: "Kitty Party",
-    badge: "Fun & Thematic Gatherings",
-    title: "Exciting Theme Kitty Parties & Ladies Get-Together",
-    subtitle: "Retro, Bollywood, Floral ya Hawaiian theme — Rewa ki ladies ke liye fun games, customized backdrops aur delicious snacks.",
-    heroImage: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=1200&q=80",
-    stats: [
-      { number: "150+", label: "Kitty Parties Hosted" },
-      { number: "Creative", label: "Themes & Dress Codes" },
-      { number: "Fun", label: "Interactive Games & Prizes" },
-      { number: "Instant", label: "Photo Memories" },
-    ],
-    overview: "Monthly kitty party ko boring restaurant visit se badalkar ek exciting themed celebration banaiye RIWAJ ke creative planning ke sath.",
-    features: [
-      { title: "Theme Backdrops & Props", desc: "Bollywood retro, casino, pastel tea party ya floral garden setup." },
-      { title: "Fun Hosting & Games", desc: "Exciting tambola, funny quizzes aur customized props." },
-      { title: "Finger-Licking Hi-Tea Menu", desc: "Gourmet chaats, artisanal bakery items aur refreshing mocktails." },
-      { title: "Photobooth & Reel Corner", desc: "Instagram reels aur status photos ke liye well-lit selfie corner." },
-    ],
-    galleryImages: [
-      "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=800&q=75",
-    ],
-    packages: [
-      {
-        name: "Fun Theme Kitty",
-        price: "₹15,000",
-        popular: true,
-        tagline: "Upto 25 Ladies Theme Party",
-        features: ["Customized Theme Backdrop", "Tambola & game kits", "Selfie booth with props", "Background music & host assistance"],
-      },
-    ],
-    faqs: [
-      { q: "Kya hum theme decide kar sakte hain?", a: "Bilkul, aap jo bhi theme bolein (e.g. Retro 80s, Pink Fairytale, Bollywood) hum wahi create kar denge." },
-    ],
-  },
 ];
 
 export const CORPORATE_EVENTS: EventDetail[] = [
@@ -695,7 +2338,7 @@ export const CORPORATE_EVENTS: EventDetail[] = [
     badge: "Premium Corporate Venues",
     title: "Banquet Hall Selection & Professional Corporate Setup",
     subtitle: "Rewa aur aas-paas ke top AC banquet halls ki booking, round-table seating, stage backdrop aur customized corporate dining.",
-    heroImage: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80",
+    heroImage: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1200&q=80",
     stats: [
       { number: "300+", label: "Banquet Setups Done" },
       { number: "AC", label: "Top Premium Venues" },
@@ -709,10 +2352,10 @@ export const CORPORATE_EVENTS: EventDetail[] = [
       { title: "Full PA & Sound System", desc: "Echo-free high clarity sound for speeches, presentations and background music." },
       { title: "Corporate Buffet Catering", desc: "Hygienic, multi-course executive lunch and dinner with live counters." },
     ],
-    galleryImages: [
+    "galleryImages": [
       "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -747,10 +2390,10 @@ export const CORPORATE_EVENTS: EventDetail[] = [
       { title: "Delegate Welcome & Kit Distribution", desc: "Uniformed hostesses for registration, badges and delegate file distribution." },
       { title: "Tea/Coffee & Cookie Breaks", desc: "Session ke beech me quick hygienic refreshment setups." },
     ],
-    galleryImages: [
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -772,7 +2415,7 @@ export const CORPORATE_EVENTS: EventDetail[] = [
     badge: "Corporate Success Celebrations",
     title: "Corporate Party Halls & Success Celebrations",
     subtitle: "Target poora hone par team celebration, promotions party, aur office festival events ke liye energetic party halls.",
-    heroImage: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80",
+    heroImage: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1200&q=80",
     stats: [
       { number: "200+", label: "Corporate Parties Done" },
       { number: "High Energy", label: "DJ & Dance Floor" },
@@ -786,10 +2429,10 @@ export const CORPORATE_EVENTS: EventDetail[] = [
       { title: "Cocktail/Mocktail Bars", desc: "Live mocktail mixers, finger foods and delicious starters." },
       { title: "Award & Trophy Stage", desc: "Star performers ko recognize karne ke liye special spotlight stage." },
     ],
-    galleryImages: [
-      "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=75",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1732259495388-af40b972c311?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -825,10 +2468,10 @@ export const CORPORATE_EVENTS: EventDetail[] = [
       { title: "Corporate Gifting & Badges", desc: "Customized promotional gifts, delegate IDs, certificates and hampers." },
       { title: "VIP Transport & Hotel Logistics", desc: "Executive car fleet, hotel room booking and airport coordination." },
     ],
-    galleryImages: [
+    "galleryImages": [
       "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -850,7 +2493,7 @@ export const CORPORATE_EVENTS: EventDetail[] = [
     badge: "Team Building & Outings",
     title: "Group Events & Employee Engagement Outings",
     subtitle: "Outstation team outings, leadership retreats, fun sports days aur networking gatherings — energetic activities aur stress-free execution.",
-    heroImage: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80",
+    heroImage: "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80",
     stats: [
       { number: "100+", label: "Team Retreats" },
       { number: "Fun", label: "Interactive Outdoor Games" },
@@ -864,10 +2507,10 @@ export const CORPORATE_EVENTS: EventDetail[] = [
       { title: "Recreational Sports & Tournaments", desc: "Cricket matches, badminton, volleyball aur swimming pool games with customized medals." },
       { title: "Campfire & Acoustic Evening", desc: "Night bonfires with live singer, DJ music, barbecue counters aur memorable bonding." },
     ],
-    galleryImages: [
-      "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=75",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -904,10 +2547,10 @@ export const CORPORATE_EVENTS: EventDetail[] = [
       { title: "Speaker Green Room & Lounge", desc: "VIP guests aur keynote speakers ke liye dedicated hospitality lounge." },
       { title: "Conference Souvenirs & Folders", desc: "Printed agendas, ID cards, custom lanyards and conference kits." },
     ],
-    galleryImages: [
-      "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=75",
+    "galleryImages": [
       "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -929,7 +2572,7 @@ export const CORPORATE_EVENTS: EventDetail[] = [
     badge: "Yearly Milestones Celebration",
     title: "Grand Annual General Meeting (AGM) & Celebrations",
     subtitle: "Pichle saal ki uplabdhiyon ka jashn aur aane wale saal ka vision — Royal stage, corporate video showcase aur gala dinner.",
-    heroImage: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=80",
+    heroImage: "https://images.unsplash.com/photo-1551818255-e6e10975bc17?auto=format&fit=crop&w=1200&q=80",
     stats: [
       { number: "180+", label: "Annual Meets Managed" },
       { number: "Grand", label: "LED Stage Presentations" },
@@ -955,10 +2598,10 @@ export const CORPORATE_EVENTS: EventDetail[] = [
         desc: "High-quality photography, cinematic videography, drone coverage, live streaming and highlight videos that capture every important moment of your corporate annual gathering.",
       },
     ],
-    galleryImages: [
+    "galleryImages": [
       "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -1013,10 +2656,10 @@ export const CORPORATE_EVENTS: EventDetail[] = [
       { title: "Professional Award Emcees", desc: "Audience ko baandhkar rakhne wale charismatic anchors and stage coordinators." },
       { title: "Customized Trophies & Mementos", desc: "Crystal, wooden and metallic engraved awards and certificates." },
     ],
-    galleryImages: [
-      "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=75",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -1052,10 +2695,10 @@ export const CORPORATE_EVENTS: EventDetail[] = [
       { title: "DJ & Dance Celebration", desc: "High tempo celebratory music tracks for team enjoyment and celebrations." },
       { title: "Employee Souvenirs & Recognition Hamper", desc: "Customized gift hampers, premium certificates and team photo frames." },
     ],
-    galleryImages: [
-      "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=75",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -1072,9 +2715,20 @@ export const CORPORATE_EVENTS: EventDetail[] = [
   },
 ];
 
-export const ALL_EVENTS: EventDetail[] = [...WEDDING_EVENTS, ...CORPORATE_EVENTS];
+export const ALL_EVENTS: EventDetail[] = [...CATERING_EVENTS, ...DECORATION_EVENTS, ...WEDDING_EVENTS, ...CORPORATE_EVENTS];
+
+const LEGACY_SLUG_MAP: Record<string, string> = {
+  "non-veg-catering": "veg-catering",
+  "wedding-decoration": "stage-decoration",
+  "destination-wedding-decor": "destination-wedding",
+  "corporate-stage-backdrop": "stage-decoration",
+  "baby-shower-decor": "baby-shower",
+};
 
 export const getEventBySlug = (slug: string): EventDetail | undefined => {
-  const cleanSlug = slug.toLowerCase().trim();
+  let cleanSlug = slug.toLowerCase().trim();
+  if (LEGACY_SLUG_MAP[cleanSlug]) {
+    cleanSlug = LEGACY_SLUG_MAP[cleanSlug];
+  }
   return ALL_EVENTS.find((e) => e.slug === cleanSlug);
 };

@@ -24,6 +24,9 @@ import {
   Users,
   Briefcase,
   Layers,
+  UtensilsCrossed,
+  ChefHat,
+  Palette,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import TopBanner from "@/components/TopBanner";
@@ -33,6 +36,11 @@ import BookConsultation from "@/components/BookConsultation";
 import EventFaqAccordion from "@/components/EventFaqAccordion";
 import { ALL_EVENTS, getEventBySlug } from "@/data/eventRoutes";
 import { getSiteSettings } from "@/lib/getSiteSettings";
+import connectToDatabase from "@/lib/db";
+import { SubCategory } from "@/lib/models/SubCategory";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 interface Props {
   params: Promise<{ eventSlug: string }>;
@@ -58,9 +66,31 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const phoneStr = settings.primaryPhone || "7898522932";
   const brandName = "RIWAJ Events";
 
+  // Dynamic Image & Alt from MongoDB (Pure Database Source of Truth)
+  let heroImageUrl = "";
+  let heroImageAlt = `${event.menuTitle} - ${brandName}`;
+  try {
+    await connectToDatabase();
+    const dbSub = await SubCategory.findOne({ slug: eventSlug }).lean();
+    if (dbSub) {
+      if (dbSub.mainImage?.url) {
+        heroImageUrl = dbSub.mainImage.url;
+      }
+      if (dbSub.mainImage?.alt) {
+        heroImageAlt = dbSub.mainImage.alt;
+      }
+    }
+  } catch {
+    // Keep fallback
+  }
+
+  if (!heroImageUrl) {
+    heroImageUrl = event.heroImage || "/og-image.jpg";
+  }
+
   // SEO Optimized: Prioritize RIWAJ brand name and multi-city event excellence
   const title = `${event.title} | ${brandName}`;
-  const description = `${event.subtitle} Luxury ${event.category === "wedding" ? "wedding" : "corporate"} event planning, premium themes & flawless management by ${brandName}. Call ${phoneStr} for instant quotation.`;
+  const description = `${event.subtitle} Luxury ${event.category === "wedding" ? "wedding" : event.category === "corporate" ? "corporate" : event.category === "catering" ? "catering" : "decoration"} event planning, premium themes & flawless management by ${brandName}. Call ${phoneStr} for instant quotation.`;
 
   return {
     title,
@@ -84,10 +114,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       images: [
         {
-          url: event.heroImage,
+          url: heroImageUrl,
           width: 1200,
           height: 630,
-          alt: `${event.menuTitle} - ${brandName}`,
+          alt: heroImageAlt,
         },
       ],
       type: "website",
@@ -97,7 +127,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title,
       description,
-      images: [event.heroImage],
+      images: [heroImageUrl],
     },
     alternates: {
       canonical: `/${event.slug}`,
@@ -108,6 +138,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // Icon helper for What We Offer cards
 const getFeatureIcon = (index: number, title: string, category: string) => {
   const t = title.toLowerCase();
+  if (t.includes("catering") || t.includes("food") || t.includes("chaat") || t.includes("buffet") || t.includes("biryani") || t.includes("kebab") || t.includes("curry") || t.includes("tandoor") || t.includes("sweet") || t.includes("dish")) {
+    return <UtensilsCrossed className="w-6 h-6" />;
+  }
+  if (t.includes("chef") || t.includes("kitchen") || t.includes("recipe") || t.includes("swad") || t.includes("cook")) {
+    return <ChefHat className="w-6 h-6" />;
+  }
+  if (t.includes("decor") || t.includes("styling") || t.includes("theme") || t.includes("design") || t.includes("art") || t.includes("arch") || t.includes("balloon")) {
+    return <Palette className="w-6 h-6" />;
+  }
   if (t.includes("presentation") || t.includes("conference") || t.includes("screen") || t.includes("av") || t.includes("podium")) {
     return <Mic className="w-6 h-6" />;
   }
@@ -132,11 +171,12 @@ const getFeatureIcon = (index: number, title: string, category: string) => {
 
   // Fallbacks by index
   const icons = [
+    <UtensilsCrossed className="w-6 h-6" key="utensil" />,
+    <Palette className="w-6 h-6" key="pal" />,
+    <Crown className="w-6 h-6" key="crown" />,
+    <Sparkles className="w-6 h-6" key="spk" />,
     <Mic className="w-6 h-6" key="mic" />,
     <Trophy className="w-6 h-6" key="trophy" />,
-    <Music className="w-6 h-6" key="music" />,
-    <Camera className="w-6 h-6" key="cam" />,
-    <Sparkles className="w-6 h-6" key="spk" />,
   ];
   return icons[index % icons.length];
 };
@@ -149,6 +189,41 @@ export default async function EventPage({ params }: Props) {
     notFound();
   }
 
+  // Fetch only images and alt texts from MongoDB ("hame sirf Image ko database se fetch karke show karana hai")
+  let dbSub: any = null;
+  try {
+    await connectToDatabase();
+    dbSub = await SubCategory.findOne({ slug: eventSlug }).lean();
+  } catch {
+    // Keep fallback to static event data
+  }
+
+  // Pure Database Source of Truth:
+  // If dbSub document exists in MongoDB, respect its image state strictly.
+  // If admin deleted images (empty array or blank mainImage.url), do NOT fall back to static data!
+  let heroImageUrl = "";
+  let heroImageAlt = `${event.title} - RIWAJ Events`;
+  let showcaseImages: { url: string; alt: string }[] = [];
+
+  if (dbSub) {
+    // DB record exists: database is the single source of truth
+    heroImageUrl = dbSub.mainImage?.url || "";
+    heroImageAlt = dbSub.mainImage?.alt || `${event.title} - RIWAJ Events`;
+    showcaseImages = (dbSub.relevantImages || [])
+      .filter((img: any) => img && typeof img.url === "string" && img.url.trim().length > 0)
+      .map((img: any, i: number) => ({
+        url: img.url.trim(),
+        alt: img.alt || `${event.menuTitle} Real Event Setup ${i + 1} - RIWAJ Events`,
+      }));
+  } else {
+    // Only if DB is unreachable or document not seeded yet
+    heroImageUrl = event.heroImage;
+    showcaseImages = event.galleryImages.map((url, i) => ({
+      url,
+      alt: `${event.menuTitle} Real Event Setup ${i + 1} - RIWAJ Events`,
+    }));
+  }
+
   const settings = await getSiteSettings();
   const cleanWA = (settings.whatsAppNumber || "7898522932").replace(/[^0-9]/g, "");
   const fullWA = cleanWA.length === 10 ? `91${cleanWA}` : cleanWA || "917898522932";
@@ -156,14 +231,38 @@ export default async function EventPage({ params }: Props) {
   const rawDigits = displayPhone.replace(/[^0-9+]/g, "");
   const telLink = `tel:${rawDigits || "7898522932"}`;
 
+  const categoryText =
+    event.category === "wedding"
+      ? "Wedding"
+      : event.category === "corporate"
+      ? "Corporate Event"
+      : event.category === "catering"
+      ? "Catering"
+      : "Decoration";
+
   // Pre-filled dynamic WhatsApp link specific to this event route
   const waLink = `https://wa.me/${fullWA}?text=Namaste%20RIWAJ%20Events!%20Mujhe%20${encodeURIComponent(
     event.menuTitle
-  )}%20(${event.category === "wedding" ? "Wedding" : "Corporate"}%20Event)%20ke%20decor%20aur%20planning%20packages%20ki%20details%20chahiye.`;
+  )}%20(${encodeURIComponent(categoryText)})%20ke%20details%20aur%20packages%20ki%20jaankari%20chahiye.`;
 
   // Breadcrumbs data
-  const categoryLabel = event.category === "wedding" ? "Wedding" : "Corporate Event";
-  const categoryHref = event.category === "wedding" ? "/services#wedding" : "/services#corporate";
+  const categoryLabel =
+    event.category === "wedding"
+      ? "Wedding"
+      : event.category === "corporate"
+      ? "Corporate Event"
+      : event.category === "catering"
+      ? "Catering Services"
+      : "Decoration & Themes";
+
+  const categoryHref =
+    event.category === "wedding"
+      ? "/services#wedding"
+      : event.category === "corporate"
+      ? "/services#corporate"
+      : event.category === "catering"
+      ? "/services#catering"
+      : "/services#decoration";
 
   // Schema.org JSON-LD for SEO rich snippets
   const breadcrumbSchema = {
@@ -195,7 +294,14 @@ export default async function EventPage({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "Service",
     name: `${event.menuTitle} Planning & Decor`,
-    serviceType: event.category === "wedding" ? "Wedding Event Management" : "Corporate Event Management",
+    serviceType:
+      event.category === "wedding"
+        ? "Wedding Event Management"
+        : event.category === "corporate"
+        ? "Corporate Event Management"
+        : event.category === "catering"
+        ? "Catering & Banquet Services"
+        : "Wedding & Event Decoration",
     description: event.subtitle,
     provider: {
       "@type": "LocalBusiness",
@@ -322,10 +428,10 @@ export default async function EventPage({ params }: Props) {
             {/* Right Column: Hero Image with Overlay */}
             <div className="lg:col-span-5">
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white group">
-                <div className="relative h-72 sm:h-84 md:h-96 w-full">
+                <div className="relative h-72 sm:h-84 md:h-96 w-full bg-gray-100">
                   <SafeImage
-                    src={event.heroImage}
-                    alt={`${event.title} - RIWAJ Events`}
+                    src={heroImageUrl || (event.category === "wedding" ? "/dercoration1.webp" : "/og-image.jpg")}
+                    alt={heroImageAlt}
                     fill
                     priority
                     fallbackSrc={event.category === "wedding" ? "/dercoration1.webp" : "/og-image.jpg"}
@@ -441,28 +547,59 @@ export default async function EventPage({ params }: Props) {
             </Link>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {event.galleryImages.map((imgUrl, i) => (
-              <div
-                key={i}
-                className="relative h-64 sm:h-72 rounded-3xl overflow-hidden shadow-md group border border-gray-200"
-              >
-                <SafeImage
-                  src={imgUrl}
-                  alt={`${event.menuTitle} Decor Photo ${i + 1} - RIWAJ`}
-                  fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-700"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-5">
-                  <span className="text-white text-xs font-bold flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                    <span>RIWAJ Luxury Artistry</span>
-                  </span>
+          {showcaseImages.length > 0 ? (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {showcaseImages.map((imgObj, i) => (
+                <div
+                  key={i}
+                  className="relative h-64 sm:h-72 rounded-3xl overflow-hidden shadow-md group border border-gray-200 bg-gray-100"
+                >
+                  <SafeImage
+                    src={imgObj.url}
+                    alt={imgObj.alt || `${event.menuTitle} Real Event Setup ${i + 1} - RIWAJ`}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-5 z-2">
+                    <span className="text-white text-xs font-bold flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-amber-300 shrink-0" />
+                      <span className="line-clamp-1">{imgObj.alt || "RIWAJ Luxury Artistry"}</span>
+                    </span>
+                  </div>
                 </div>
+              ))}
+            </div>
+          ) : (
+            <div className="bg-white rounded-3xl p-8 sm:p-12 text-center border border-gray-100 shadow-sm max-w-2xl mx-auto">
+              <div className="w-14 h-14 mx-auto rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mb-4">
+                <Camera className="w-7 h-7" />
               </div>
-            ))}
-          </div>
+              <h3 className="font-serif font-bold text-lg text-gray-800 mb-1">
+                Latest Setups Gallery Updating
+              </h3>
+              <p className="text-gray-500 text-xs sm:text-sm leading-relaxed max-w-md mx-auto mb-5">
+                Hamari team is specific category ke fresh setup photos upload kar rahi hai. Live portfolio ya real event videos dekhne ke liye seedha call ya WhatsApp karein.
+              </p>
+              <div className="flex items-center justify-center gap-3">
+                <a
+                  href={waLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 rounded-xl bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 transition-colors inline-flex items-center gap-1.5"
+                >
+                  <MessageSquare className="w-3.5 h-3.5" />
+                  <span>WhatsApp Portfolio</span>
+                </a>
+                <Link
+                  href="/gallery"
+                  className="px-4 py-2 rounded-xl border border-gray-200 text-gray-700 font-bold text-xs hover:bg-gray-50 transition-colors"
+                >
+                  View Gallery
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -556,7 +693,7 @@ export default async function EventPage({ params }: Props) {
             </p>
           </div>
 
-          <BookConsultation />
+          <BookConsultation formOnly={true} />
         </div>
       </section>
 

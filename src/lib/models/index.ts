@@ -6,3 +6,8 @@ export { Inquiry, type IInquiry } from "./Inquiry";
 export { SiteSetting, type ISiteSetting, type IHeroSlide, type IStatItem, type ITestimonialItem } from "./SiteSetting";
 export { Testimonial, type ITestimonial } from "./Testimonial";
 export { TeamMember, type ITeamMember } from "./TeamMember";
+export { Vendor, type IVendor } from "./Vendor";
+export { SubCategory, type ISubCategory, type ISubCategoryImage } from "./SubCategory";
+export { Customer, type ICustomer, type ICustomerLocation, type ICustomerChild } from "./Customer";
+export { Booking, type IBooking, type ISubEvent, type IAssignedPerson, type IBookingFinancials, type IPaymentRecord } from "./Booking";
+export { WhatsAppLog, type IWhatsAppLog } from "./WhatsAppLog";

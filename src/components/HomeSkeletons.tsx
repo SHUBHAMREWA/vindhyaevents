@@ -44,35 +44,29 @@ export function HeroShimmerSkeleton() {
  */
 export function ServicesShimmerSkeleton() {
   return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-7xl mx-auto">
       {[1, 2, 3, 4, 5, 6].map((i) => (
         <div
           key={i}
-          className="bg-white rounded-3xl border border-gray-100 shadow-md overflow-hidden relative"
+          className="bg-white rounded-3xl border border-gray-100 shadow-md overflow-hidden relative flex flex-col sm:flex-row"
         >
           {/* Image header placeholder */}
-          <div className="h-56 relative shimmer-effect">
-            <div className="absolute top-4 left-4 w-14 h-14 rounded-full shimmer-effect-rose border-2 border-white shadow-sm" />
+          <div className="sm:w-5/12 h-48 sm:h-auto min-h-[190px] relative shimmer-effect shrink-0">
+            <div className="absolute top-4 left-4 w-12 h-12 rounded-2xl shimmer-effect-rose border-2 border-white shadow-sm" />
           </div>
 
           {/* Content placeholder */}
-          <div className="p-6 space-y-4">
-            <div className="h-6 w-2/3 rounded-lg shimmer-effect" />
-            <div className="space-y-2">
+          <div className="sm:w-7/12 p-6 space-y-4 flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="h-6 w-2/3 rounded-lg shimmer-effect" />
               <div className="h-4 w-full rounded shimmer-effect" />
               <div className="h-4 w-4/5 rounded shimmer-effect" />
-            </div>
-
-            {/* Feature tags placeholder */}
-            <div className="pt-2 flex flex-wrap gap-2">
-              <div className="h-6 w-20 rounded-full shimmer-effect-rose" />
-              <div className="h-6 w-24 rounded-full shimmer-effect-rose" />
             </div>
 
             {/* Read more footer */}
             <div className="pt-3 border-t border-gray-100 flex justify-between items-center">
               <div className="h-4 w-24 rounded shimmer-effect" />
-              <div className="h-5 w-5 rounded-full shimmer-effect" />
+              <div className="h-4 w-20 rounded shimmer-effect" />
             </div>
           </div>
         </div>

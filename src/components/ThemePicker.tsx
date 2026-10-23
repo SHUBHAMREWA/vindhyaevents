@@ -32,7 +32,7 @@ export default function ThemePicker({ mobileInline = false }: { mobileInline?: b
             <button
               key={t.id}
               onClick={() => setThemeById(t.id as ThemeId)}
-              className={`flex items-center gap-2 px-3 py-2 rounded-xl text-left transition-all text-sm font-medium border-2 ${
+              className={`flex items-center gap-2 px-3 py-2 rounded-xl text-left transition-all text-sm font-medium border-2 cursor-pointer ${
                 theme.id === t.id
                   ? "border-current shadow-sm"
                   : "border-transparent bg-gray-50 text-gray-700"
@@ -66,7 +66,7 @@ export default function ThemePicker({ mobileInline = false }: { mobileInline?: b
       <button
         onClick={() => setOpen((v) => !v)}
         title="Change Theme"
-        className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200 border-2 group ${
+        className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200 border-2 group cursor-pointer ${
           open ? "shadow-md scale-105" : "border-gray-200 hover:border-gray-300 bg-white hover:bg-gray-50 active:scale-95"
         }`}
         style={open ? {
@@ -104,7 +104,7 @@ export default function ThemePicker({ mobileInline = false }: { mobileInline?: b
                   <button
                     key={t.id}
                     onClick={() => { setThemeById(t.id as ThemeId); setOpen(false); }}
-                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all duration-200 group ${
+                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all duration-200 group cursor-pointer ${
                       isActive ? "shadow-sm" : "hover:bg-gray-50"
                     }`}
                     style={isActive ? {

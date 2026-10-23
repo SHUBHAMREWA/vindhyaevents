@@ -21,99 +21,116 @@ import {
   Crown,
 } from "lucide-react";
 import { useSettings } from "@/context/SettingsContext";
+import { useInstantContent } from "@/lib/cache/useInstantContent";
+
+const WhatsAppIcon = ({ className = "w-4 h-4" }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.558 4.116 1.535 5.845L.057 23.492a.75.75 0 0 0 .904.964l5.805-1.524A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.713 9.713 0 0 1-4.962-1.358l-.355-.211-3.683.966.983-3.595-.232-.369A9.718 9.718 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z" />
+  </svg>
+);
 
 const allServices = [
   {
     icon: Calendar,
     title: "Full Wedding Planning & Coordination",
-    subtitle: "End-to-End Stress-Free Management",
+    subtitle: "Roka Se Vidai Tak Royal Management",
     description:
-      "Comprehensive wedding management from initial concept and budget formulation to vendor coordination, guest logistics, and day-of execution.",
+      "Comprehensive end-to-end wedding management tailored for traditional Indian rituals — Muhurat timelines, royal venue selection, vendor negotiation, and dedicated day-of event coordination.",
     image:
-      "https://images.unsplash.com/photo-1519225429980-715cb0215aed?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1724847664960-5060a1ae8259?auto=format&fit=crop&w=1200&q=80",
     features: [
-      "Custom 12-month wedding timeline & checklist",
+      "Custom 12-month wedding timeline & rasam checklist",
       "Venue selection & contract negotiations across Rewa & MP",
       "Dedicated lead wedding coordinator on event day",
-      "Guest RSVP, room allocations & welcome hamper setup",
+      "Guest RSVP, hotel room allocations & welcome hampers",
     ],
   },
   {
     icon: Flower2,
     title: "Floral & Mandap Stage Décor",
-    subtitle: "Custom Themes & Royal Floral Artistry",
+    subtitle: "Grand Palace Mandaps & Marigold Artistry",
     description:
-      "Mesmerizing mandap installations, floral entrance pathways, royal seating stages, and enchanting tablescapes designed to reflect your family traditions.",
+      "Mesmerizing royal mandap installations, marigold & red rose cascades, illuminated entrance walkways, and majestic VIP stage seating reflecting your family's royal heritage.",
     image:
-      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1080&q=80",
+      "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=1200&q=80",
     features: [
-      "Traditional & modern theme mandap setups",
-      "Fresh exotic and local flower arrangements",
-      "Intelligent LED & fairy light ambiences",
-      "Thematic photobooths & selfie zones",
+      "Traditional Shahi & modern pastel theme mandap setups",
+      "Fresh exotic orchids, desi genda & red rose arrangements",
+      "Intelligent warm LED chandeliers & fairy light ambience",
+      "Thematic photobooths, selfie zones & floral arches",
     ],
   },
   {
     icon: Camera,
     title: "Photography & Cinematic Videography",
-    subtitle: "Preserving Every Precious Moment",
+    subtitle: "Royal Candid Portraits & 4K Teaser Films",
     description:
-      "Top-tier wedding photography team capturing raw candid emotions, drone aerial shots, teaser trailers, and timeless cinematic wedding films.",
+      "Top-tier Indian wedding photography capturing raw candid emotions, bridal portraits, drone aerial coverage, and Bollywood-style cinematic trailers.",
     image:
-      "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?auto=format&fit=crop&w=1080&q=80",
+      "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=1200&q=80",
     features: [
-      "Candid & traditional high-resolution coverage",
-      "4K cinematic wedding trailer & full documentary",
-      "Pre-wedding shoot with custom locations",
-      "Designer luxury hardbound photo albums",
+      "Royal bridal portraits & candid emotional ceremony moments",
+      "4K cinematic wedding trailer & full documentary films",
+      "Pre-wedding shoot at scenic heritage spots in Rewa & MP",
+      "Luxury velvet & leather-bound customized photo albums",
     ],
   },
   {
     icon: Music,
     title: "Sangeet, DJ & Live Entertainment",
-    subtitle: "Electrifying Nights of Music & Dance",
+    subtitle: "High-Energy Bollywood Nights & Live Dhol",
     description:
-      "State-of-the-art concert sound systems, dynamic truss lighting, professional DJs, celebrity choreographers, and live folk artists.",
+      "Concert-grade line array sound systems, dynamic truss lighting, celebrity DJs, family dance choreographers, and traditional energetic Punjabi Dhol troupes.",
     image:
-      "https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1080&q=80",
+      "https://images.unsplash.com/photo-1766113483422-7c871de23591?auto=format&fit=crop&w=1200&q=80",
     features: [
-      "Celebrity & wedding choreographers for family sangeet",
-      "Bass-pumping club sound & intelligent beam lighting",
-      "Cold pyros, dry ice fog & paper blast effects",
-      "Traditional Shehnai & Dhol tasha troupes",
+      "Bollywood choreographers for family sangeet performances",
+      "Concert-style LED stage walls & intelligent beam lighting",
+      "Cold pyros, dry ice low fog & celebratory paper blast effects",
+      "Traditional energetic Shehnai & Dhol Tasha teams",
     ],
   },
   {
     icon: Utensils,
     title: "Royal Catering & Gourmet Banquets",
-    subtitle: "Unforgettable Multi-Cuisine Feasts",
+    subtitle: "Shahi Dawat, Live Chaat & Multi-Cuisine Feasts",
     description:
-      "Mouthwatering gastronomic experiences crafted by certified culinary masters, offering traditional regional delicacies alongside international cuisines.",
+      "Authentic Indian wedding feasts crafted by master chefs — Bundelkhandi royal delicacies, live chaat stalls, North Indian curries, and gourmet dessert counters.",
     image:
-      "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=1080&q=80",
+      "https://images.unsplash.com/photo-1732259495388-af40b972c311?auto=format&fit=crop&w=1200&q=80",
     features: [
-      "Pure vegetarian & customized gourmet options",
-      "Authentic Bundelkhandi & North Indian royal feasts",
-      "Live chaat counters, mocktail bars & dessert stations",
-      "High-grade food safety & trained white-glove staff",
+      "100% pure vegetarian & customized royal gourmet menus",
+      "Authentic Bundelkhandi, Awadhi & Mughlai royal delicacies",
+      "Live chaat counters, tandoori breads, mocktail bars & mithai",
+      "Gleaming copper chafing dishes & trained white-glove staff",
     ],
   },
   {
     icon: Sparkles,
     title: "Royal Baraat & Vintage Hospitality",
-    subtitle: "Grand Processions & Warm Welcome",
+    subtitle: "Majestic Groom Processions & Grand Swagat",
     description:
-      "Make your groom entrance legendary with vintage cars, decorated royal chariots, horse/elephant processions, and traditional welcome tilak ceremonies.",
+      "Make the groom's entry legendary with vintage convertibles, royal decorated chariots, synchronized brass bands, and royal aarti guest reception.",
     image:
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1080&q=80",
+      "https://images.unsplash.com/photo-1754782921197-ba8514594184?auto=format&fit=crop&w=1200&q=80",
     features: [
-      "Vintage open convertibles & luxury chariot setups",
-      "Synchronized brass band & percussion musicians",
-      "Aarti & flower shower guest welcome teams",
-      "Custom safa / pagdi tying experts for baratis",
+      "Vintage open cars & decorated royal chariot / horse setups",
+      "Synchronized royal brass band & percussion musicians",
+      "Traditional aarti, ittar spray & flower shower swagat team",
+      "Custom royal safa & pagdi tying masters for all baratis",
     ],
   },
 ];
+
+const iconMap: Record<string, any> = {
+  Calendar,
+  Flower2,
+  Camera,
+  Music,
+  Utensils,
+  Sparkles,
+};
 
 const packages = [
   {
@@ -159,8 +176,36 @@ const packages = [
   },
 ];
 
+interface ServiceItem {
+  icon: any;
+  title: string;
+  subtitle: string;
+  description: string;
+  image: string;
+  features: string[];
+}
+
 export default function ServicesPage() {
-  const { phone, telLink } = useSettings();
+  const { phone, telLink, getWhatsAppLink, siteName } = useSettings();
+  const { content } = useInstantContent();
+
+  const displayedServices: ServiceItem[] =
+    content.services && content.services.length > 0
+      ? content.services.map((svc: any, idx: number): ServiceItem => {
+          const fallback = allServices[idx] || allServices[0];
+          return {
+            icon: iconMap[svc.iconName] || fallback.icon,
+            title: svc.title || fallback.title,
+            subtitle: svc.category ? `${svc.category} • Royal Service` : fallback.subtitle,
+            description: svc.shortDescription || svc.description || fallback.description,
+            image: svc.coverImage?.url || svc.image || fallback.image,
+            features:
+              Array.isArray(svc.features) && svc.features.length > 0
+                ? (svc.features as string[])
+                : fallback.features,
+          };
+        })
+      : allServices;
 
   return (
     <PageLayout
@@ -169,71 +214,90 @@ export default function ServicesPage() {
       subtitle="From royal stage decorations and majestic baraat entries to bespoke catering and photography — every detail of your special day crafted to perfection."
     >
       {/* ── All Services Grid ─────────────────────────────────── */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-6 max-w-7xl">
-          <div className="text-center max-w-3xl mx-auto mb-16">
+      <section className="py-8 md:py-20 bg-white">
+        <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+          <div className="text-center max-w-3xl mx-auto mb-8 md:mb-16">
             <span
-              className="inline-block px-4 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase mb-3"
+              className="inline-block px-3.5 py-1 md:px-4 md:py-1.5 rounded-full text-[10px] md:text-xs font-bold tracking-wider uppercase mb-2 md:mb-3"
               style={{ background: "var(--c-bg-soft)", color: "var(--c-primary)" }}
             >
               Tailored For Your Traditions
             </span>
-            <h2 className="text-3xl md:text-5xl font-serif font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-serif font-bold text-gray-900 mb-2 md:mb-4">
               Comprehensive Wedding Services
             </h2>
-            <p className="text-gray-600 text-base md:text-lg">
+            <p className="text-gray-600 text-xs sm:text-sm md:text-base lg:text-lg">
               Explore our wide array of bespoke wedding solutions designed to create timeless memories for you and your guests across Madhya Pradesh.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {allServices.map((svc, idx) => {
+          {/* ── Horizontal Service Cards ────────────────────────────── */}
+          <div className="space-y-6 md:space-y-8 max-w-6xl mx-auto">
+            {displayedServices.map((svc, idx) => {
               const Icon = svc.icon;
+              const waMessage = `Namaste ${siteName || "RIWAJ Events"}! 🙏 I am interested in your "${svc.title}" service. Please share package details, pricing, and availability.`;
+              const waUrl = getWhatsAppLink(waMessage);
+
               return (
                 <motion.div
                   key={svc.title}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col group"
+                  transition={{ duration: 0.5, delay: idx * 0.08 }}
+                  className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col md:flex-row group"
                 >
-                  <div className="relative h-60 w-full overflow-hidden bg-gray-100">
+                  {/* Left Column: Landscape Photo */}
+                  <div className="relative w-full md:w-5/12 lg:w-[420px] min-h-[240px] sm:min-h-[280px] md:min-h-[340px] overflow-hidden bg-gray-100 shrink-0">
                     <Image
                       src={svc.image}
                       alt={svc.title}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-700"
-                      sizes="(max-width: 768px) 100vw, 33vw"
+                      sizes="(max-width: 768px) 100vw, 420px"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                    <div className="absolute bottom-4 left-4 right-4 text-white flex items-center gap-3">
+                    <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black/75 via-black/30 to-transparent" />
+
+                    {/* Floating Service Badge & Icon */}
+                    <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
                       <div
-                        className="w-10 h-10 rounded-xl flex items-center justify-center text-white shrink-0 shadow-md"
+                        className="w-10 h-10 rounded-xl flex items-center justify-center text-white shrink-0 shadow-lg backdrop-blur-md"
                         style={{ background: "var(--c-primary)" }}
                       >
                         <Icon className="w-5 h-5" />
                       </div>
-                      <div>
-                        <span className="text-[11px] font-semibold tracking-wide uppercase text-white/80">
-                          {svc.subtitle}
-                        </span>
-                      </div>
+                      <span className="px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider text-white bg-black/60 backdrop-blur-md border border-white/20 shadow-md">
+                        {svc.subtitle}
+                      </span>
+                    </div>
+
+                    <div className="absolute bottom-3 left-4 text-white/80 text-[11px] font-mono font-semibold hidden md:block">
+                      ✦ Royal Service 0{idx + 1}
                     </div>
                   </div>
 
-                  <div className="p-6 flex-1 flex flex-col justify-between">
+                  {/* Right Column: Details & Action Buttons */}
+                  <div className="p-6 sm:p-7 md:p-8 flex-1 flex flex-col justify-between bg-white">
                     <div>
-                      <h3 className="font-serif font-bold text-xl text-gray-900 mb-2.5">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span
+                          className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider"
+                          style={{ background: "var(--c-bg-soft)", color: "var(--c-primary)" }}
+                        >
+                          Signature Experience
+                        </span>
+                      </div>
+                      <h3 className="font-serif font-bold text-xl sm:text-2xl md:text-2xl text-gray-900 mb-2.5 group-hover:text-rose-600 transition-colors">
                         {svc.title}
                       </h3>
-                      <p className="text-gray-600 text-xs md:text-sm leading-relaxed mb-5">
+                      <p className="text-gray-600 text-xs sm:text-sm md:text-base leading-relaxed mb-4">
                         {svc.description}
                       </p>
 
-                      <div className="space-y-2 mb-6 pt-4 border-t border-gray-100">
-                        {svc.features.map((feat, fidx) => (
-                          <div key={fidx} className="flex items-start gap-2 text-xs text-gray-700">
+                      {/* 2-Column Features Grid */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-4 pt-4 border-t border-gray-100">
+                        {svc.features.map((feat: string, fidx: number) => (
+                          <div key={fidx} className="flex items-start gap-2 text-xs sm:text-sm text-gray-700 font-medium">
                             <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                             <span>{feat}</span>
                           </div>
@@ -241,25 +305,38 @@ export default function ServicesPage() {
                       </div>
                     </div>
 
-                    <Link
-                      href="/contact"
-                      className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl text-xs font-bold transition-all duration-200 border hover:text-white"
-                      style={{
-                        borderColor: "var(--c-primary)",
-                        color: "var(--c-primary)",
-                      }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLElement).style.background = "var(--c-primary)";
-                        (e.currentTarget as HTMLElement).style.color = "#ffffff";
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLElement).style.background = "";
-                        (e.currentTarget as HTMLElement).style.color = "var(--c-primary)";
-                      }}
-                    >
-                      <span>Inquire About This Service</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
+                    {/* Action Buttons */}
+                    <div className="pt-4 border-t border-gray-100 flex flex-wrap items-center gap-3">
+                      <a
+                        href={waUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 bg-[#25D366] hover:bg-[#20ba5a] text-white shadow-sm hover:shadow-md active:scale-[0.98]"
+                        title={`Send WhatsApp message about ${svc.title}`}
+                      >
+                        <WhatsAppIcon className="w-4 h-4 fill-current shrink-0" />
+                        <span>Send Message for This Service</span>
+                      </a>
+
+                      <Link
+                        href="/contact"
+                        className="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 bg-rose-50 hover:bg-rose-100 text-rose-700"
+                      >
+                        <span>Book Consultation</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
+
+                      {telLink && (
+                        <a
+                          href={telLink}
+                          className="hidden lg:inline-flex items-center justify-center gap-1.5 px-3.5 py-3 rounded-xl text-xs font-semibold text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition-colors ml-auto"
+                          title="Call RIWAJ Office"
+                        >
+                          <PhoneCall className="w-3.5 h-3.5 text-rose-500" />
+                          <span>Call RIWAJ</span>
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </motion.div>
               );

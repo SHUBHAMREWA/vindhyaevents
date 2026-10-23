@@ -7,7 +7,6 @@ import GalleryPreview from "@/components/GalleryPreview";
 import TestimonialsWrapper from "@/components/TestimonialsWrapper";
 import BlogPreview from "@/components/BlogPreview";
 import Footer from "@/components/Footer";
-import ClientWidgets from "@/components/ClientWidgets";
 import connectToDatabase from "@/lib/db";
 import { Blog, Testimonial } from "@/lib/models";
 import { getSiteSettings } from "@/lib/getSiteSettings";
@@ -83,7 +82,6 @@ export default async function Home() {
       <TestimonialsWrapper testimonials={testimonials} />
       <BlogPreview blogs={latestBlogs} />
       <Footer />
-      <ClientWidgets />
     </main>
   );
 }

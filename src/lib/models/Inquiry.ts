@@ -1,5 +1,18 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
+export interface IAssignedVendor {
+  _id?: string;
+  vendorId?: string;
+  vendorName: string;
+  vendorPhone?: string;
+  serviceName: string;
+  agreedCost: number;
+  advancePaid: number;
+  status: "assigned" | "confirmed" | "completed" | "cancelled";
+  reportingTime?: string;
+  notes?: string;
+}
+
 export interface IInquiry extends Document {
   name: string;
   phone: string;
@@ -12,6 +25,12 @@ export interface IInquiry extends Document {
   status: "pending" | "contacted" | "in_discussion" | "booked" | "cancelled" | "archived";
   adminNotes?: string;
   source: string;
+  // Mini CRM & Event Execution Fields
+  venueAddress?: string;
+  packagePrice?: number;
+  advanceReceived?: number;
+  followUpDate?: string;
+  assignedVendors?: IAssignedVendor[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -70,6 +89,39 @@ const InquirySchema = new Schema<IInquiry>(
       type: String,
       default: "Website Consultation Form",
     },
+    venueAddress: {
+      type: String,
+      default: "",
+    },
+    packagePrice: {
+      type: Number,
+      default: 0,
+    },
+    advanceReceived: {
+      type: Number,
+      default: 0,
+    },
+    followUpDate: {
+      type: String,
+      default: "",
+    },
+    assignedVendors: [
+      {
+        vendorId: { type: String, default: "" },
+        vendorName: { type: String, required: true },
+        vendorPhone: { type: String, default: "" },
+        serviceName: { type: String, required: true },
+        agreedCost: { type: Number, default: 0 },
+        advancePaid: { type: Number, default: 0 },
+        status: {
+          type: String,
+          enum: ["assigned", "confirmed", "completed", "cancelled"],
+          default: "assigned",
+        },
+        reportingTime: { type: String, default: "" },
+        notes: { type: String, default: "" },
+      },
+    ],
   },
   {
     timestamps: true,

@@ -21,6 +21,11 @@ export default function FloatingWhatsAppButton({ customMessage, customTooltip }:
   const { siteName, getWhatsAppLink } = useSettings();
   const pathname = usePathname();
 
+  // Hide on admin dashboard and login pages
+  if (pathname?.startsWith("/admin") || pathname?.startsWith("/login")) {
+    return null;
+  }
+
   const brandName = siteName || "RIWAJ Events";
 
   // Check if current route is an event slug
@@ -33,20 +38,34 @@ export default function FloatingWhatsAppButton({ customMessage, customTooltip }:
 
   if (!finalMessage) {
     if (matchedEvent) {
-      finalMessage = `Namaste ${brandName}! Mujhe ${matchedEvent.menuTitle} (${matchedEvent.category === "wedding" ? "Wedding" : "Corporate"} Event) ke decor aur packages ke baare mein enquiry karni hai. Kripya pricing aur details share karein.`;
+      const catName =
+        matchedEvent.category === "wedding"
+          ? "Wedding"
+          : matchedEvent.category === "corporate"
+          ? "Corporate Event"
+          : matchedEvent.category === "catering"
+          ? "Catering"
+          : "Decoration";
+      finalMessage = `Namaste ${brandName}! Mujhe ${matchedEvent.menuTitle} (${catName} Service) ke details aur packages ke baare mein enquiry karni hai. Kripya pricing aur details share karein.`;
       finalTooltip = `WhatsApp: ${matchedEvent.menuTitle} Enquiry`;
     } else if (pathname === "/services") {
       finalMessage = `Namaste ${brandName}! Mujhe aapki wedding aur corporate event services ke baare mein enquiry karni hai.`;
       finalTooltip = "WhatsApp: Services Enquiry";
+    } else if (pathname === "/about") {
+      finalMessage = `Namaste ${brandName}! Mujhe aapki team aur wedding planning packages ke baare mein consult karna hai.`;
+      finalTooltip = "WhatsApp: Team Consultation";
     } else if (pathname === "/gallery") {
       finalMessage = `Namaste ${brandName}! Maine aapki real wedding & event gallery dekhi, mujhe quotation chahiye.`;
       finalTooltip = "WhatsApp: Photo Gallery Enquiry";
+    } else if (pathname?.startsWith("/blog")) {
+      finalMessage = `Namaste ${brandName}! Maine aapka wedding blog post padha, mujhe event details chahiye.`;
+      finalTooltip = "WhatsApp: Blog Enquiry";
     } else if (pathname === "/contact") {
       finalMessage = `Namaste ${brandName}! Main event planning ke liye consult karna chahta hoon.`;
       finalTooltip = "WhatsApp: Instant Chat";
     } else {
       finalMessage = `Namaste ${brandName}! Mujhe wedding & event decor ke baare mein enquiry karni hai. Please pricing aur available packages share karein.`;
-      finalTooltip = "WhatsApp Chat: Instant Enquiry";
+      finalTooltip = "Chat: Instant Enquiry";
     }
   }
 
@@ -55,11 +74,12 @@ export default function FloatingWhatsAppButton({ customMessage, customTooltip }:
   return (
     <aside
       aria-label="Direct WhatsApp Consultation"
-      className="fixed z-40 right-4 md:right-8 bottom-20 md:bottom-8 flex items-center group select-none"
+      className="fixed z-50 right-4 md:right-8 bottom-20 md:bottom-8 flex items-center group select-none"
     >
       {/* Tooltip / Label visible on desktop hover or mobile tap */}
-      <div className="hidden md:flex items-center mr-3 px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-md shadow-lg border border-emerald-100 text-emerald-950 text-xs font-semibold opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-300 pointer-events-none whitespace-nowrap">
-        <span suppressHydrationWarning>{finalTooltip || "WhatsApp Chat: Instant Enquiry"}</span>
+      <div className="hidden md:flex items-center gap-2 mr-3 px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-md shadow-lg border border-emerald-100 text-emerald-950 text-xs font-semibold opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-300 pointer-events-none whitespace-nowrap">
+        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+        <span suppressHydrationWarning>{finalTooltip || "Chat: Instant Enquiry"}</span>
       </div>
 
       {/* WhatsApp Button with official WhatsApp Green (#25D366) */}

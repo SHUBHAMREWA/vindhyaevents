@@ -1,6 +1,6 @@
 "use client";
 
-import { Phone, MapPin } from "lucide-react";
+import { Phone, MapPin, Youtube } from "lucide-react";
 import { useSettings } from "@/context/SettingsContext";
 
 // Inline WhatsApp SVG — no extra package
@@ -12,7 +12,7 @@ const WAIcon = () => (
 );
 
 export default function TopBanner() {
-  const { phone, telLink, getWhatsAppLink, siteName, taglineHindi, bannerText, showTopBanner, address } = useSettings();
+  const { phone, telLink, getWhatsAppLink, siteName, taglineHindi, bannerText, showTopBanner, address, socialLinks } = useSettings();
 
   if (showTopBanner === false) {
     return null;
@@ -22,7 +22,8 @@ export default function TopBanner() {
     ? "Rewa, MP"
     : address?.split(",")[0] || "Rewa, MP";
 
-  const displayBannerText = bannerText?.trim() || `🎉 Welcome to ${siteName || "Vindhya Events"} — Weddings & Events`;
+  const brandTitle = siteName && !siteName.toLowerCase().includes("vindhya") ? siteName : "RIWAJ Wedding & Events";
+  const displayBannerText = bannerText?.trim() || `🎉 Welcome to ${brandTitle} — Weddings & Events`;
 
   return (
     <div
@@ -68,6 +69,18 @@ export default function TopBanner() {
               </span>
               <span>WhatsApp</span>
             </a>
+            {socialLinks?.youtube && (
+              <a
+                href={socialLinks.youtube}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 hover:text-red-200 transition-colors font-medium group"
+                title="Watch on YouTube"
+              >
+                <Youtube className="w-3.5 h-3.5 text-red-400 group-hover:scale-110 transition-transform" />
+                <span>YouTube</span>
+              </a>
+            )}
             <span className="flex items-center gap-1.5 opacity-80">
               <MapPin className="w-3.5 h-3.5" />
               <span suppressHydrationWarning>{shortCity}</span>

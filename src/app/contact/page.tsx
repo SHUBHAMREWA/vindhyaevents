@@ -6,87 +6,101 @@ import { Phone, MapPin, Clock, MessageSquare } from "lucide-react";
 import { useSettings } from "@/context/SettingsContext";
 
 export default function ContactPage() {
-  const { phone, telLink, getWhatsAppLink, address, siteName } = useSettings();
+  const { phone, telLink, getWhatsAppLink, address, siteName, googleMapUrl } = useSettings();
 
   return (
     <PageLayout
       badge="Let's Connect"
-      title={`Contact ${siteName || "Vindhya Events"}`}
+      title={`Contact ${siteName && !siteName.toLowerCase().includes("vindhya") ? siteName : "RIWAJ Wedding & Events"}`}
       subtitle="Have questions or ready to plan your fairytale wedding? Reach out to our expert team for a complimentary personalized consultation."
     >
-      {/* ── Contact Info Grid ─────────────────────────────────── */}
-      <section className="py-16 bg-white border-b border-gray-100">
-        <div className="container mx-auto px-6 max-w-6xl">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* ── Contact Info Horizontal/Grid ─────────────────────────────────── */}
+      <section className="py-4 md:py-16 bg-white border-b border-gray-100">
+        <div className="container mx-auto px-4 md:px-6 max-w-6xl">
+          <div className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar gap-2.5 sm:gap-6 pb-2 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-4">
             {/* Phone */}
-            <div className="p-6 rounded-3xl bg-rose-50/50 border border-rose-100 flex flex-col justify-between hover:shadow-lg transition-all">
+            <div className="w-[195px] xs:w-[215px] sm:w-auto shrink-0 snap-start p-3.5 sm:p-6 rounded-2xl sm:rounded-3xl bg-rose-50/50 border border-rose-100 flex flex-col justify-between hover:shadow-lg transition-all">
               <div>
-                <div className="w-12 h-12 rounded-2xl bg-rose-500 text-white flex items-center justify-center mb-4 shadow-md">
-                  <Phone className="w-5 h-5" />
+                <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-rose-500 text-white flex items-center justify-center mb-2.5 sm:mb-4 shadow-sm sm:shadow-md">
+                  <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
-                <h3 className="font-serif font-bold text-lg text-gray-900 mb-1">Call Directly</h3>
-                <p className="text-xs text-gray-500 mb-4">Immediate discussion with our wedding directors.</p>
+                <h3 className="font-serif font-bold text-sm sm:text-lg text-gray-900 mb-0.5 sm:mb-1">Call Directly</h3>
+                <p className="text-[11px] sm:text-xs text-gray-500 mb-2 sm:mb-4 leading-tight sm:leading-normal">Immediate discussion with our wedding directors.</p>
               </div>
               <a
                 href={telLink}
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-rose-600 hover:text-rose-700"
+                className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-rose-600 hover:text-rose-700 mt-auto"
               >
                 <span suppressHydrationWarning>{phone}</span>
               </a>
             </div>
 
             {/* WhatsApp */}
-            <div className="p-6 rounded-3xl bg-emerald-50/50 border border-emerald-100 flex flex-col justify-between hover:shadow-lg transition-all">
+            <div className="w-[195px] xs:w-[215px] sm:w-auto shrink-0 snap-start p-3.5 sm:p-6 rounded-2xl sm:rounded-3xl bg-emerald-50/50 border border-emerald-100 flex flex-col justify-between hover:shadow-lg transition-all">
               <div>
-                <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center mb-4 shadow-md">
-                  <MessageSquare className="w-5 h-5" />
+                <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-emerald-500 text-white flex items-center justify-center mb-2.5 sm:mb-4 shadow-sm sm:shadow-md">
+                  <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
-                <h3 className="font-serif font-bold text-lg text-gray-900 mb-1">WhatsApp Chat</h3>
-                <p className="text-xs text-gray-500 mb-4">Share decor photos, dates, and get quick quotes.</p>
+                <h3 className="font-serif font-bold text-sm sm:text-lg text-gray-900 mb-0.5 sm:mb-1">WhatsApp Chat</h3>
+                <p className="text-[11px] sm:text-xs text-gray-500 mb-2 sm:mb-4 leading-tight sm:leading-normal">Share decor photos, dates, and get quick quotes.</p>
               </div>
               <a
-                href={getWhatsAppLink(`Hi ${siteName || "Vindhya Events"}, I want to book a consultation!`)}
+                href={getWhatsAppLink(`Hi ${siteName && !siteName.toLowerCase().includes("vindhya") ? siteName : "RIWAJ Wedding & Events"}, I want to book a consultation!`)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 hover:text-emerald-700"
+                className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-emerald-600 hover:text-emerald-700 mt-auto"
               >
                 <span>Chat on WhatsApp →</span>
               </a>
             </div>
 
             {/* Address */}
-            <div className="p-6 rounded-3xl bg-amber-50/50 border border-amber-100 flex flex-col justify-between hover:shadow-lg transition-all">
+            <a
+              href={googleMapUrl || "https://maps.google.com/?q=Rewa+Madhya+Pradesh"}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Click to navigate on Google Maps"
+              className="w-[195px] xs:w-[215px] sm:w-auto shrink-0 snap-start p-3.5 sm:p-6 rounded-2xl sm:rounded-3xl bg-amber-50/50 border border-amber-100 flex flex-col justify-between hover:shadow-lg hover:border-amber-300 transition-all group"
+            >
               <div>
-                <div className="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center mb-4 shadow-md">
-                  <MapPin className="w-5 h-5" />
+                <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-amber-500 text-white flex items-center justify-center mb-2.5 sm:mb-4 shadow-sm sm:shadow-md group-hover:scale-105 transition-transform">
+                  <MapPin className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
-                <h3 className="font-serif font-bold text-lg text-gray-900 mb-1">Studio & Office</h3>
-                <p className="text-xs text-gray-500 mb-4">Visit our design gallery for a personal meeting.</p>
+                <h3 className="font-serif font-bold text-sm sm:text-lg text-gray-900 mb-0.5 sm:mb-1">Studio & Office</h3>
+                <p className="text-[11px] sm:text-xs text-gray-500 mb-2 sm:mb-4 leading-tight sm:leading-normal">Visit our design gallery for a personal meeting.</p>
               </div>
-              <span suppressHydrationWarning className="text-xs font-semibold text-gray-800">{address}</span>
-            </div>
+              <div className="mt-auto">
+                <span suppressHydrationWarning className="text-[11px] sm:text-xs font-semibold text-gray-800 line-clamp-2 sm:line-clamp-none block">{address}</span>
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-700 group-hover:text-amber-800 mt-1">
+                  <span>Open on Map →</span>
+                </span>
+              </div>
+            </a>
 
             {/* Working Hours */}
-            <div className="p-6 rounded-3xl bg-blue-50/50 border border-blue-100 flex flex-col justify-between hover:shadow-lg transition-all">
+            <div className="w-[195px] xs:w-[215px] sm:w-auto shrink-0 snap-start p-3.5 sm:p-6 rounded-2xl sm:rounded-3xl bg-blue-50/50 border border-blue-100 flex flex-col justify-between hover:shadow-lg transition-all">
               <div>
-                <div className="w-12 h-12 rounded-2xl bg-blue-500 text-white flex items-center justify-center mb-4 shadow-md">
-                  <Clock className="w-5 h-5" />
+                <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-blue-500 text-white flex items-center justify-center mb-2.5 sm:mb-4 shadow-sm sm:shadow-md">
+                  <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
-                <h3 className="font-serif font-bold text-lg text-gray-900 mb-1">Consultation Hours</h3>
-                <p className="text-xs text-gray-500 mb-4">Available 7 days a week for booked couples.</p>
+                <h3 className="font-serif font-bold text-sm sm:text-lg text-gray-900 mb-0.5 sm:mb-1">Consultation Hours</h3>
+                <p className="text-[11px] sm:text-xs text-gray-500 mb-2 sm:mb-4 leading-tight sm:leading-normal">Available 7 days a week for booked couples.</p>
               </div>
-              <span className="text-xs font-semibold text-gray-800">Monday – Sunday: 9 AM – 9 PM</span>
+              <span className="text-[11px] sm:text-xs font-semibold text-gray-800 mt-auto">Mon – Sun: 9 AM – 9 PM</span>
             </div>
+          </div>
+
+          {/* Mobile Swipe Indicator */}
+          <div className="flex sm:hidden items-center justify-center gap-1.5 mt-2 text-[10px] text-gray-400 font-medium">
+            <span>← Swipe options horizontally →</span>
           </div>
         </div>
       </section>
 
       {/* ── Consultation Form Section ─────────────────────────── */}
-      <section className="py-12 bg-white" id="book">
-        <div className="container mx-auto px-6 max-w-6xl">
-          <BookConsultation />
-        </div>
-      </section>
+      <div id="book" className="w-full">
+        <BookConsultation />
+      </div>
 
       {/* ── FAQ Section ───────────────────────────────────────── */}
       <section className="py-16 bg-gray-50 border-t border-gray-100">

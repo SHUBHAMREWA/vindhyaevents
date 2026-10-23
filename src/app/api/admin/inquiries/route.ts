@@ -66,6 +66,11 @@ export async function POST(req: NextRequest) {
       status: body.status || "pending",
       adminNotes: body.adminNotes || "",
       source: body.source || "Admin Manual Entry",
+      venueAddress: body.venueAddress || "",
+      packagePrice: Number(body.packagePrice) || 0,
+      advanceReceived: Number(body.advanceReceived) || 0,
+      followUpDate: body.followUpDate || "",
+      assignedVendors: Array.isArray(body.assignedVendors) ? body.assignedVendors : [],
     });
 
     return NextResponse.json({ success: true, inquiry: newInquiry }, { status: 201 });
@@ -100,6 +105,11 @@ export async function PATCH(req: NextRequest) {
     if (body.message !== undefined) updateData.message = body.message;
     if (body.status !== undefined) updateData.status = body.status;
     if (body.adminNotes !== undefined) updateData.adminNotes = body.adminNotes;
+    if (body.venueAddress !== undefined) updateData.venueAddress = body.venueAddress;
+    if (body.packagePrice !== undefined) updateData.packagePrice = Number(body.packagePrice) || 0;
+    if (body.advanceReceived !== undefined) updateData.advanceReceived = Number(body.advanceReceived) || 0;
+    if (body.followUpDate !== undefined) updateData.followUpDate = body.followUpDate;
+    if (body.assignedVendors !== undefined) updateData.assignedVendors = Array.isArray(body.assignedVendors) ? body.assignedVendors : [];
 
     const updated = await Inquiry.findByIdAndUpdate(
       id,
