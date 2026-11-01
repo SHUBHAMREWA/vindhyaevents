@@ -477,7 +477,7 @@ export default function BookConsultation({ formOnly = false }: BookConsultationP
                 <div className="relative w-full h-[165px] sm:h-[185px] rounded-2xl overflow-hidden border border-rose-100 shadow-sm bg-gray-100 group">
                   <iframe
                     title="Google Map Location - RIWAJ Events Rewa"
-                    src={`https://maps.google.com/maps?q=${encodeURIComponent(address || "Rewa, Madhya Pradesh")}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
+                    src={`https://maps.google.com/maps?q=${encodeURIComponent("The Riwaj Weddings and Events, Rewa, Madhya Pradesh")}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
                     className="w-full h-full border-0 pointer-events-auto"
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
@@ -485,7 +485,7 @@ export default function BookConsultation({ formOnly = false }: BookConsultationP
 
                   {/* Top-Right "Open in Maps" Floating Pill */}
                   <a
-                    href={googleMapUrl || "https://maps.google.com/?q=Rewa+Madhya+Pradesh"}
+                    href={googleMapUrl || "https://maps.app.goo.gl/oxD7riczpGY7z4LJ7"}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="absolute top-2.5 right-2.5 z-10 px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/95 text-rose-600 border border-rose-200/80 shadow-md backdrop-blur-md flex items-center gap-1 hover:bg-rose-600 hover:text-white transition-all group/btn"

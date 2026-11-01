@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import PageLayout from "@/components/PageLayout";
 import { motion } from "motion/react";
 import Image from "next/image";
@@ -19,6 +20,7 @@ import {
   Star,
   PhoneCall,
   Crown,
+  X,
 } from "lucide-react";
 import { useSettings } from "@/context/SettingsContext";
 import { useInstantContent } from "@/lib/cache/useInstantContent";
@@ -186,6 +188,7 @@ interface ServiceItem {
 }
 
 export default function ServicesPage() {
+  const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
   const { phone, telLink, getWhatsAppLink, siteName } = useSettings();
   const { content } = useInstantContent();
 
@@ -231,12 +234,10 @@ export default function ServicesPage() {
             </p>
           </div>
 
-          {/* ── Horizontal Service Cards ────────────────────────────── */}
-          <div className="space-y-6 md:space-y-8 max-w-6xl mx-auto">
+          {/* ── 2 Cards per Row in Desktop (matches second screenshot) ──────── */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-7xl mx-auto">
             {displayedServices.map((svc, idx) => {
               const Icon = svc.icon;
-              const waMessage = `Namaste ${siteName || "RIWAJ Events"}! 🙏 I am interested in your "${svc.title}" service. Please share package details, pricing, and availability.`;
-              const waUrl = getWhatsAppLink(waMessage);
 
               return (
                 <motion.div
@@ -244,98 +245,73 @@ export default function ServicesPage() {
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: idx * 0.08 }}
-                  className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col md:flex-row group"
+                  transition={{ duration: 0.6, delay: idx * 0.08 }}
+                  whileHover={{ y: -6 }}
+                  className="bg-white shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden group rounded-3xl border border-gray-100 flex flex-col sm:flex-row"
                 >
                   {/* Left Column: Landscape Photo */}
-                  <div className="relative w-full md:w-5/12 lg:w-[420px] min-h-[240px] sm:min-h-[280px] md:min-h-[340px] overflow-hidden bg-gray-100 shrink-0">
+                  <div className="relative sm:w-5/12 min-h-[200px] sm:min-h-full overflow-hidden bg-gray-100 shrink-0">
                     <Image
                       src={svc.image}
                       alt={svc.title}
                       fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-700"
-                      sizes="(max-width: 768px) 100vw, 420px"
+                      loading="lazy"
+                      quality={75}
+                      className="object-cover group-hover:scale-110 transition-transform duration-700"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 30vw"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black/75 via-black/30 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-black/60 via-black/20 to-transparent" />
 
-                    {/* Floating Service Badge & Icon */}
-                    <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
-                      <div
-                        className="w-10 h-10 rounded-xl flex items-center justify-center text-white shrink-0 shadow-lg backdrop-blur-md"
-                        style={{ background: "var(--c-primary)" }}
-                      >
-                        <Icon className="w-5 h-5" />
-                      </div>
-                      <span className="px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider text-white bg-black/60 backdrop-blur-md border border-white/20 shadow-md">
-                        {svc.subtitle}
-                      </span>
-                    </div>
-
-                    <div className="absolute bottom-3 left-4 text-white/80 text-[11px] font-mono font-semibold hidden md:block">
-                      ✦ Royal Service 0{idx + 1}
+                    {/* Floating Icon Badge on Image */}
+                    <div className="absolute top-4 left-4 w-12 h-12 rounded-2xl bg-white/95 backdrop-blur-sm flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                      <Icon className="w-6 h-6 text-rose-500" />
                     </div>
                   </div>
 
-                  {/* Right Column: Details & Action Buttons */}
-                  <div className="p-6 sm:p-7 md:p-8 flex-1 flex flex-col justify-between bg-white">
+                  {/* Right Column: Details & Actions */}
+                  <div className="sm:w-7/12 p-6 flex flex-col justify-between">
                     <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <span
-                          className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider"
-                          style={{ background: "var(--c-bg-soft)", color: "var(--c-primary)" }}
-                        >
-                          Signature Experience
-                        </span>
-                      </div>
-                      <h3 className="font-serif font-bold text-xl sm:text-2xl md:text-2xl text-gray-900 mb-2.5 group-hover:text-rose-600 transition-colors">
+                      <h3
+                        className="font-serif font-bold text-xl text-gray-900 mb-2 group-hover:text-rose-600 transition-colors"
+                        style={{ color: "var(--c-footer-from)" }}
+                      >
                         {svc.title}
                       </h3>
-                      <p className="text-gray-600 text-xs sm:text-sm md:text-base leading-relaxed mb-4">
+
+                      <p className="text-gray-600 text-xs sm:text-sm leading-relaxed mb-4 font-medium line-clamp-3">
                         {svc.description}
                       </p>
-
-                      {/* 2-Column Features Grid */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-4 pt-4 border-t border-gray-100">
-                        {svc.features.map((feat: string, fidx: number) => (
-                          <div key={fidx} className="flex items-start gap-2 text-xs sm:text-sm text-gray-700 font-medium">
-                            <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                            <span>{feat}</span>
-                          </div>
-                        ))}
-                      </div>
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="pt-4 border-t border-gray-100 flex flex-wrap items-center gap-3">
-                      <a
-                        href={waUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 bg-[#25D366] hover:bg-[#20ba5a] text-white shadow-sm hover:shadow-md active:scale-[0.98]"
-                        title={`Send WhatsApp message about ${svc.title}`}
+                    <div className="pt-3 border-t border-gray-100 flex items-center justify-between">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedService(svc)}
+                        className="inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all duration-300 text-xs font-bold hover:opacity-80 cursor-pointer"
+                        style={{ color: "var(--c-primary)" }}
                       >
-                        <WhatsAppIcon className="w-4 h-4 fill-current shrink-0" />
-                        <span>Send Message for This Service</span>
-                      </a>
+                        <span>View Details</span>
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </button>
 
                       <Link
-                        href="/contact"
-                        className="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 bg-rose-50 hover:bg-rose-100 text-rose-700"
+                        href={`/contact?service=${encodeURIComponent(svc.title)}`}
+                        className="text-[11px] font-semibold text-gray-400 hover:text-gray-700 transition-colors"
                       >
-                        <span>Book Consultation</span>
-                        <ArrowRight className="w-4 h-4" />
+                        Book Service →
                       </Link>
-
-                      {telLink && (
-                        <a
-                          href={telLink}
-                          className="hidden lg:inline-flex items-center justify-center gap-1.5 px-3.5 py-3 rounded-xl text-xs font-semibold text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition-colors ml-auto"
-                          title="Call RIWAJ Office"
-                        >
-                          <PhoneCall className="w-3.5 h-3.5 text-rose-500" />
-                          <span>Call RIWAJ</span>
-                        </a>
-                      )}
                     </div>
                   </div>
                 </motion.div>
@@ -344,6 +320,89 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
+
+      {/* ── Service Detail Modal ─────────────────────────────────── */}
+      {selectedService && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn"
+          onClick={() => setSelectedService(null)}
+        >
+          <div
+            className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-100 p-6 sm:p-8 relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setSelectedService(null)}
+              className="absolute top-4 right-4 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center transition-colors cursor-pointer z-10"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Modal Image Header */}
+            <div className="relative w-full h-56 sm:h-64 rounded-2xl overflow-hidden mb-6 bg-gray-100">
+              <Image
+                src={selectedService.image}
+                alt={selectedService.title}
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+              <div className="absolute bottom-4 left-4 right-4 text-white">
+                <span className="inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-rose-600 text-white backdrop-blur-sm mb-2">
+                  {selectedService.subtitle || "Signature Experience"}
+                </span>
+                <h3 className="font-serif font-bold text-2xl sm:text-3xl text-white">
+                  {selectedService.title}
+                </h3>
+              </div>
+            </div>
+
+            <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-6 font-medium">
+              {selectedService.description}
+            </p>
+
+            {selectedService.features && selectedService.features.length > 0 && (
+              <div className="mb-6">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">
+                  What&apos;s Included in This Service
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {selectedService.features.map((feat: string, i: number) => (
+                    <div key={i} className="flex items-start gap-2 text-xs sm:text-sm text-gray-700 font-medium">
+                      <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <span>{feat}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Action Buttons in Modal */}
+            <div className="pt-4 border-t border-gray-100 flex flex-wrap items-center gap-3">
+              <a
+                href={getWhatsAppLink(
+                  `Namaste ${siteName || "RIWAJ Events"}! 🙏 I am interested in your "${selectedService.title}" service. Please share package details and pricing.`
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-xs sm:text-sm font-bold bg-[#25D366] hover:bg-[#20ba5a] text-white shadow-sm hover:shadow-md transition-all flex-1"
+              >
+                <WhatsAppIcon className="w-4 h-4 fill-current shrink-0" />
+                <span>Inquire on WhatsApp</span>
+              </a>
+              <Link
+                href={`/contact?service=${encodeURIComponent(selectedService.title)}`}
+                onClick={() => setSelectedService(null)}
+                className="inline-flex items-center justify-center gap-1.5 px-5 py-3 rounded-xl text-xs sm:text-sm font-bold bg-rose-600 hover:bg-rose-700 text-white shadow-sm hover:shadow-md transition-all"
+              >
+                <span>Book Consultation</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── Wedding Packages Comparison ──────────────────────── */}
       <section className="py-20 bg-rose-50/40 border-y border-rose-100">

@@ -40,6 +40,9 @@ export interface ISiteSetting extends Document {
   primaryPhone: string;
   secondaryPhone?: string;
   whatsAppNumber: string;
+  whatsAppPhoneNumberId?: string;
+  whatsAppAccessToken?: string;
+  whatsAppBusinessAccountId?: string;
   primaryEmail: string;
   address: string;
   googleMapUrl?: string;
@@ -61,7 +64,7 @@ const SiteSettingSchema = new Schema<ISiteSetting>(
   {
     siteName: {
       type: String,
-      default: "Vindhya Events",
+      default: "RIWAJ Weddings & Events",
     },
     tagline: {
       type: String,
@@ -73,7 +76,7 @@ const SiteSettingSchema = new Schema<ISiteSetting>(
     },
     bannerText: {
       type: String,
-      default: "🎉 Welcome to Vindhya Events — Weddings & Events",
+      default: "🎉 Welcome to RIWAJ Weddings & Events — Rewa, MP",
     },
     showTopBanner: {
       type: Boolean,
@@ -85,7 +88,7 @@ const SiteSettingSchema = new Schema<ISiteSetting>(
     },
     primaryPhone: {
       type: String,
-      default: "7898522932",
+      default: "+91 98935 18332",
     },
     secondaryPhone: {
       type: String,
@@ -93,11 +96,23 @@ const SiteSettingSchema = new Schema<ISiteSetting>(
     },
     whatsAppNumber: {
       type: String,
-      default: "7898522932",
+      default: "+91 98935 18332",
+    },
+    whatsAppPhoneNumberId: {
+      type: String,
+      default: "",
+    },
+    whatsAppAccessToken: {
+      type: String,
+      default: "",
+    },
+    whatsAppBusinessAccountId: {
+      type: String,
+      default: "",
     },
     primaryEmail: {
       type: String,
-      default: "vindhyaevent@gmail.com",
+      default: "riwajweddingplanner@gmail.com",
     },
     address: {
       type: String,
@@ -105,12 +120,12 @@ const SiteSettingSchema = new Schema<ISiteSetting>(
     },
     googleMapUrl: {
       type: String,
-      default: "https://maps.google.com/?q=Rewa+Madhya+Pradesh",
+      default: "https://maps.app.goo.gl/oxD7riczpGY7z4LJ7",
     },
     socialLinks: {
-      instagram: { type: String, default: "https://instagram.com/vindhyaevents" },
-      facebook: { type: String, default: "https://facebook.com/vindhyaevents" },
-      youtube: { type: String, default: "" },
+      instagram: { type: String, default: "https://www.instagram.com/riwaj.wedding/" },
+      facebook: { type: String, default: "https://www.facebook.com/riwajweddingandevents/" },
+      youtube: { type: String, default: "https://www.youtube.com/@riwajweddings" },
       twitter: { type: String, default: "" },
     },
     heroSlides: [

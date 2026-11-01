@@ -316,9 +316,7 @@ export default function Navbar() {
                                 <span className="text-[10px] text-gray-500">शाही दावत व लज़ीज़ स्वाद</span>
                               </div>
                             </div>
-                            <span className="px-2 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-bold">
-                              50+ Menus
-                            </span>
+                            
                           </div>
 
                           <div className="grid grid-cols-2 gap-2.5 mt-2.5">
@@ -330,7 +328,7 @@ export default function Navbar() {
                             >
                               <div className="relative h-24 w-full">
                                 <SafeImage
-                                  src="https://images.unsplash.com/photo-1732259495388-af40b972c311?auto=format&fit=crop&w=400&q=80"
+                                  src="/dercoration1.webp"
                                   alt="Grand Indian Wedding Feast"
                                   fill
                                   className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -353,7 +351,7 @@ export default function Navbar() {
                             >
                               <div className="relative h-24 w-full">
                                 <SafeImage
-                                  src="https://images.unsplash.com/photo-1732519970445-8f2d6998961f?auto=format&fit=crop&w=400&q=80"
+                                  src="/dercoration1.webp"
                                   alt="Live Chaat & Tandoori Counters"
                                   fill
                                   className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -525,7 +523,7 @@ export default function Navbar() {
                             >
                               <div className="relative h-24 w-full">
                                 <SafeImage
-                                  src="https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=400&q=80"
+                                  src="/dercoration1.webp"
                                   alt="Royal Indian Mandap Decor"
                                   fill
                                   className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -548,7 +546,7 @@ export default function Navbar() {
                             >
                               <div className="relative h-24 w-full">
                                 <SafeImage
-                                  src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=80"
+                                  src="/girlsimg.webp"
                                   alt="Floral Stage Decor"
                                   fill
                                   className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -706,9 +704,7 @@ export default function Navbar() {
                                 <span className="text-[10px] text-gray-500">रीवा व MP के आयोजन</span>
                               </div>
                             </div>
-                            <span className="px-2 py-0.5 rounded-full bg-rose-500 text-white text-[10px] font-bold">
-                              500+ Done
-                            </span>
+                            
                           </div>
 
                           <div className="grid grid-cols-2 gap-2.5 mt-2.5">
@@ -720,7 +716,7 @@ export default function Navbar() {
                             >
                               <div className="relative h-24 w-full">
                                 <SafeImage
-                                  src="https://images.unsplash.com/photo-1682802142549-b72576d31d5e?auto=format&fit=crop&w=400&q=80"
+                                  src="/girlsimg.webp"
                                   alt="Indian Wedding Varmala"
                                   fill
                                   className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -728,9 +724,9 @@ export default function Navbar() {
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
                                 <div className="absolute bottom-1.5 left-2 right-2 text-white">
                                   <p className="text-[10px] font-bold drop-shadow leading-tight truncate">
-                                    Dr Shubham & Navnik
+                                    Our Wedding
                                   </p>
-                                  <p className="text-[8px] text-white/80">Rewa Royal Palace</p>
+                                  <p className="text-[8px] text-white/80">Rewa, MP</p>
                                 </div>
                               </div>
                             </Link>
@@ -743,7 +739,7 @@ export default function Navbar() {
                             >
                               <div className="relative h-24 w-full">
                                 <SafeImage
-                                  src="https://images.unsplash.com/photo-1754782921197-ba8514594184?auto=format&fit=crop&w=400&q=80"
+                                  src="/dercoration1.webp"
                                   alt="Indian Wedding Couple"
                                   fill
                                   className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -753,7 +749,7 @@ export default function Navbar() {
                                   <p className="text-[10px] font-bold drop-shadow leading-tight truncate">
                                     Prerna & Aditya
                                   </p>
-                                  <p className="text-[8px] text-white/80">Jabalpur Lawn</p>
+                                  <p className="text-[8px] text-white/80">Madhya Pradesh</p>
                                 </div>
                               </div>
                             </Link>
@@ -915,7 +911,7 @@ export default function Navbar() {
                             >
                               <div className="relative h-24 w-full">
                                 <SafeImage
-                                  src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=400&q=80"
+                                  src="/dercoration1.webp"
                                   alt="Corporate Seminar Summit"
                                   fill
                                   className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -938,7 +934,7 @@ export default function Navbar() {
                             >
                               <div className="relative h-24 w-full">
                                 <SafeImage
-                                  src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=400&q=80"
+                                  src="/girlsimg.webp"
                                   alt="Corporate Gala & Convention"
                                   fill
                                   className="object-cover group-hover:scale-105 transition-transform duration-300"

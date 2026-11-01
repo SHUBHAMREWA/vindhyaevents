@@ -26,34 +26,6 @@ const fallbackSlides = [
     ctaText: "Book Consultation",
     ctaLink: "/contact",
   },
-  {
-    image: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80",
-    title: "Full-Service Wedding Planning",
-    subtitle: "From Mehndi to Baraat — Every Detail Perfectly Managed",
-    ctaText: "Book Consultation",
-    ctaLink: "/contact",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80",
-    title: "Luxury Décor & Floral Design",
-    subtitle: "Transforming Venues into Breathtaking Celebrations",
-    ctaText: "Book Consultation",
-    ctaLink: "/contact",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1200&q=80",
-    title: "Elegant Sangeet & Reception",
-    subtitle: "Creating Unforgettable Moments for You and Your Guests",
-    ctaText: "Book Consultation",
-    ctaLink: "/contact",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?auto=format&fit=crop&w=1200&q=80",
-    title: "Photography & Videography",
-    subtitle: "Preserving Your Precious Memories Forever",
-    ctaText: "Book Consultation",
-    ctaLink: "/contact",
-  },
 ];
 
 export interface HeroSlideInput {

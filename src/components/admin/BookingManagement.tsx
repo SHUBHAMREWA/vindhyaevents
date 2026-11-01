@@ -1136,7 +1136,7 @@ export default function BookingManagement({
       year: "numeric",
     });
 
-    const msg = `Namaste ${custName} ji! 🙏\n\nRIWAJ Events me aapka grand event booking confirm ho gaya hai.\n\n📋 *Booking Details:*\n• *Booking No:* ${booking.bookingNumber}\n• *Main Event Date:* ${eventDate}\n• *Total Package:* ₹${(booking.financials?.finalAmount || 0).toLocaleString()}\n• *Advance Paid:* ₹${(booking.financials?.advancePaid || 0).toLocaleString()}\n• *Balance Due:* ₹${(booking.financials?.balanceDue || 0).toLocaleString()}\n\nHumari expert team aapke royal execution ke liye tayyar hai. Kisi bhi update ke liye humein call karein.\n\n*RIWAJ Events & Weddings*\nContact: 7898522932`;
+    const msg = `Namaste ${custName} ji! 🙏\n\nRIWAJ Events me aapka grand event booking confirm ho gaya hai.\n\n📋 *Booking Details:*\n• *Booking No:* ${booking.bookingNumber}\n• *Main Event Date:* ${eventDate}\n• *Total Package:* ₹${(booking.financials?.finalAmount || 0).toLocaleString()}\n• *Advance Paid:* ₹${(booking.financials?.advancePaid || 0).toLocaleString()}\n• *Balance Due:* ₹${(booking.financials?.balanceDue || 0).toLocaleString()}\n\nHumari expert team aapke royal execution ke liye tayyar hai. Kisi bhi update ke liye humein call karein.\n\n*RIWAJ Events & Weddings*\nContact: +91 98935 18332`;
 
     onOpenWhatsApp(
       [

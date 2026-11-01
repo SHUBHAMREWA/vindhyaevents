@@ -17,7 +17,7 @@ export interface WhatsAppSendResult {
 
 /**
  * Normalizes phone numbers for India / international format
- * E.g., '7898522932' -> '917898522932'
+ * E.g., '9893518332' -> '919893518332'
  */
 export function normalizePhoneNumber(rawPhone: string): string {
   const digitsOnly = (rawPhone || "").replace(/[^0-9]/g, "");
@@ -54,27 +54,33 @@ export async function sendMetaWhatsAppMessage({
     };
   }
 
-  // Check env vars first, fallback to SiteSetting
-  let phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID || "";
-  let accessToken = process.env.WHATSAPP_ACCESS_TOKEN || "";
+  // 1. Fetch DB SiteSetting credentials FIRST (so admin dashboard overrides env variables)
+  let phoneNumberId = "";
+  let accessToken = "";
 
-  if (!phoneNumberId || !accessToken) {
-    try {
-      await connectToDatabase();
-      const settings: any = await SiteSetting.findOne().lean();
-      if (settings?.whatsAppPhoneNumberId) phoneNumberId = settings.whatsAppPhoneNumberId;
-      if (settings?.whatsAppAccessToken) accessToken = settings.whatsAppAccessToken;
-    } catch {
-      // Ignore DB fetch error
+  try {
+    await connectToDatabase();
+    const settings: any = await SiteSetting.findOne().lean();
+    if (settings?.whatsAppPhoneNumberId?.trim()) {
+      phoneNumberId = settings.whatsAppPhoneNumberId.trim();
     }
+    if (settings?.whatsAppAccessToken?.trim()) {
+      accessToken = settings.whatsAppAccessToken.trim();
+    }
+  } catch (err) {
+    console.error("Failed to fetch WhatsApp credentials from database:", err);
   }
+
+  // 2. Fallback to env vars only if not set in DB
+  if (!phoneNumberId) phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID || "";
+  if (!accessToken) accessToken = process.env.WHATSAPP_ACCESS_TOKEN || "";
 
   if (!phoneNumberId || !accessToken) {
     return {
       success: false,
       channel: "Meta-Cloud-API",
       error:
-        "Meta WhatsApp Cloud API credentials (WHATSAPP_PHONE_NUMBER_ID / WHATSAPP_ACCESS_TOKEN) are not set. You can use 'Send via WhatsApp Web' instead or configure them in settings.",
+        "Meta WhatsApp Cloud API credentials (Phone Number ID / Access Token) are not configured. Please add them in the 'WhatsApp API Config' tab in your Admin Dashboard, or use 'Direct WhatsApp Web' instead.",
     };
   }
 

@@ -25,7 +25,7 @@ interface SettingsContextValue {
 
 const formatWhatsAppNumber = (wa: string): string => {
   const digits = (wa || "").replace(/[^0-9]/g, "");
-  if (!digits) return "917898522932";
+  if (!digits) return "919893518332";
   // If Indian 10-digit number without country code, prepend 91
   if (digits.length === 10) return `91${digits}`;
   return digits;
@@ -39,7 +39,7 @@ const SettingsContext = createContext<SettingsContextValue>({
   whatsAppNumber: DEFAULT_SITE_SETTINGS.whatsAppNumber,
   email: DEFAULT_SITE_SETTINGS.primaryEmail,
   address: DEFAULT_SITE_SETTINGS.address,
-  googleMapUrl: DEFAULT_SITE_SETTINGS.googleMapUrl || "https://maps.google.com/?q=Rewa+Madhya+Pradesh",
+  googleMapUrl: DEFAULT_SITE_SETTINGS.googleMapUrl || "https://maps.app.goo.gl/oxD7riczpGY7z4LJ7",
   siteName: DEFAULT_SITE_SETTINGS.siteName,
   taglineHindi: DEFAULT_SITE_SETTINGS.taglineHindi || "✨ आपके रीति रिवाज सजावट के साथ ✨",
   bannerText: DEFAULT_SITE_SETTINGS.bannerText || "🎉 Welcome to RIWAJ Events — Weddings & Celebrations",
@@ -47,7 +47,7 @@ const SettingsContext = createContext<SettingsContextValue>({
   heroSlides: DEFAULT_SITE_SETTINGS.heroSlides,
   socialLinks: DEFAULT_SITE_SETTINGS.socialLinks,
   getWhatsAppLink: (msg?: string) =>
-    `https://wa.me/917898522932?text=${encodeURIComponent(msg || "Hi RIWAJ Events, I want to book a consultation!")}`,
+    `https://wa.me/919893518332?text=${encodeURIComponent(msg || "Hi RIWAJ Events, I want to book a consultation!")}`,
   refreshSettings: async () => {},
   mounted: false,
 });
@@ -105,7 +105,7 @@ export function SettingsProvider({
     const phone = active.primaryPhone || DEFAULT_SITE_SETTINGS.primaryPhone;
     const rawDigits = phone.replace(/[^0-9+]/g, "");
     const cleanDigits = rawDigits.startsWith("+") ? rawDigits : `+91${rawDigits.replace(/^0+/, "")}`;
-    const telLink = `tel:${rawDigits || "7898522932"}`;
+    const telLink = `tel:${rawDigits || "+919893518332"}`;
 
     const formattedWA = formatWhatsAppNumber(
       active.whatsAppNumber || DEFAULT_SITE_SETTINGS.whatsAppNumber
@@ -126,7 +126,7 @@ export function SettingsProvider({
       whatsAppNumber: active.whatsAppNumber || DEFAULT_SITE_SETTINGS.whatsAppNumber,
       email: active.primaryEmail || DEFAULT_SITE_SETTINGS.primaryEmail,
       address: active.address || DEFAULT_SITE_SETTINGS.address,
-      googleMapUrl: active.googleMapUrl || DEFAULT_SITE_SETTINGS.googleMapUrl || "https://maps.google.com/?q=Rewa+Madhya+Pradesh",
+      googleMapUrl: active.googleMapUrl || DEFAULT_SITE_SETTINGS.googleMapUrl || "https://maps.app.goo.gl/oxD7riczpGY7z4LJ7",
       siteName: active.siteName || DEFAULT_SITE_SETTINGS.siteName,
       taglineHindi: active.taglineHindi || DEFAULT_SITE_SETTINGS.taglineHindi || "",
       bannerText: active.bannerText || DEFAULT_SITE_SETTINGS.bannerText || "",

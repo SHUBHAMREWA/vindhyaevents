@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, Phone, MapPin, Instagram, Facebook, Twitter, Youtube, Sparkles } from "lucide-react";
+import { Mail, Phone, MapPin, Instagram, Facebook, Youtube } from "lucide-react";
 import { useSettings } from "@/context/SettingsContext";
 import LocationMapBox from "./LocationMapBox";
 import FooterPwaDownload from "./FooterPwaDownload";
@@ -43,10 +43,10 @@ export default function Footer() {
   return (
     <footer
       suppressHydrationWarning
-      className="text-white"
+      className="text-white relative"
       style={{ background: "linear-gradient(to bottom, var(--c-footer-from), var(--c-footer-to))" }}
     >
-      <div className="container mx-auto px-6 py-16">
+      <div className="container mx-auto px-4 sm:px-6 pt-12 sm:pt-16 pb-36 md:pb-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
           {/* 1. Logo & Tagline */}
           <div className="lg:col-span-1 sm:col-span-2">
@@ -74,15 +74,8 @@ export default function Footer() {
               </div>
             </Link>
             <p className="text-white/70 text-xs leading-relaxed mb-4">
-              Creating timeless memories and celebrating love stories since 2021.
               Rewa aur pure Madhya Pradesh me aapke sapno ki shaadi aur events.
             </p>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-white/90 text-[11px] font-semibold border border-white/10">
-              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              <span>300+ Events Planned</span>
-            </div>
-
-            {/* PWA Mobile App Download Card (hidden if already downloaded/installed) */}
             <FooterPwaDownload />
           </div>
 
@@ -170,7 +163,7 @@ export default function Footer() {
                 <span suppressHydrationWarning>{email}</span>
               </a>
               <a
-                href={googleMapUrl || "https://maps.google.com/?q=Rewa+Madhya+Pradesh"}
+                href={googleMapUrl || "https://maps.app.goo.gl/oxD7riczpGY7z4LJ7"}
                 target="_blank"
                 rel="noopener noreferrer"
                 title="Click to view on Google Maps"
@@ -189,10 +182,9 @@ export default function Footer() {
             {/* Social Icons */}
             <div className="flex gap-2.5 mt-5">
               {[
-                { href: socialLinks?.instagram || "https://instagram.com/vindhyaevents", icon: Instagram, label: "Instagram", hoverClass: "hover:bg-gradient-to-tr hover:from-amber-500 hover:to-rose-600" },
-                { href: socialLinks?.facebook || "https://facebook.com/vindhyaevents",   icon: Facebook,  label: "Facebook",  hoverClass: "hover:bg-[#1877F2]" },
-                { href: socialLinks?.twitter || "https://twitter.com",                    icon: Twitter,   label: "Twitter",   hoverClass: "hover:bg-[#1DA1F2]" },
-                { href: socialLinks?.youtube || "",                                      icon: Youtube,   label: "YouTube",   hoverClass: "hover:bg-[#FF0000]" },
+                { href: socialLinks?.instagram, icon: Instagram, label: "Instagram", hoverClass: "hover:bg-gradient-to-tr hover:from-amber-500 hover:to-rose-600" },
+                { href: socialLinks?.facebook,  icon: Facebook,  label: "Facebook",  hoverClass: "hover:bg-[#1877F2]" },
+                { href: socialLinks?.youtube,   icon: Youtube,   label: "YouTube",   hoverClass: "hover:bg-[#FF0000]" },
               ].filter(item => item.href).map(({ href, icon: Icon, label, hoverClass }) => (
                 <a
                   key={label}
@@ -225,11 +217,17 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t pt-6" style={{ borderColor: "rgba(255,255,255,0.12)" }}>
-          <div className="flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-white/40">
-            <p suppressHydrationWarning>© 2026 {siteName || "RIWAJ Events"} Weddings & Events, Rewa. All rights reserved.</p>
-            <div className="flex gap-6">
-              <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-              <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+          <div className="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4 text-xs text-white/50">
+            <p suppressHydrationWarning className="leading-relaxed">
+              © 2026 {siteName || "RIWAJ Events"} Weddings &amp; Events, Rewa. All rights reserved.
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-6 text-white/70">
+              <Link href="/privacy" className="hover:text-white transition-colors underline-offset-4 hover:underline py-1">
+                Privacy Policy
+              </Link>
+              <Link href="/terms" className="hover:text-white transition-colors underline-offset-4 hover:underline py-1">
+                Terms of Service
+              </Link>
             </div>
           </div>
         </div>

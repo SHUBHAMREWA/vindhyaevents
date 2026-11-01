@@ -15,7 +15,7 @@ export default function LocationMapBox({
   showAddressText = true,
 }: LocationMapBoxProps) {
   const { address, googleMapUrl, siteName } = useSettings();
-  const mapUrl = googleMapUrl || "https://maps.google.com/?q=Rewa+Madhya+Pradesh";
+  const mapUrl = googleMapUrl || "https://maps.app.goo.gl/oxD7riczpGY7z4LJ7";
 
   if (variant === "footer") {
     return (
@@ -25,7 +25,7 @@ export default function LocationMapBox({
         {/* Real Interactive Google Map iframe */}
         <iframe
           title="RIWAJ Events Location Map"
-          src={`https://maps.google.com/maps?q=${encodeURIComponent(address || "Rewa, Madhya Pradesh")}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
+          src={`https://maps.google.com/maps?q=${encodeURIComponent("The Riwaj Weddings and Events, Rewa, Madhya Pradesh")}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
           className="w-full h-full border-0 pointer-events-auto"
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
@@ -74,7 +74,7 @@ export default function LocationMapBox({
       {/* Real Interactive Google Map iframe */}
       <iframe
         title="RIWAJ Events Location Map"
-        src={`https://maps.google.com/maps?q=${encodeURIComponent(address || "Rewa, Madhya Pradesh")}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
+        src={`https://maps.google.com/maps?q=${encodeURIComponent("The Riwaj Weddings and Events, Rewa, Madhya Pradesh")}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
         className="w-full h-full border-0 pointer-events-auto"
         loading="lazy"
         referrerPolicy="no-referrer-when-downgrade"
