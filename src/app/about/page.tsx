@@ -106,7 +106,7 @@ const aboutStats = [
 
 export default function AboutPage() {
   const { siteName, address } = useSettings();
-  const brandTitle = siteName && !siteName.toLowerCase().includes("vindhya") ? siteName : "RIWAJ Wedding & Events";
+  const brandTitle = siteName || "RIWAJ Weddings & Events";
 
   const [teamList, setTeamList] = useState<TeamMemberItem[]>([]);
   const [loadingTeam, setLoadingTeam] = useState(true);
@@ -152,7 +152,7 @@ export default function AboutPage() {
             >
               <div className="relative h-[420px] md:h-[480px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
                 <Image
-                  src="https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=75"
+                  src="/girlsimg.webp"
                   alt={`About ${brandTitle} Wedding Events`}
                   fill
                   className="object-cover"

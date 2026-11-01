@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 
-export type ThemeId = "royal" | "rose" | "sunset" | "nature";
+export type ThemeId = "rose" | "royal" | "sunset" | "nature";
 
 export interface Theme {
   id: ThemeId;
@@ -14,29 +14,6 @@ export interface Theme {
 }
 
 export const THEMES: Theme[] = [
-  {
-    id: "royal",
-    name: "Royal",
-    description: "Maroon & Gold",
-    dot: "#800000",
-    vars: {
-      "--c-primary":        "#800000",
-      "--c-primary-dark":   "#600000",
-      "--c-primary-light":  "#d4a0a0",
-      "--c-secondary":      "#D4AF37",
-      "--c-accent":         "#c9a227",
-      "--c-bg":             "#F8F4E3",
-      "--c-bg-soft":        "#f3edcf",
-      "--c-surface":        "#fffdf5",
-      "--c-text":           "#2c1a0e",
-      "--c-text-muted":     "#7a5c40",
-      "--c-border":         "#e8d5a3",
-      "--c-banner-from":    "#600000",
-      "--c-banner-to":      "#9b2226",
-      "--c-footer-from":    "#3d0000",
-      "--c-footer-to":      "#1a0000",
-    },
-  },
   {
     id: "rose",
     name: "Rose",
@@ -58,6 +35,29 @@ export const THEMES: Theme[] = [
       "--c-banner-to":      "#f43f5e",
       "--c-footer-from":    "#881337",
       "--c-footer-to":      "#4c0519",
+    },
+  },
+  {
+    id: "royal",
+    name: "Royal",
+    description: "Maroon & Gold",
+    dot: "#800000",
+    vars: {
+      "--c-primary":        "#800000",
+      "--c-primary-dark":   "#600000",
+      "--c-primary-light":  "#d4a0a0",
+      "--c-secondary":      "#D4AF37",
+      "--c-accent":         "#c9a227",
+      "--c-bg":             "#F8F4E3",
+      "--c-bg-soft":        "#f3edcf",
+      "--c-surface":        "#fffdf5",
+      "--c-text":           "#2c1a0e",
+      "--c-text-muted":     "#7a5c40",
+      "--c-border":         "#e8d5a3",
+      "--c-banner-from":    "#600000",
+      "--c-banner-to":      "#9b2226",
+      "--c-footer-from":    "#3d0000",
+      "--c-footer-to":      "#1a0000",
     },
   },
   {
@@ -129,7 +129,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("site-theme", t.id);
   };
 
-  // On mount: read saved theme from localStorage
+  // On mount: read saved theme from localStorage, or default to rose
   useEffect(() => {
     const saved = localStorage.getItem("site-theme") as ThemeId | null;
     if (saved) {
@@ -138,6 +138,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         const timer = setTimeout(() => applyTheme(found), 0);
         return () => clearTimeout(timer);
       }
+    } else {
+      // Default apply rose theme
+      applyTheme(THEMES[0]);
     }
   }, []);
 

@@ -54,14 +54,18 @@ import {
   Sliders,
   CreditCard,
   Tag,
+  Video,
+  Film,
+  Play,
 } from "lucide-react";
 import CustomerCRM from "@/components/admin/CustomerCRM";
 import BookingManagement from "@/components/admin/BookingManagement";
 import WhatsAppCenter from "@/components/admin/WhatsAppCenter";
+import ImagePreviewStudio from "@/components/admin/ImagePreviewStudio";
 import { INDIAN_STATES_AND_CITIES, INDIAN_STATES } from "@/lib/indianLocations";
 
 // Client-side image compression and WebP conversion helper
-const compressImageToWebP = async (file: File, maxWidth = 1200, quality = 0.85): Promise<File> => {
+const compressImageToWebP = async (file: File, maxWidth = 1920, quality = 0.85): Promise<File> => {
   if (!file.type.startsWith("image/")) return file;
   return new Promise((resolve) => {
     const reader = new FileReader();
@@ -132,6 +136,7 @@ export default function AdminDashboardPage() {
     | "bookings"
     | "whatsapp_logs"
     | "vendors"
+    | "works"
     | "hero_banner"
     | "subcategories"
     | "services"
@@ -150,6 +155,7 @@ export default function AdminDashboardPage() {
   // Data states
   const [inquiries, setInquiries] = useState<any[]>([]);
   const [vendors, setVendors] = useState<any[]>([]);
+  const [works, setWorks] = useState<any[]>([]);
   const [subcategories, setSubcategories] = useState<any[]>([]);
   const [services, setServices] = useState<any[]>([]);
   const [blogs, setBlogs] = useState<any[]>([]);
@@ -416,6 +422,7 @@ export default function AdminDashboardPage() {
         fetchBookings(),
         fetchWhatsAppLogs(),
         fetchVendors(),
+        fetchWorks(),
         fetchSubcategories(),
         fetchServices(),
         fetchBlogs(),
@@ -455,6 +462,16 @@ export default function AdminDashboardPage() {
       if (data.success) setVendors(data.vendors || []);
     } catch (err) {
       console.error("Error fetching vendors:", err);
+    }
+  };
+
+  const fetchWorks = async () => {
+    try {
+      const res = await fetch("/api/admin/works");
+      const data = await res.json();
+      if (data.success) setWorks(data.works || []);
+    } catch (err) {
+      console.error("Error fetching works:", err);
     }
   };
 
@@ -1123,8 +1140,14 @@ export default function AdminDashboardPage() {
       }
     }
 
+    const finalImgUrl = modalData.image?.url || modalData.url || "";
     const payload = {
       ...modalData,
+      image: {
+        url: finalImgUrl,
+        public_id: modalData.image?.public_id || "",
+      },
+      url: finalImgUrl,
       category: categoryToSave || "Ceremony",
     };
 
@@ -1159,6 +1182,55 @@ export default function AdminDashboardPage() {
       fetchGallery();
     } else {
       alert(d.message || "Failed to delete photo");
+    }
+  };
+
+  // Work Videos (YouTube & Instagram)
+  const handleSaveWork = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!modalData.title?.trim() || !modalData.videoUrl?.trim()) {
+      alert("Please provide both Title and Video URL.");
+      return;
+    }
+    setSaveLoading(true);
+    try {
+      const isEdit = Boolean(modalData._id);
+      const res = await fetch("/api/admin/works", {
+        method: isEdit ? "PATCH" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(modalData),
+      });
+      const d = await res.json();
+      setSaveLoading(false);
+      if (d.success) {
+        setShowModal(null);
+        setModalData({});
+        fetchWorks();
+        setFeedbackMsg(isEdit ? "Work video updated!" : "New work video added successfully!");
+        setTimeout(() => setFeedbackMsg(""), 3500);
+      } else {
+        alert(d.error || "Failed to save work video");
+      }
+    } catch (err: any) {
+      setSaveLoading(false);
+      alert("Error saving work video: " + err.message);
+    }
+  };
+
+  const handleDeleteWork = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this work video?")) return;
+    try {
+      const res = await fetch(`/api/admin/works?id=${id}`, { method: "DELETE" });
+      const d = await res.json();
+      if (d.success) {
+        fetchWorks();
+        setFeedbackMsg("Work video deleted!");
+        setTimeout(() => setFeedbackMsg(""), 3000);
+      } else {
+        alert(d.error || "Failed to delete work video");
+      }
+    } catch (err: any) {
+      alert("Error deleting work video: " + err.message);
     }
   };
 
@@ -1373,52 +1445,52 @@ export default function AdminDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex flex-col">
+    <div className="min-h-screen bg-[#f8fafc] flex flex-col overflow-x-hidden overflow-y-auto">
       {/* Top Navigation Bar */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-40 px-4 sm:px-6 py-3 flex items-center justify-between shadow-sm">
-        <div className="flex items-center gap-3">
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-40 px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between shadow-2xs">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           {/* Mobile Hamburger Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(true)}
-            className="md:hidden p-2 rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors"
+            className="md:hidden p-2 rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors shrink-0 cursor-pointer"
             title="Open Admin Menu"
             aria-label="Open Admin Menu"
           >
             <Menu className="w-5 h-5" />
           </button>
 
-          <div className="flex items-center gap-2">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-rose-500 to-amber-500 flex items-center justify-center text-white font-serif font-black shadow-md shrink-0">
+          <div className="flex items-center gap-2 min-w-0">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-rose-500 to-amber-500 flex items-center justify-center text-white font-serif font-black shadow-xs shrink-0 text-sm sm:text-base">
               R
             </div>
-            <div>
-              <h1 className="font-serif text-base sm:text-lg font-black text-gray-900 leading-tight tracking-wider">RIWAJ</h1>
-              <p className="text-[10px] sm:text-[11px] text-gray-500 font-medium">Luxury Wedding CMS</p>
+            <div className="min-w-0">
+              <h1 className="font-serif text-sm sm:text-lg font-black text-gray-900 leading-tight tracking-wider truncate">RIWAJ</h1>
+              <p className="hidden sm:block text-[10px] sm:text-[11px] text-gray-500 font-medium truncate">Luxury Wedding CMS</p>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           <Link
             href="/"
             target="_blank"
             className="flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-lg border border-gray-200 text-gray-600 text-xs font-semibold hover:bg-gray-50 transition-colors"
+            title="View Live Website"
           >
-            <span className="hidden sm:inline">View Live Site</span>
-            <span className="sm:hidden">Live Site</span>
             <ExternalLink className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">View Live Site</span>
           </Link>
 
+          {/* Clear Demo Data Button (Desktop only in top bar; on Mobile it is placed neatly inside the Hamburger Menu) */}
           <button
             type="button"
             onClick={handleCleanDemoData}
             disabled={cleaningDemo}
-            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border border-amber-200 bg-amber-50 text-amber-800 hover:bg-amber-100 text-xs font-semibold transition-colors disabled:opacity-50 cursor-pointer"
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-amber-200 bg-amber-50 text-amber-800 hover:bg-amber-100 text-xs font-semibold transition-colors disabled:opacity-50 cursor-pointer"
             title="Permanently remove predefined demo data (team, reviews, blogs, vendors, gallery)"
           >
             <Trash2 className="w-3.5 h-3.5 text-amber-600" />
-            <span className="hidden sm:inline">{cleaningDemo ? "Cleaning..." : "Clear Demo Data"}</span>
-            <span className="sm:hidden">Clean</span>
+            <span>{cleaningDemo ? "Cleaning..." : "Clear Demo Data"}</span>
           </button>
 
           <div className="hidden sm:block h-6 w-px bg-gray-200" />
@@ -1430,7 +1502,8 @@ export default function AdminDashboardPage() {
 
           <button
             onClick={handleLogout}
-            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-rose-50 text-rose-600 text-xs font-semibold hover:bg-rose-100 transition-colors"
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-rose-50 text-rose-600 text-xs font-semibold hover:bg-rose-100 transition-colors cursor-pointer"
+            title="Logout"
           >
             <LogOut className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Logout</span>
@@ -1515,7 +1588,7 @@ export default function AdminDashboardPage() {
                     type="button"
                     onClick={() => setWebsiteSettingsOpen(!websiteSettingsOpen)}
                     className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                      ["hero_banner", "subcategories", "services", "testimonials", "team", "settings", "admins"].includes(activeTab)
+                      ["hero_banner", "works", "subcategories", "services", "testimonials", "team", "settings", "admins"].includes(activeTab)
                         ? "bg-rose-50 text-rose-800 font-bold border border-rose-200"
                         : "text-gray-700 hover:bg-gray-100"
                     }`}
@@ -1526,7 +1599,7 @@ export default function AdminDashboardPage() {
                     </div>
                     <div className="flex items-center gap-1.5">
                       <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-gray-200/80 text-gray-700 font-semibold font-mono">
-                        7
+                        8
                       </span>
                       {websiteSettingsOpen ? (
                         <ChevronDown className="w-4 h-4 text-gray-400" />
@@ -1540,6 +1613,7 @@ export default function AdminDashboardPage() {
                     <div className="ml-4 pl-3 border-l-2 border-rose-200 space-y-1 mt-1.5 animate-in slide-in-from-top-1 duration-150">
                       {[
                         { id: "hero_banner", label: "Banner & Hero", icon: Sparkles, count: settings?.heroSlides?.length || 0 },
+                        { id: "works", label: "Video Works", icon: Film, count: works.length },
                         { id: "subcategories", label: "Navbar Subcategories", icon: Layers, count: subcategories.length },
                         { id: "services", label: "Manage Services", icon: Briefcase, count: services.length },
                         { id: "testimonials", label: "Client Reviews", icon: Quote, count: testimonials.length },
@@ -1602,6 +1676,23 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
             </div>
+
+            {/* Mobile Drawer Clear Demo Data Button */}
+              <div className="p-3 border-t border-gray-100">
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleCleanDemoData();
+                    setMobileMenuOpen(false);
+                  }}
+                  disabled={cleaningDemo}
+                  className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border border-amber-200 bg-amber-50 text-amber-800 hover:bg-amber-100 text-xs font-semibold transition-colors disabled:opacity-50 cursor-pointer"
+                  title="Permanently remove predefined demo data"
+                >
+                  <Trash2 className="w-4 h-4 text-amber-600" />
+                  <span>{cleaningDemo ? "Cleaning Demo Data..." : "Clear Demo Data"}</span>
+                </button>
+              </div>
 
             {/* Bottom info & Logout in Drawer */}
             <div className="p-4 border-t border-gray-200 bg-gray-50 flex items-center justify-between">
@@ -1671,20 +1762,20 @@ export default function AdminDashboardPage() {
                 type="button"
                 onClick={() => setWebsiteSettingsOpen(!websiteSettingsOpen)}
                 className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                  ["hero_banner", "subcategories", "services", "testimonials", "team", "settings", "admins"].includes(activeTab)
+                  ["hero_banner", "works", "subcategories", "services", "testimonials", "team", "settings", "admins"].includes(activeTab)
                     ? "bg-rose-50 text-rose-800 font-bold border border-rose-200"
                     : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <div className={`p-1 rounded-lg ${["hero_banner", "subcategories", "services", "testimonials", "team", "settings", "admins"].includes(activeTab) ? "bg-rose-500 text-white" : "bg-gray-100 text-gray-600"}`}>
+                  <div className={`p-1 rounded-lg ${["hero_banner", "works", "subcategories", "services", "testimonials", "team", "settings", "admins"].includes(activeTab) ? "bg-rose-500 text-white" : "bg-gray-100 text-gray-600"}`}>
                     <Sliders className="w-3.5 h-3.5" />
                   </div>
                   <span>Website Settings</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-gray-100 text-gray-600 font-semibold font-mono">
-                    7
+                    8
                   </span>
                   {websiteSettingsOpen ? (
                     <ChevronDown className="w-4 h-4 text-gray-400" />
@@ -1699,6 +1790,7 @@ export default function AdminDashboardPage() {
                 <div className="ml-4 pl-3 border-l-2 border-rose-200 space-y-1 mt-1.5 animate-in slide-in-from-top-1 duration-150">
                   {[
                     { id: "hero_banner", label: "Banner & Hero", icon: Sparkles, count: settings?.heroSlides?.length || 0 },
+                    { id: "works", label: "Video Works", icon: Film, count: works.length },
                     { id: "subcategories", label: "Navbar Subcategories", icon: Layers, count: subcategories.length },
                     { id: "services", label: "Manage Services", icon: Briefcase, count: services.length },
                     { id: "testimonials", label: "Client Reviews", icon: Quote, count: testimonials.length },
@@ -1760,7 +1852,7 @@ export default function AdminDashboardPage() {
         </aside>
 
         {/* Tab Content Area */}
-        <main className="flex-1 p-4 sm:p-6 md:p-8 pb-28 md:pb-8 max-w-7xl mx-auto w-full">
+        <main className="flex-1 p-3 sm:p-6 md:p-8 pb-36 md:pb-8 max-w-7xl mx-auto w-full overflow-x-hidden overflow-y-visible">
           {/* TAB 1: INQUIRIES & LEADS */}
           {activeTab === "inquiries" && (
             <div className="space-y-6">
@@ -3095,6 +3187,159 @@ export default function AdminDashboardPage() {
             </div>
           )}
 
+          {/* TAB: VIDEO WORKS SHOWCASE */}
+          {activeTab === "works" && (
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-2xl font-serif font-bold text-gray-900">Featured Video Works (Hero Showcase)</h2>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Manage YouTube and Instagram videos shown in the interactive motion carousel directly below the homepage hero section.
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    setModalData({
+                      category: "Videography",
+                      title: "",
+                      videoUrl: "",
+                      description: "",
+                      order: works.length + 1,
+                      isActive: true,
+                    });
+                    setShowModal("work");
+                  }}
+                  className="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl text-xs shadow-md transition-all flex items-center gap-2 self-start sm:self-auto cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Add Video Work</span>
+                </button>
+              </div>
+
+              {/* Explanatory Banner */}
+              <div className="p-4 bg-gradient-to-r from-amber-50 to-rose-50 rounded-2xl border border-amber-200/70 text-xs text-gray-700 space-y-1">
+                <div className="font-bold text-amber-900 flex items-center gap-1.5">
+                  <Sparkles className="w-4 h-4 text-amber-600" />
+                  <span>How Video Works Showcase works on the website:</span>
+                </div>
+                <ul className="list-disc list-inside text-gray-600 space-y-0.5 pl-1">
+                  <li><strong>YouTube:</strong> Standard videos, watch links, or shorts (e.g., <code>https://youtube.com/watch?v=...</code> or <code>https://youtu.be/...</code>).</li>
+                  <li><strong>Instagram:</strong> Paste any reel or video URL (e.g., <code>https://www.instagram.com/reel/...</code>).</li>
+                  <li><strong>Autoplay:</strong> Plays smoothly as soon as the visitor scrolls down to the section.</li>
+                  <li><strong>Category Emphasis:</strong> The category (e.g. <em>Videography, Mandap Décor, Grand Entry, Haldi Ceremony</em>) is prominently highlighted right below the player.</li>
+                </ul>
+              </div>
+
+              {/* Works Grid */}
+              {works.length === 0 ? (
+                <div className="text-center py-16 bg-white rounded-3xl border border-dashed border-gray-300">
+                  <Film className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                  <h4 className="font-bold text-gray-700 text-sm">No Video Works Added Yet</h4>
+                  <p className="text-xs text-gray-400 mt-1 max-w-sm mx-auto">
+                    Add your first YouTube or Instagram video link to showcase your real event masterpieces.
+                  </p>
+                  <button
+                    onClick={() => {
+                      setModalData({
+                        category: "Videography",
+                        title: "",
+                        videoUrl: "",
+                        description: "",
+                        order: 1,
+                        isActive: true,
+                      });
+                      setShowModal("work");
+                    }}
+                    className="mt-4 px-4 py-2 bg-rose-600 text-white text-xs font-bold rounded-xl hover:bg-rose-700 transition-colors shadow-sm inline-flex items-center gap-1.5"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Add Video Work</span>
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {works.map((work) => {
+                    const isYT = work.videoUrl?.includes("youtube") || work.videoUrl?.includes("youtu.be");
+                    const isInsta = work.videoUrl?.includes("instagram");
+                    return (
+                      <div
+                        key={work._id}
+                        className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
+                      >
+                        <div className="p-4">
+                          <div className="flex items-center justify-between gap-2 mb-2">
+                            <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-rose-50 text-rose-700 border border-rose-200">
+                              {work.category || "Videography"}
+                            </span>
+                            <span
+                              className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                                work.isActive ? "bg-emerald-50 text-emerald-700" : "bg-gray-100 text-gray-500"
+                              }`}
+                            >
+                              {work.isActive ? "Active on Home" : "Hidden"}
+                            </span>
+                          </div>
+
+                          <h4 className="font-bold text-gray-900 text-sm mb-1.5 line-clamp-1">{work.title}</h4>
+                          {work.description && (
+                            <p className="text-xs text-gray-500 line-clamp-2 mb-2">{work.description}</p>
+                          )}
+
+                          <div className="flex items-center gap-1.5 text-xs text-gray-600 font-mono bg-gray-50 p-2 rounded-xl border border-gray-100">
+                            <Film className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+                            <span className="truncate flex-1">{work.videoUrl}</span>
+                            {isYT && (
+                              <span className="text-[10px] font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded">
+                                YouTube
+                              </span>
+                            )}
+                            {isInsta && (
+                              <span className="text-[10px] font-bold text-pink-600 bg-pink-50 px-1.5 py-0.5 rounded">
+                                Instagram
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="px-4 py-3 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
+                          <span className="text-[11px] text-gray-400 font-mono">Order: #{work.order || 0}</span>
+                          <div className="flex items-center gap-1.5">
+                            <a
+                              href={work.videoUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-1.5 text-gray-400 hover:text-gray-700 transition-colors"
+                              title="Open original video"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5" />
+                            </a>
+                            <button
+                              onClick={() => {
+                                setModalData(work);
+                                setShowModal("work");
+                              }}
+                              className="p-1.5 text-gray-500 hover:text-rose-600 transition-colors"
+                              title="Edit Video Work"
+                            >
+                              <Edit3 className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteWork(work._id)}
+                              className="p-1.5 text-gray-400 hover:text-red-600 transition-colors"
+                              title="Delete Video Work"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+
           {/* TAB: CLIENT TESTIMONIALS */}
           {activeTab === "testimonials" && (
             <div className="space-y-6">
@@ -3379,18 +3624,18 @@ export default function AdminDashboardPage() {
 
           {/* TAB: BANNER & HERO MANAGEMENT */}
           {activeTab === "hero_banner" && (
-            <div className="space-y-8 max-w-5xl">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-6 sm:space-y-8 max-w-5xl w-full overflow-x-hidden">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                 <div>
-                  <h2 className="text-2xl font-serif font-bold text-gray-900 flex items-center gap-2">
-                    <Sparkles className="w-6 h-6 text-rose-500" />
+                  <h2 className="text-xl sm:text-2xl font-serif font-bold text-gray-900 flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-rose-500 shrink-0" />
                     <span>Home Banner & Hero Carousel</span>
                   </h2>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-xs sm:text-sm text-gray-500 mt-1">
                     Manage the top notification announcement banner and the full-screen interactive hero slides on your website.
                   </p>
                 </div>
-                <div className="flex flex-wrap items-center gap-2.5">
+                <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
                   <button
                     onClick={() => {
                       setModalData({
@@ -3403,15 +3648,15 @@ export default function AdminDashboardPage() {
                       });
                       setShowModal("heroSlide");
                     }}
-                    className="px-4 py-2.5 bg-gradient-to-r from-rose-500 to-rose-600 text-white font-bold text-xs rounded-xl shadow-md hover:opacity-90 flex items-center gap-2"
+                    className="flex-1 sm:flex-initial px-3.5 py-2 bg-gradient-to-r from-rose-500 to-rose-600 text-white font-bold text-xs rounded-xl shadow-md hover:opacity-90 flex items-center justify-center gap-1.5 cursor-pointer"
                   >
                     <Plus className="w-4 h-4" />
-                    <span>+ Add New Slide</span>
+                    <span>Add New Slide</span>
                   </button>
                   <button
                     onClick={() => handleSaveSettings()}
                     disabled={saveLoading}
-                    className="px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-xs rounded-xl shadow-md hover:opacity-90 flex items-center gap-2"
+                    className="flex-1 sm:flex-initial px-3.5 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-xs rounded-xl shadow-md hover:opacity-90 flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
                   >
                     <Save className="w-4 h-4" />
                     <span>{saveLoading ? "Saving..." : "Save All Changes"}</span>
@@ -3420,27 +3665,27 @@ export default function AdminDashboardPage() {
               </div>
 
               {feedbackMsg && (
-                <div className="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500 text-emerald-800 text-xs font-bold flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4" />
+                <div className="p-3.5 sm:p-4 rounded-xl bg-emerald-500/15 border border-emerald-500 text-emerald-800 text-xs font-bold flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 shrink-0" />
                   <span>{feedbackMsg}</span>
                 </div>
               )}
 
               {/* 1. TOP HEADER BANNER CONTROLS */}
-              <div className="bg-white rounded-3xl border border-gray-200 p-6 shadow-sm space-y-5">
-                <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+              <div className="bg-white rounded-2xl sm:rounded-3xl border border-gray-200 p-4 sm:p-6 shadow-sm space-y-4 sm:space-y-5 w-full overflow-x-hidden">
+                <div className="flex flex-col xs:flex-row xs:items-center justify-between gap-2 pb-3 border-b border-gray-100">
                   <div>
-                    <h3 className="font-serif font-bold text-base text-gray-900 flex items-center gap-2">
+                    <h3 className="font-serif font-bold text-sm sm:text-base text-gray-900 flex items-center gap-2">
                       <span>1. Top Header Announcement Banner</span>
-                      <span className="text-xs px-2.5 py-0.5 rounded-full font-medium bg-rose-100 text-rose-700">
+                      <span className="text-[10px] sm:text-xs px-2 sm:px-2.5 py-0.5 rounded-full font-medium bg-rose-100 text-rose-700">
                         {settings?.showTopBanner !== false ? "Active" : "Hidden"}
                       </span>
                     </h3>
-                    <p className="text-xs text-gray-500 mt-0.5">
+                    <p className="text-[11px] sm:text-xs text-gray-500 mt-0.5">
                       Fixed red gradient strip shown at the top of the browser with celebration announcements.
                     </p>
                   </div>
-                  <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-gray-700">
+                  <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-gray-700 shrink-0">
                     <input
                       type="checkbox"
                       checked={settings?.showTopBanner !== false}
@@ -3453,26 +3698,26 @@ export default function AdminDashboardPage() {
 
                 {/* Banner Live Preview Bar */}
                 <div>
-                  <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-2">Live Preview</div>
+                  <div className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-2">Live Preview</div>
                   <div
-                    className="h-10 rounded-xl px-4 flex items-center justify-between text-white text-xs shadow-inner overflow-hidden"
+                    className="min-h-10 rounded-xl px-3 sm:px-4 py-2 sm:py-0 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 text-white text-xs shadow-inner overflow-hidden"
                     style={{
                       background: "linear-gradient(to right, #e11d48, #f43f5e)",
                     }}
                   >
-                    <div className="flex items-center gap-3 truncate">
+                    <div className="flex items-center gap-2 sm:gap-3 truncate w-full sm:w-auto">
                       <span className="font-medium truncate">
                         {settings?.bannerText?.trim() || `🎉 Welcome to ${settings?.siteName || "Vindhya Events"} — Weddings & Events`}
                       </span>
                       {settings?.taglineHindi && (
                         <>
-                          <span className="opacity-40">|</span>
-                          <span className="text-[11px] opacity-90 truncate">{settings?.taglineHindi}</span>
+                          <span className="opacity-40 hidden sm:inline">|</span>
+                          <span className="text-[11px] opacity-90 truncate hidden sm:inline">{settings?.taglineHindi}</span>
                         </>
                       )}
                     </div>
                     <div className="hidden sm:flex items-center gap-3 text-[11px] shrink-0 opacity-90">
-                      <span>📞 {settings?.primaryPhone || "7898522932"}</span>
+                      <span>📞 {settings?.primaryPhone || "+91 98935 18332"}</span>
                       <span>💬 WhatsApp</span>
                       <span>📍 Rewa, MP</span>
                     </div>
@@ -3480,7 +3725,7 @@ export default function AdminDashboardPage() {
                 </div>
 
                 {/* Edit Form Inputs */}
-                <div className="grid sm:grid-cols-2 gap-4 pt-2">
+                <div className="grid sm:grid-cols-2 gap-3 sm:gap-4 pt-1">
                   <div>
                     <label className="block text-xs font-bold text-gray-700 mb-1">
                       Main Banner Announcement Text
@@ -3511,24 +3756,24 @@ export default function AdminDashboardPage() {
               </div>
 
               {/* 2. HERO CAROUSEL SLIDES LIST */}
-              <div className="bg-white rounded-3xl border border-gray-200 p-6 shadow-sm space-y-6">
+              <div className="bg-white rounded-2xl sm:rounded-3xl border border-gray-200 p-4 sm:p-6 shadow-sm space-y-4 sm:space-y-6 w-full overflow-x-hidden">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-gray-100">
                   <div>
-                    <h3 className="font-serif font-bold text-base text-gray-900 flex items-center gap-2">
+                    <h3 className="font-serif font-bold text-sm sm:text-base text-gray-900 flex items-center gap-2">
                       <span>2. Home Page Hero Carousel Slides</span>
                       <span className="text-xs px-2.5 py-0.5 rounded-full font-medium bg-amber-100 text-amber-800">
                         {settings?.heroSlides?.length || 0} Slides Active
                       </span>
                     </h3>
-                    <p className="text-xs text-gray-500 mt-0.5">
+                    <p className="text-[11px] sm:text-xs text-gray-500 mt-0.5">
                       Slide 1 holds your primary H1 title for SEO rankings. Subsequent slides cycle with fade animation.
                     </p>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
                     {(!settings?.heroSlides || settings.heroSlides.length === 0) && (
                       <button
                         onClick={handleLoadDefaultHeroSlides}
-                        className="px-3 py-1.5 text-xs font-medium border border-gray-200 hover:bg-gray-50 rounded-lg text-gray-700"
+                        className="flex-1 sm:flex-initial px-3 py-1.5 text-xs font-medium border border-gray-200 hover:bg-gray-50 rounded-lg text-gray-700 cursor-pointer"
                       >
                         Load Default Slides
                       </button>
@@ -3545,12 +3790,52 @@ export default function AdminDashboardPage() {
                         });
                         setShowModal("heroSlide");
                       }}
-                      className="px-3.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg text-xs font-bold transition flex items-center gap-1.5"
+                      className="flex-1 sm:flex-initial px-3.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer"
                     >
                       <Plus className="w-3.5 h-3.5" />
                       <span>Add Slide</span>
                     </button>
                   </div>
+                </div>
+
+                {/* Photo Dimension & Live Dual-Preview Advisory Banner */}
+                <div className="bg-gradient-to-br from-rose-50 via-amber-50/70 to-rose-50 border border-rose-200/90 rounded-2xl p-3.5 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5 shadow-xs">
+                  <div className="flex items-start gap-3 min-w-0 flex-1">
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white text-rose-500 shadow-sm border border-rose-100 flex items-center justify-center shrink-0 mt-0.5">
+                      <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </div>
+                    <div className="min-w-0 flex-1 space-y-1">
+                      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                        <h4 className="text-xs sm:text-sm font-bold text-gray-900 font-serif leading-tight">
+                          Slide Photo Dimensions & Ratio Guide
+                        </h4>
+                        <span className="shrink-0 text-[10px] px-2 py-0.5 rounded-full bg-rose-500 text-white font-bold tracking-wide shadow-xs">
+                          16:9 Widescreen
+                        </span>
+                      </div>
+                      <p className="text-[11px] sm:text-xs text-gray-600 leading-relaxed">
+                        आदर्श साइज़: <strong className="text-gray-900 font-bold">1920 × 1080 px (16:9)</strong>. नया स्लाइड जोड़ते या एडिट करते समय आप <strong>Desktop और Mobile दोनों व्यू में लाइव प्रीव्यू</strong> देख सकते हैं।
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setModalData({
+                        title: "",
+                        subtitle: "",
+                        imageUrl: "",
+                        ctaText: "Book Consultation",
+                        ctaLink: "/contact",
+                        order: (settings?.heroSlides?.length || 0) + 1,
+                      });
+                      setShowModal("heroSlide");
+                    }}
+                    className="w-full sm:w-auto justify-center shrink-0 px-4 py-2 sm:py-1.5 bg-gradient-to-r from-rose-500 to-rose-600 text-white rounded-xl text-xs font-bold shadow hover:opacity-95 active:scale-98 transition flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Add Slide with Preview</span>
+                  </button>
                 </div>
 
                 {/* Slides Cards */}
@@ -3563,37 +3848,42 @@ export default function AdminDashboardPage() {
                     </p>
                     <button
                       onClick={handleLoadDefaultHeroSlides}
-                      className="px-4 py-2 bg-rose-500 text-white font-bold text-xs rounded-xl shadow hover:bg-rose-600 transition"
+                      className="px-4 py-2 bg-rose-500 text-white font-bold text-xs rounded-xl shadow hover:bg-rose-600 transition cursor-pointer"
                     >
                       Load Editable Default Slides
                     </button>
                   </div>
                 ) : (
-                  <div className="space-y-4">
+                  <div className="space-y-3.5 sm:space-y-4">
                     {settings.heroSlides.map((slide: any, idx: number) => {
                       const isH1 = idx === 0;
                       const slideImg = slide.image?.url || slide.image || "/girlsimg.webp";
                       return (
                         <div
                           key={idx}
-                          className="bg-gray-50/70 border border-gray-200 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:shadow-md transition-shadow relative overflow-hidden"
+                          className="bg-gray-50/80 border border-gray-200 rounded-2xl p-3.5 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-3.5 sm:gap-4 hover:shadow-md transition-shadow relative overflow-hidden"
                         >
-                          <div className="flex items-start sm:items-center gap-4 flex-1 min-w-0">
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 flex-1 min-w-0 w-full">
                             {/* Slide Image Thumbnail */}
-                            <div className="w-24 h-16 sm:w-28 sm:h-20 rounded-xl overflow-hidden bg-gray-200 shrink-0 relative border border-gray-200 shadow-sm">
+                            <div className="w-full sm:w-32 h-36 sm:h-20 rounded-xl overflow-hidden bg-gray-200 shrink-0 relative border border-gray-200 shadow-sm">
                               <img
                                 src={slideImg}
                                 alt={slide.title}
                                 className="w-full h-full object-cover"
                               />
-                              <span className="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-black/60 text-white text-[9px] font-bold">
-                                #{idx + 1}
+                              <span className="absolute bottom-1.5 left-1.5 px-2 py-0.5 rounded-md bg-black/70 backdrop-blur-xs text-white text-[10px] font-bold">
+                                Slide #{idx + 1}
                               </span>
+                              {isH1 && (
+                                <span className="sm:hidden absolute top-1.5 left-1.5 text-[9px] px-2 py-0.5 rounded-md font-bold uppercase tracking-wider bg-amber-500 text-white shadow-xs">
+                                  Primary H1 Slide
+                                </span>
+                              )}
                             </div>
 
                             {/* Details */}
-                            <div className="flex-1 min-w-0 space-y-1">
-                              <div className="flex items-center gap-2">
+                            <div className="flex-1 min-w-0 space-y-1.5 w-full">
+                              <div className="hidden sm:flex items-center gap-2">
                                 <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${
                                   isH1 ? "bg-amber-100 text-amber-800 border border-amber-300" : "bg-gray-200 text-gray-700"
                                 }`}>
@@ -3605,69 +3895,81 @@ export default function AdminDashboardPage() {
                                   </span>
                                 )}
                               </div>
-                              <h4 className="font-serif font-bold text-gray-900 text-sm sm:text-base truncate">
+
+                              <h4 className="font-serif font-bold text-gray-900 text-sm sm:text-base leading-snug line-clamp-2">
                                 {slide.title}
                               </h4>
-                              <p className="text-xs text-gray-500 line-clamp-1">
+                              <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">
                                 {slide.subtitle}
                               </p>
-                              {slide.ctaLink && (
-                                <p className="text-[11px] text-gray-400 font-mono truncate">
-                                  Link: {slide.ctaLink}
-                                </p>
-                              )}
+
+                              <div className="flex flex-wrap items-center gap-2 pt-0.5">
+                                {slide.ctaText && (
+                                  <span className="sm:hidden text-[10px] px-2 py-0.5 rounded-full bg-rose-50 text-rose-600 border border-rose-200 font-medium">
+                                    CTA: {slide.ctaText}
+                                  </span>
+                                )}
+                                {slide.ctaLink && (
+                                  <span className="text-[10px] text-gray-400 font-mono truncate max-w-full">
+                                    Link: {slide.ctaLink}
+                                  </span>
+                                )}
+                              </div>
                             </div>
                           </div>
 
                           {/* Action Buttons */}
-                          <div className="flex items-center gap-1.5 self-end md:self-center shrink-0">
-                            {/* Reorder Buttons */}
-                            <button
-                              onClick={() => handleMoveHeroSlide(idx, "up")}
-                              disabled={idx === 0}
-                              title="Move Slide Up"
-                              className="p-1.5 rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed"
-                            >
-                              ▲
-                            </button>
-                            <button
-                              onClick={() => handleMoveHeroSlide(idx, "down")}
-                              disabled={idx === settings.heroSlides.length - 1}
-                              title="Move Slide Down"
-                              className="p-1.5 rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed"
-                            >
-                              ▼
-                            </button>
+                          <div className="flex items-center justify-between sm:justify-end gap-1.5 w-full md:w-auto pt-2.5 sm:pt-0 border-t sm:border-t-0 border-gray-200/70 shrink-0">
+                            <div className="flex items-center gap-1">
+                              <button
+                                onClick={() => handleMoveHeroSlide(idx, "up")}
+                                disabled={idx === 0}
+                                title="Move Slide Up"
+                                className="p-1.5 sm:p-2 rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                              >
+                                ▲
+                              </button>
+                              <button
+                                onClick={() => handleMoveHeroSlide(idx, "down")}
+                                disabled={idx === settings.heroSlides.length - 1}
+                                title="Move Slide Down"
+                                className="p-1.5 sm:p-2 rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                              >
+                                ▼
+                              </button>
+                            </div>
 
-                            {/* Edit Button */}
-                            <button
-                              onClick={() => {
-                                setModalData({
-                                  slideIndex: idx,
-                                  title: slide.title,
-                                  subtitle: slide.subtitle,
-                                  imageUrl: slide.image?.url || slide.image || "",
-                                  public_id: slide.image?.public_id || "",
-                                  ctaText: slide.ctaText || "Book Consultation",
-                                  ctaLink: slide.ctaLink || "/contact",
-                                  order: slide.order || idx + 1,
-                                });
-                                setShowModal("heroSlide");
-                              }}
-                              className="px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-gray-700 hover:text-rose-600 hover:border-rose-300 text-xs font-semibold flex items-center gap-1 shadow-sm"
-                            >
-                              <Edit3 className="w-3.5 h-3.5" />
-                              <span>Edit</span>
-                            </button>
+                            <div className="flex items-center gap-1.5">
+                              {/* Edit Button */}
+                              <button
+                                onClick={() => {
+                                  setModalData({
+                                    slideIndex: idx,
+                                    title: slide.title,
+                                    subtitle: slide.subtitle,
+                                    imageUrl: slide.image?.url || slide.image || "",
+                                    public_id: slide.image?.public_id || "",
+                                    ctaText: slide.ctaText || "Book Consultation",
+                                    ctaLink: slide.ctaLink || "/contact",
+                                    order: slide.order || idx + 1,
+                                  });
+                                  setShowModal("heroSlide");
+                                }}
+                                className="px-3.5 py-1.5 rounded-lg bg-white border border-gray-200 text-gray-700 hover:text-rose-600 hover:border-rose-300 text-xs font-semibold flex items-center gap-1.5 shadow-xs cursor-pointer"
+                              >
+                                <Edit3 className="w-3.5 h-3.5 text-rose-500" />
+                                <span>Edit Slide</span>
+                              </button>
 
-                            {/* Delete Button */}
-                            <button
-                              onClick={() => handleDeleteHeroSlide(idx)}
-                              className="p-1.5 rounded-lg border border-gray-200 bg-white text-gray-400 hover:text-red-600 hover:bg-red-50"
-                              title="Delete Slide"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
+                              {/* Delete Button */}
+                              <button
+                                onClick={() => handleDeleteHeroSlide(idx)}
+                                className="p-1.5 sm:p-2 rounded-lg border border-gray-200 bg-white text-gray-400 hover:text-red-600 hover:bg-red-50 cursor-pointer"
+                                title="Delete Slide"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
                           </div>
                         </div>
                       );
@@ -3778,7 +4080,7 @@ export default function AdminDashboardPage() {
                   </div>
                   <input
                     type="url"
-                    placeholder="https://maps.google.com/?q=Rewa+Madhya+Pradesh or https://goo.gl/maps/..."
+                    placeholder="https://maps.app.goo.gl/oxD7riczpGY7z4LJ7"
                     value={settings?.googleMapUrl || ""}
                     onChange={(e) => setSettings({ ...settings, googleMapUrl: e.target.value })}
                     className="w-full px-3.5 py-2.5 border border-emerald-300 rounded-xl text-xs focus:ring-2 focus:ring-emerald-400 bg-white font-mono"
@@ -3982,162 +4284,168 @@ export default function AdminDashboardPage() {
         </button>
       </nav>
 
-      {/* HERO SLIDE MODAL */}
+      {/* HERO SLIDE MODAL WITH DUAL-DEVICE PREVIEW & ASPECT RATIO STUDIO */}
       {showModal === "heroSlide" && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+          <div className="bg-white rounded-3xl max-w-5xl w-full p-5 sm:p-7 shadow-2xl relative max-h-[92vh] overflow-y-auto">
             <button
               onClick={() => setShowModal(null)}
-              className="absolute right-5 top-5 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500"
+              className="absolute right-5 top-5 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 transition-colors cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
 
-            <div className="mb-5 pb-3 border-b border-gray-100 pr-8">
-              <h3 className="font-serif font-bold text-xl text-gray-900">
-                {modalData.slideIndex !== undefined ? "Edit Hero Slide" : "Add New Hero Slide"}
-              </h3>
+            <div className="mb-5 pb-3 border-b border-gray-100 pr-10">
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="font-serif font-bold text-xl text-gray-900">
+                  {modalData.slideIndex !== undefined ? "Edit Hero Slide" : "Add New Hero Slide"}
+                </h3>
+                <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-600 border border-rose-200">
+                  16:9 Landscape HD
+                </span>
+              </div>
               <p className="text-xs text-gray-500 mt-0.5">
-                Customize slide heading, Hindi/English subtitle, background photo, and CTA button
+                Customize slide heading, Hindi/English subtitle, background photo, and CTA button. Preview live in Desktop (16:9) & Mobile (9:16).
               </p>
             </div>
 
-            <form onSubmit={handleSaveHeroSlideModal} className="space-y-4">
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Slide Headline (H1 on 1st Slide) *
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Celebrating Every Tradition"
-                  value={modalData.title || ""}
-                  onChange={(e) => setModalData({ ...modalData, title: e.target.value })}
-                  className="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-rose-400 font-medium"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Slide Subtitle / Hindi Catchphrase
-                </label>
-                <textarea
-                  rows={2}
-                  placeholder="e.g. आपके रीति-रिवाज़ को खूबसूरत सजावट के साथ मनाएं"
-                  value={modalData.subtitle || ""}
-                  onChange={(e) => setModalData({ ...modalData, subtitle: e.target.value })}
-                  className="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-rose-400"
-                />
-              </div>
-
-              {/* Background Image Upload / URL */}
-              <div className="space-y-2">
-                <label className="block text-xs font-bold text-gray-700">
-                  Slide Background Image *
-                </label>
-                
-                <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 space-y-2.5">
-                  <div className="flex items-center gap-2">
-                    <label className="cursor-pointer px-3.5 py-1.5 bg-rose-500 text-white rounded-lg text-xs font-bold hover:bg-rose-600 transition flex items-center gap-1.5 shadow-sm">
-                      <Upload className="w-3.5 h-3.5" />
-                      <span>{uploadingImage ? "Uploading WebP..." : "Upload Photo"}</span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={async (e) => {
-                          const file = e.target.files?.[0];
-                          if (file) {
-                            const res = await handleFileUpload(file);
-                            if (res) {
-                              setModalData((prev: any) => ({
-                                ...prev,
-                                imageUrl: res.url,
-                                public_id: res.public_id,
-                              }));
-                            }
-                          }
-                        }}
-                      />
-                    </label>
-                    <span className="text-[11px] text-gray-400">Direct Cloudinary upload</span>
-                  </div>
-
-                  <div>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Or paste image URL (e.g. /dercoration1.webp or https://...)"
-                      value={modalData.imageUrl || ""}
-                      onChange={(e) => setModalData({ ...modalData, imageUrl: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs bg-white focus:ring-2 focus:ring-rose-400"
-                    />
-                  </div>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+              {/* LEFT COLUMN: FORM INPUTS */}
+              <form onSubmit={handleSaveHeroSlideModal} className="lg:col-span-6 space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">
+                    Slide Headline (H1 on 1st Slide) *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Celebrating Every Tradition"
+                    value={modalData.title || ""}
+                    onChange={(e) => setModalData({ ...modalData, title: e.target.value })}
+                    className="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-rose-400 font-medium"
+                  />
                 </div>
 
-                {/* Preview Thumbnail */}
-                {modalData.imageUrl && (
-                  <div className="relative h-28 rounded-xl overflow-hidden border border-gray-200 bg-black/10">
-                    <img
-                      src={modalData.imageUrl}
-                      alt="Slide preview"
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center p-3 text-center">
-                      <p className="text-white text-xs font-serif font-bold drop-shadow">
-                        {modalData.title || "Headline preview"}
-                      </p>
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">
+                    Slide Subtitle / Hindi Catchphrase
+                  </label>
+                  <textarea
+                    rows={2}
+                    placeholder="e.g. आपके रीति-रिवाज़ को खूबसूरत सजावट के साथ मनाएं"
+                    value={modalData.subtitle || ""}
+                    onChange={(e) => setModalData({ ...modalData, subtitle: e.target.value })}
+                    className="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-rose-400"
+                  />
+                </div>
+
+                {/* Background Image Upload / URL */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-bold text-gray-700">
+                      Slide Background Image *
+                    </label>
+                    <span className="text-[10px] text-gray-400 font-medium">Rec: 1920×1080 px (16:9)</span>
+                  </div>
+                  
+                  <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 space-y-2.5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <label className="cursor-pointer px-3.5 py-1.5 bg-rose-500 text-white rounded-lg text-xs font-bold hover:bg-rose-600 transition flex items-center gap-1.5 shadow-sm">
+                        <Upload className="w-3.5 h-3.5" />
+                        <span>{uploadingImage ? "Uploading WebP..." : "Upload Photo"}</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={async (e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              const res = await handleFileUpload(file);
+                              if (res) {
+                                setModalData((prev: any) => ({
+                                  ...prev,
+                                  imageUrl: res.url,
+                                  public_id: res.public_id,
+                                }));
+                              }
+                            }
+                          }}
+                        />
+                      </label>
+                      <span className="text-[11px] text-gray-400">Direct Cloudinary upload (Auto WebP)</span>
+                    </div>
+
+                    <div>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Or paste image URL (e.g. /dercoration1.webp or https://...)"
+                        value={modalData.imageUrl || ""}
+                        onChange={(e) => setModalData({ ...modalData, imageUrl: e.target.value })}
+                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs bg-white focus:ring-2 focus:ring-rose-400"
+                      />
                     </div>
                   </div>
-                )}
-              </div>
-
-              {/* CTA Button Customization */}
-              <div className="grid sm:grid-cols-2 gap-3 pt-1">
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">
-                    Button Label
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Book Consultation"
-                    value={modalData.ctaText || "Book Consultation"}
-                    onChange={(e) => setModalData({ ...modalData, ctaText: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-rose-400"
-                  />
                 </div>
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">
-                    Button Link / Action
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="/contact or #consultation"
-                    value={modalData.ctaLink || "/contact"}
-                    onChange={(e) => setModalData({ ...modalData, ctaLink: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-rose-400 font-mono"
-                  />
-                </div>
-              </div>
 
-              <div className="flex justify-end gap-2.5 pt-4 border-t border-gray-100">
-                <button
-                  type="button"
-                  onClick={() => setShowModal(null)}
-                  className="px-4 py-2 border border-gray-200 rounded-xl text-xs font-semibold text-gray-600 hover:bg-gray-50"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={uploadingImage || saveLoading}
-                  className="px-5 py-2 bg-gradient-to-r from-rose-500 to-rose-600 text-white rounded-xl text-xs font-bold shadow-md hover:opacity-90 flex items-center gap-1.5"
-                >
-                  <Save className="w-4 h-4" />
-                  <span>{saveLoading ? "Saving..." : "Save Slide"}</span>
-                </button>
+                {/* CTA Button Customization */}
+                <div className="grid sm:grid-cols-2 gap-3 pt-1">
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 mb-1">
+                      Button Label
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Book Consultation"
+                      value={modalData.ctaText || "Book Consultation"}
+                      onChange={(e) => setModalData({ ...modalData, ctaText: e.target.value })}
+                      className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-rose-400"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 mb-1">
+                      Button Link / Action
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="/contact or #consultation"
+                      value={modalData.ctaLink || "/contact"}
+                      onChange={(e) => setModalData({ ...modalData, ctaLink: e.target.value })}
+                      className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-rose-400 font-mono"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex justify-end gap-2.5 pt-4 border-t border-gray-100">
+                  <button
+                    type="button"
+                    onClick={() => setShowModal(null)}
+                    className="px-4 py-2 border border-gray-200 rounded-xl text-xs font-semibold text-gray-600 hover:bg-gray-50 cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={uploadingImage || saveLoading}
+                    className="px-5 py-2 bg-gradient-to-r from-rose-500 to-rose-600 text-white rounded-xl text-xs font-bold shadow-md hover:opacity-90 flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                  >
+                    <Save className="w-4 h-4" />
+                    <span>{saveLoading ? "Saving..." : "Save Slide"}</span>
+                  </button>
+                </div>
+              </form>
+
+              {/* RIGHT COLUMN: DUAL-DEVICE PREVIEW STUDIO & ASPECT RATIO GUIDANCE */}
+              <div className="lg:col-span-6">
+                <ImagePreviewStudio
+                  type="hero"
+                  imageUrl={modalData.imageUrl || ""}
+                  title={modalData.title || ""}
+                  subtitle={modalData.subtitle || ""}
+                  ctaText={modalData.ctaText || "Book Consultation"}
+                />
               </div>
-            </form>
+            </div>
           </div>
         </div>
       )}
@@ -5565,156 +5873,216 @@ export default function AdminDashboardPage() {
         </div>
       )}
 
-      {/* 3. Gallery Modal */}
+      {/* 3. Gallery Modal with Dual-Device Preview & Aspect Ratio Studio */}
       {showModal === "gallery" && (
-        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative">
-            <button onClick={() => setShowModal(null)} className="absolute right-5 top-5 text-gray-400 hover:text-gray-700">
-              <X className="w-5 h-5" />
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+          <div className="bg-white rounded-3xl max-w-5xl w-full p-5 sm:p-7 shadow-2xl relative max-h-[92vh] overflow-y-auto">
+            <button
+              onClick={() => setShowModal(null)}
+              className="absolute right-5 top-5 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 cursor-pointer transition-colors"
+            >
+              <X className="w-4 h-4" />
             </button>
-            <h3 className="font-serif font-bold text-xl text-gray-900 mb-4">
-              {modalData._id ? "Edit Gallery Photo" : "Add Gallery Photo"}
-            </h3>
-            <form onSubmit={handleSaveGallery} className="space-y-4 text-xs">
-              <div>
-                <label className="block font-bold text-gray-700 mb-1">Photo Title</label>
-                <input
-                  type="text"
-                  required
-                  value={modalData.title || ""}
-                  onChange={(e) => setModalData({ ...modalData, title: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-200 rounded-xl"
-                  placeholder="e.g. Royal Mandap Ceremony"
-                />
+            <div className="mb-5 pb-3 border-b border-gray-100 pr-10">
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="font-serif font-bold text-xl text-gray-900">
+                  {modalData._id ? "Edit Gallery Photo" : "Add Gallery Photo"}
+                </h3>
+                <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-600 border border-rose-200">
+                  4:3 or 1:1 Standard
+                </span>
               </div>
+              <p className="text-xs text-gray-500 mt-0.5">
+                Add wedding photography with category tag, optimal 4:3 or 1:1 aspect ratio, and live preview on Desktop & Mobile.
+              </p>
+            </div>
 
-              {/* Category Selector & Custom Category Creation */}
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label className="font-bold text-gray-700 flex items-center gap-1.5">
-                    <Tag className="w-3.5 h-3.5 text-rose-500" />
-                    <span>Category</span>
-                  </label>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsCreatingNewCategory(!isCreatingNewCategory);
-                      setNewGalleryCategoryInput("");
-                    }}
-                    className="text-[11px] font-bold text-rose-600 hover:text-rose-700 hover:underline flex items-center gap-1 transition-colors"
-                  >
-                    {isCreatingNewCategory ? "← Choose Existing" : "+ Create Custom Category"}
-                  </button>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+              {/* Form on left */}
+              <form onSubmit={handleSaveGallery} className="lg:col-span-6 space-y-4 text-xs">
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Photo Title *</label>
+                  <input
+                    type="text"
+                    required
+                    value={modalData.title || ""}
+                    onChange={(e) => setModalData({ ...modalData, title: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-xl"
+                    placeholder="e.g. Royal Mandap Ceremony"
+                  />
                 </div>
 
-                {isCreatingNewCategory ? (
-                  <div className="space-y-2 p-3 bg-gradient-to-br from-rose-50/70 to-amber-50/50 rounded-2xl border border-rose-200/80">
-                    <p className="text-[11px] text-gray-600 font-medium">
-                      Enter a custom category name (will show publicly in gallery filter tabs):
-                    </p>
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        value={newGalleryCategoryInput}
-                        onChange={(e) => setNewGalleryCategoryInput(e.target.value)}
-                        placeholder="e.g. Haldi, Sangeet, Mandap..."
-                        className="flex-1 px-3 py-2 bg-white border border-rose-300 rounded-xl text-xs focus:ring-2 focus:ring-rose-400 outline-none"
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            e.preventDefault();
-                            handleAddCustomGalleryCategory();
-                          }
-                        }}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => handleAddCustomGalleryCategory()}
-                        disabled={!newGalleryCategoryInput.trim()}
-                        className="px-3.5 py-2 bg-gradient-to-r from-rose-500 to-amber-500 text-white font-bold rounded-xl text-xs hover:opacity-95 disabled:opacity-50 shadow-sm"
-                      >
-                        Apply
-                      </button>
-                    </div>
+                {/* Category Selector & Custom Category Creation */}
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="font-bold text-gray-700 flex items-center gap-1.5">
+                      <Tag className="w-3.5 h-3.5 text-rose-500" />
+                      <span>Category</span>
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsCreatingNewCategory(!isCreatingNewCategory);
+                        setNewGalleryCategoryInput("");
+                      }}
+                      className="text-[11px] font-bold text-rose-600 hover:text-rose-700 hover:underline flex items-center gap-1 transition-colors"
+                    >
+                      {isCreatingNewCategory ? "← Choose Existing" : "+ Create Custom Category"}
+                    </button>
+                  </div>
 
-                    {/* Quick suggestion chips */}
-                    <div>
-                      <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-1.5">Quick Suggestions:</p>
-                      <div className="flex flex-wrap gap-1.5">
-                        {["Haldi", "Mehndi", "Sangeet", "Mandap", "Pre-Wedding", "Cocktail", "Bidaai", "Varmala"].map((chip) => (
-                          <button
-                            key={chip}
-                            type="button"
-                            onClick={() => handleAddCustomGalleryCategory(chip)}
-                            className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-white border border-rose-200 text-rose-700 hover:bg-rose-100 hover:border-rose-300 transition-colors"
-                          >
-                            + {chip}
-                          </button>
-                        ))}
+                  {isCreatingNewCategory ? (
+                    <div className="space-y-2 p-3 bg-gradient-to-br from-rose-50/70 to-amber-50/50 rounded-2xl border border-rose-200/80">
+                      <p className="text-[11px] text-gray-600 font-medium">
+                        Enter a custom category name (will show publicly in gallery filter tabs):
+                      </p>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={newGalleryCategoryInput}
+                          onChange={(e) => setNewGalleryCategoryInput(e.target.value)}
+                          placeholder="e.g. Haldi, Sangeet, Mandap..."
+                          className="flex-1 px-3 py-2 bg-white border border-rose-300 rounded-xl text-xs focus:ring-2 focus:ring-rose-400 outline-none"
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              handleAddCustomGalleryCategory();
+                            }
+                          }}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleAddCustomGalleryCategory()}
+                          disabled={!newGalleryCategoryInput.trim()}
+                          className="px-3.5 py-2 bg-gradient-to-r from-rose-500 to-amber-500 text-white font-bold rounded-xl text-xs hover:opacity-95 disabled:opacity-50 shadow-sm"
+                        >
+                          Apply
+                        </button>
+                      </div>
+
+                      {/* Quick suggestion chips */}
+                      <div>
+                        <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-1.5">Quick Suggestions:</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {["Haldi", "Mehndi", "Sangeet", "Mandap", "Pre-Wedding", "Cocktail", "Bidaai", "Varmala"].map((chip) => (
+                            <button
+                              key={chip}
+                              type="button"
+                              onClick={() => handleAddCustomGalleryCategory(chip)}
+                              className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-white border border-rose-200 text-rose-700 hover:bg-rose-100 hover:border-rose-300 transition-colors"
+                            >
+                              + {chip}
+                            </button>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ) : (
-                  <div>
-                    <select
-                      value={modalData.category || "Ceremony"}
-                      onChange={(e) => {
-                        if (e.target.value === "__create_new__") {
-                          setIsCreatingNewCategory(true);
-                          setNewGalleryCategoryInput("");
-                        } else {
-                          setModalData({ ...modalData, category: e.target.value });
+                  ) : (
+                    <div>
+                      <select
+                        value={modalData.category || "Ceremony"}
+                        onChange={(e) => {
+                          if (e.target.value === "__create_new__") {
+                            setIsCreatingNewCategory(true);
+                            setNewGalleryCategoryInput("");
+                          } else {
+                            setModalData({ ...modalData, category: e.target.value });
+                          }
+                        }}
+                        className="w-full px-3 py-2 border border-gray-200 rounded-xl bg-white text-gray-800 font-medium focus:ring-2 focus:ring-rose-400 outline-none"
+                      >
+                        {allGalleryCategories.map((cat: string) => (
+                          <option key={cat} value={cat}>
+                            {cat}
+                          </option>
+                        ))}
+                        <option value="__create_new__" className="text-rose-600 font-bold">
+                          + Add Custom Category...
+                        </option>
+                      </select>
+                      {modalData.category && (
+                        <p className="mt-1 text-[11px] text-gray-500 flex items-center gap-1">
+                          Active Category: <span className="font-bold text-rose-600">{modalData.category}</span>
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* Upload or Paste URL */}
+                <div className="space-y-2">
+                  <label className="block font-bold text-gray-700 mb-1">
+                    {modalData._id ? "Change Photo (Optional)" : "Select Photo (Auto WebP) *"}
+                  </label>
+                  
+                  <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 space-y-2">
+                    <input
+                      type="file"
+                      required={!modalData.image?.url && !modalData.url}
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const f = e.target.files?.[0];
+                        if (f) {
+                          const res = await handleFileUpload(f);
+                          if (res) setModalData({ ...modalData, image: { url: res.url, public_id: res.public_id }, url: res.url });
                         }
                       }}
-                      className="w-full px-3 py-2 border border-gray-200 rounded-xl bg-white text-gray-800 font-medium focus:ring-2 focus:ring-rose-400 outline-none"
-                    >
-                      {allGalleryCategories.map((cat: string) => (
-                        <option key={cat} value={cat}>
-                          {cat}
-                        </option>
-                      ))}
-                      <option value="__create_new__" className="text-rose-600 font-bold">
-                        + Add Custom Category...
-                      </option>
-                    </select>
-                    {modalData.category && (
-                      <p className="mt-1 text-[11px] text-gray-500 flex items-center gap-1">
-                        Active Category: <span className="font-bold text-rose-600">{modalData.category}</span>
-                      </p>
-                    )}
-                  </div>
-                )}
-              </div>
+                      className="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100 cursor-pointer"
+                    />
 
-              <div>
-                <label className="block font-bold text-gray-700 mb-1">
-                  {modalData._id ? "Change Photo (Optional)" : "Select Photo (Auto WebP)"}
-                </label>
-                <input
-                  type="file"
-                  required={!modalData.image?.url}
-                  accept="image/*"
-                  onChange={async (e) => {
-                    const f = e.target.files?.[0];
-                    if (f) {
-                      const res = await handleFileUpload(f);
-                      if (res) setModalData({ ...modalData, image: { url: res.url, public_id: res.public_id } });
-                    }
-                  }}
-                  className="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100"
+                    <div>
+                      <input
+                        type="text"
+                        placeholder="Or paste photo URL (e.g. /dercoration1.webp or https://...)"
+                        value={modalData.image?.url || modalData.url || ""}
+                        onChange={(e) =>
+                          setModalData({
+                            ...modalData,
+                            image: { url: e.target.value, public_id: modalData.image?.public_id || "" },
+                            url: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-xs bg-white focus:ring-2 focus:ring-rose-400"
+                      />
+                    </div>
+                  </div>
+
+                  {uploadingImage && <p className="text-amber-600 font-semibold">Uploading to Cloudinary WebP...</p>}
+                  {(modalData.image?.url || modalData.url) && (
+                    <p className="text-emerald-600 font-semibold text-[11px]">
+                      ✓ Image ready for preview & saving
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex justify-end gap-2.5 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowModal(null)}
+                    className="px-4 py-2 border border-gray-200 rounded-xl text-xs font-semibold text-gray-600 hover:bg-gray-50 cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={saveLoading || uploadingImage || (!modalData.image?.url && !modalData.url)}
+                    className="px-5 py-2.5 bg-rose-600 text-white font-bold rounded-xl shadow-md hover:bg-rose-700 transition-colors disabled:opacity-50 cursor-pointer"
+                  >
+                    {saveLoading ? "Saving Photo..." : modalData._id ? "Update Photo" : "Add to Gallery"}
+                  </button>
+                </div>
+              </form>
+
+              {/* Preview Studio on right */}
+              <div className="lg:col-span-6">
+                <ImagePreviewStudio
+                  type="gallery"
+                  imageUrl={modalData.image?.url || modalData.url || ""}
+                  title={modalData.title || ""}
+                  category={modalData.category || "Ceremony"}
                 />
-                {uploadingImage && <p className="text-amber-600 mt-1 font-semibold">Uploading to Cloudinary WebP...</p>}
-                {modalData.image?.url && (
-                  <p className="text-emerald-600 mt-1 font-semibold text-[11px]">✓ Ready: {modalData.image.url.slice(0, 45)}...</p>
-                )}
               </div>
-              <button
-                type="submit"
-                disabled={saveLoading || uploadingImage || !modalData.image?.url}
-                className="w-full py-3 bg-rose-600 text-white font-bold rounded-xl shadow-md hover:bg-rose-700 transition-colors disabled:opacity-50"
-              >
-                {saveLoading ? "Saving Photo..." : modalData._id ? "Update Photo" : "Add to Gallery"}
-              </button>
-            </form>
+            </div>
           </div>
         </div>
       )}
@@ -5793,6 +6161,138 @@ export default function AdminDashboardPage() {
               >
                 {saveLoading ? "Creating Admin Account..." : "Grant Admin Access"}
               </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Work Video Modal */}
+      {showModal === "work" && (
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button
+              onClick={() => setShowModal(null)}
+              className="absolute right-5 top-5 text-gray-400 hover:text-gray-700 cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <h3 className="font-serif font-bold text-xl text-gray-900 mb-1">
+              {modalData._id ? "Edit Video Work" : "Add New Video Work"}
+            </h3>
+            <p className="text-xs text-gray-500 mb-4">
+              Add YouTube (video/shorts) or Instagram reel links to display in the interactive motion carousel.
+            </p>
+
+            <form onSubmit={handleSaveWork} className="space-y-4 text-xs">
+              <div>
+                <label className="block font-bold text-gray-700 mb-1">
+                  Category Name <span className="text-rose-500">*</span> (Displayed Prominently)
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={modalData.category || ""}
+                  onChange={(e) => setModalData({ ...modalData, category: e.target.value })}
+                  className="w-full px-3 py-2.5 border border-gray-200 rounded-xl font-medium"
+                  placeholder="e.g. Videography, Mandap Décor, Grand Entry, Haldi Ceremony, Sangeet Night"
+                />
+                {/* Quick suggestions */}
+                <div className="flex flex-wrap gap-1.5 mt-2">
+                  {["Videography", "Mandap Décor", "Grand Entry", "Haldi Ceremony", "Sangeet Night", "Photography"].map((cat) => (
+                    <button
+                      key={cat}
+                      type="button"
+                      onClick={() => setModalData({ ...modalData, category: cat })}
+                      className="px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-gray-100 hover:bg-rose-50 hover:text-rose-600 text-gray-600 transition-colors cursor-pointer"
+                    >
+                      + {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-bold text-gray-700 mb-1">
+                  Work Title <span className="text-rose-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={modalData.title || ""}
+                  onChange={(e) => setModalData({ ...modalData, title: e.target.value })}
+                  className="w-full px-3 py-2.5 border border-gray-200 rounded-xl font-medium"
+                  placeholder="e.g. Royal Palace Wedding Highlights & Cinematic Teaser"
+                />
+              </div>
+
+              <div>
+                <label className="block font-bold text-gray-700 mb-1">
+                  Video URL (YouTube or Instagram) <span className="text-rose-500">*</span>
+                </label>
+                <input
+                  type="url"
+                  required
+                  value={modalData.videoUrl || ""}
+                  onChange={(e) => setModalData({ ...modalData, videoUrl: e.target.value })}
+                  className="w-full px-3 py-2.5 border border-gray-200 rounded-xl font-mono text-xs"
+                  placeholder="https://www.youtube.com/watch?v=... or https://www.instagram.com/reel/..."
+                />
+                <p className="text-[11px] text-gray-400 mt-1">
+                  Paste full link: YouTube watch link, youtu.be, Shorts, or Instagram reel/post URL.
+                </p>
+              </div>
+
+              <div>
+                <label className="block font-bold text-gray-700 mb-1">Short Description (Optional)</label>
+                <textarea
+                  rows={2}
+                  value={modalData.description || ""}
+                  onChange={(e) => setModalData({ ...modalData, description: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-200 rounded-xl"
+                  placeholder="Brief highlight about the ceremony, venue, or decor setup..."
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Display Order</label>
+                  <input
+                    type="number"
+                    value={modalData.order ?? 1}
+                    onChange={(e) => setModalData({ ...modalData, order: parseInt(e.target.value) || 0 })}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-xl"
+                  />
+                </div>
+
+                <div className="flex items-center pt-5">
+                  <label className="flex items-center gap-2 cursor-pointer font-bold text-gray-700">
+                    <input
+                      type="checkbox"
+                      checked={modalData.isActive !== false}
+                      onChange={(e) => setModalData({ ...modalData, isActive: e.target.checked })}
+                      className="w-4 h-4 text-rose-600 rounded border-gray-300 focus:ring-rose-500"
+                    />
+                    <span>Active on Homepage</span>
+                  </label>
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-3 border-t border-gray-100">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(null)}
+                  className="flex-1 py-2.5 border border-gray-200 rounded-xl text-gray-600 font-bold hover:bg-gray-50 cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={saveLoading}
+                  className="flex-1 py-2.5 bg-gradient-to-r from-rose-500 to-rose-600 text-white font-bold rounded-xl shadow-md hover:opacity-90 disabled:opacity-50 cursor-pointer"
+                >
+                  {saveLoading ? "Saving..." : modalData._id ? "Update Work" : "Add Work Video"}
+                </button>
+              </div>
             </form>
           </div>
         </div>

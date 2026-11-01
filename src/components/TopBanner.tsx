@@ -22,7 +22,7 @@ export default function TopBanner() {
     ? "Rewa, MP"
     : address?.split(",")[0] || "Rewa, MP";
 
-  const brandTitle = siteName && !siteName.toLowerCase().includes("vindhya") ? siteName : "RIWAJ Wedding & Events";
+  const brandTitle = siteName || "RIWAJ Weddings & Events";
   const displayBannerText = bannerText?.trim() || `🎉 Welcome to ${brandTitle} — Weddings & Events`;
 
   return (

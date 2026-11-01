@@ -1,11 +1,21 @@
 "use client";
 
 import { useEffect } from "react";
-import PwaInstallPrompt from "./PwaInstallPrompt";
 
 export default function ServiceWorkerRegister() {
   useEffect(() => {
-    if (typeof window === "undefined" || !("serviceWorker" in navigator)) return;
+    if (typeof window === "undefined") return;
+
+    // Capture beforeinstallprompt silently without showing any automatic popups
+    const handleBeforeInstall = (e: Event) => {
+      e.preventDefault();
+      (window as unknown as { __riwaj_deferred_pwa_prompt?: Event }).__riwaj_deferred_pwa_prompt = e;
+      window.dispatchEvent(new Event("riwaj_pwa_prompt_ready"));
+    };
+
+    window.addEventListener("beforeinstallprompt", handleBeforeInstall);
+
+    if (!("serviceWorker" in navigator)) return;
 
     // In development mode (localhost), NEVER register service workers and clean up any existing ones
     const isDev =
@@ -68,9 +78,13 @@ export default function ServiceWorkerRegister() {
       registerSW();
     } else {
       window.addEventListener("load", registerSW);
-      return () => window.removeEventListener("load", registerSW);
     }
+
+    return () => {
+      window.removeEventListener("load", registerSW);
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstall);
+    };
   }, []);
 
-  return <PwaInstallPrompt />;
+  return null;
 }

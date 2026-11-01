@@ -62,10 +62,10 @@ export default async function BlogPostPage({ params }: Props) {
     notFound();
   }
 
-  const phone = settings.primaryPhone || "7898522932";
+  const phone = settings.primaryPhone || "+91 98935 18332";
   const rawDigits = phone.replace(/[^0-9+]/g, "");
-  const telLink = `tel:${rawDigits || "7898522932"}`;
-  const siteName = settings.siteName || "Vindhya Events";
+  const telLink = `tel:${rawDigits || "+919893518332"}`;
+  const siteName = settings.siteName || "RIWAJ Weddings & Events";
 
   const publishedDate = post.publishedAt || post.createdAt || new Date();
   const formattedDate = new Date(publishedDate).toLocaleDateString("en-IN", {

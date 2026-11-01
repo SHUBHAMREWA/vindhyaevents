@@ -85,10 +85,10 @@ function generateCustomerEmail(name: string): string {
       
       <div style="background-color: #fff1f2; border-left: 4px solid #e11d48; padding: 16px; margin: 20px 0; border-radius: 4px;">
         <p style="margin: 0; font-weight: bold; color: #881337;">Need urgent assistance?</p>
-        <p style="margin: 4px 0 0; color: #4c0519;">Call or WhatsApp us directly at: <strong>+91 7898522932</strong></p>
+        <p style="margin: 4px 0 0; color: #4c0519;">Call or WhatsApp us directly at: <strong>+91 98935 18332</strong></p>
       </div>
       
-      <p style="font-size: 14px; color: #78716c;">Warm regards,<br /><strong>Vindhya Events Team</strong><br />Rewa, Madhya Pradesh</p>
+      <p style="font-size: 14px; color: #78716c;">Warm regards,<br /><strong>RIWAJ Events Team</strong><br />Rewa, Madhya Pradesh</p>
     </div>
   </div>
   `;

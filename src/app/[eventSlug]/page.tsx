@@ -63,7 +63,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const settings = await getSiteSettings();
-  const phoneStr = settings.primaryPhone || "7898522932";
+  const phoneStr = settings.primaryPhone || "+91 98935 18332";
   const brandName = "RIWAJ Events";
 
   // Dynamic Image & Alt from MongoDB (Pure Database Source of Truth)
@@ -225,11 +225,11 @@ export default async function EventPage({ params }: Props) {
   }
 
   const settings = await getSiteSettings();
-  const cleanWA = (settings.whatsAppNumber || "7898522932").replace(/[^0-9]/g, "");
-  const fullWA = cleanWA.length === 10 ? `91${cleanWA}` : cleanWA || "917898522932";
-  const displayPhone = settings.primaryPhone || "7898522932";
+  const cleanWA = (settings.whatsAppNumber || "9893518332").replace(/[^0-9]/g, "");
+  const fullWA = cleanWA.length === 10 ? `91${cleanWA}` : cleanWA || "919893518332";
+  const displayPhone = settings.primaryPhone || "+91 98935 18332";
   const rawDigits = displayPhone.replace(/[^0-9+]/g, "");
-  const telLink = `tel:${rawDigits || "7898522932"}`;
+  const telLink = `tel:${rawDigits || "+919893518332"}`;
 
   const categoryText =
     event.category === "wedding"

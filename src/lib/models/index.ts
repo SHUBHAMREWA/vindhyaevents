@@ -11,3 +11,4 @@ export { SubCategory, type ISubCategory, type ISubCategoryImage } from "./SubCat
 export { Customer, type ICustomer, type ICustomerLocation, type ICustomerChild } from "./Customer";
 export { Booking, type IBooking, type ISubEvent, type IAssignedPerson, type IBookingFinancials, type IPaymentRecord } from "./Booking";
 export { WhatsAppLog, type IWhatsAppLog } from "./WhatsAppLog";
+export { WorkVideo, type IWorkVideo } from "./WorkVideo";

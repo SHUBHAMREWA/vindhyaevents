@@ -56,7 +56,7 @@ export default function ContactPage() {
 
             {/* Address */}
             <a
-              href={googleMapUrl || "https://maps.google.com/?q=Rewa+Madhya+Pradesh"}
+              href={googleMapUrl || "https://maps.app.goo.gl/oxD7riczpGY7z4LJ7"}
               target="_blank"
               rel="noopener noreferrer"
               title="Click to navigate on Google Maps"

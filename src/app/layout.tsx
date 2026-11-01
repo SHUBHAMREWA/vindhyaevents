@@ -144,11 +144,11 @@ export default async function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
-              name: settings.siteName || "Vindhya Events",
+              name: settings.siteName || "RIWAJ Weddings & Events",
               description: settings.tagline || "Luxury wedding and event planning company in Rewa, Madhya Pradesh",
               url: "https://vindhyaevents.in",
-              telephone: settings.primaryPhone || "7898522932",
-              email: settings.primaryEmail || "vindhyaevent@gmail.com",
+              telephone: settings.primaryPhone || "+91 98935 18332",
+              email: settings.primaryEmail || "riwajweddingplanner@gmail.com",
               address: {
                 "@type": "PostalAddress",
                 streetAddress: settings.address || "Rewa",
@@ -166,9 +166,9 @@ export default async function RootLayout({
               priceRange: "₹₹₹",
               image: "https://vindhyaevents.in/og-image.jpg",
               sameAs: [
-                settings.socialLinks?.instagram || "https://instagram.com/vindhyaevents",
-                settings.socialLinks?.facebook || "https://facebook.com/vindhyaevents",
-                settings.socialLinks?.youtube || "",
+                settings.socialLinks?.instagram || "https://www.instagram.com/riwaj.wedding/",
+                settings.socialLinks?.facebook || "https://www.facebook.com/riwajweddingandevents/",
+                settings.socialLinks?.youtube || "https://www.youtube.com/@riwajweddings",
               ].filter(Boolean),
               aggregateRating: {
                 "@type": "AggregateRating",

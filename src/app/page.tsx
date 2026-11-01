@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import TopBanner from "@/components/TopBanner";
 import HeroSectionWrapper from "@/components/HeroSectionWrapper";
+import WorksVideoShowcase from "@/components/WorksVideoShowcase";
 import BookConsultation from "@/components/BookConsultation";
 import Services from "@/components/Services";
 import GalleryPreview from "@/components/GalleryPreview";
@@ -8,10 +9,38 @@ import TestimonialsWrapper from "@/components/TestimonialsWrapper";
 import BlogPreview from "@/components/BlogPreview";
 import Footer from "@/components/Footer";
 import connectToDatabase from "@/lib/db";
-import { Blog, Testimonial } from "@/lib/models";
+import { Blog, Testimonial, WorkVideo } from "@/lib/models";
+import { DEFAULT_WORK_VIDEOS } from "@/lib/videoUtils";
 import { getSiteSettings } from "@/lib/getSiteSettings";
 
 export const dynamic = "force-dynamic";
+
+async function getWorkVideos() {
+  try {
+    await connectToDatabase();
+    const works = await WorkVideo.find({ isActive: true })
+      .sort({ order: 1, createdAt: -1 })
+      .lean();
+
+    if (!works || works.length === 0) {
+      return DEFAULT_WORK_VIDEOS;
+    }
+
+    return works.map((w: any) => ({
+      _id: w._id.toString(),
+      title: w.title,
+      category: w.category || "Videography",
+      videoUrl: w.videoUrl,
+      videoType: w.videoType || "youtube",
+      thumbnailUrl: w.thumbnailUrl || "",
+      description: w.description || "",
+      order: w.order || 0,
+    }));
+  } catch (e) {
+    console.error("Home page getWorkVideos error:", e);
+    return DEFAULT_WORK_VIDEOS;
+  }
+}
 
 async function getLatestBlogs() {
   try {
@@ -65,10 +94,11 @@ async function getTestimonials() {
 }
 
 export default async function Home() {
-  const [latestBlogs, testimonials, siteSettings] = await Promise.all([
+  const [latestBlogs, testimonials, siteSettings, workVideos] = await Promise.all([
     getLatestBlogs(),
     getTestimonials(),
     getSiteSettings(),
+    getWorkVideos(),
   ]);
 
   return (
@@ -76,6 +106,7 @@ export default async function Home() {
       <TopBanner />
       <Navbar />
       <HeroSectionWrapper slides={siteSettings?.heroSlides} />
+      <WorksVideoShowcase initialWorks={workVideos} />
       <BookConsultation />
       <Services />
       <GalleryPreview />
