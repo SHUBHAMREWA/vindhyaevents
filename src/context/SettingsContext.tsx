@@ -42,7 +42,7 @@ const SettingsContext = createContext<SettingsContextValue>({
   googleMapUrl: DEFAULT_SITE_SETTINGS.googleMapUrl || "https://maps.app.goo.gl/oxD7riczpGY7z4LJ7",
   siteName: DEFAULT_SITE_SETTINGS.siteName,
   taglineHindi: DEFAULT_SITE_SETTINGS.taglineHindi || "✨ आपके रीति रिवाज सजावट के साथ ✨",
-  bannerText: DEFAULT_SITE_SETTINGS.bannerText || "🎉 Welcome to RIWAJ Events — Weddings & Celebrations",
+  bannerText: DEFAULT_SITE_SETTINGS.bannerText || "🎉 Welcome to RIWAJ Weddings & Events — Rewa, MP",
   showTopBanner: DEFAULT_SITE_SETTINGS.showTopBanner ?? true,
   heroSlides: DEFAULT_SITE_SETTINGS.heroSlides,
   socialLinks: DEFAULT_SITE_SETTINGS.socialLinks,
@@ -69,12 +69,34 @@ export function SettingsProvider({
       const res = await fetch("/api/public/settings", { cache: "no-store" });
       const data = await res.json();
       if (data.success && data.settings) {
+        const s = data.settings;
+        const validPhone =
+          s.primaryPhone && !s.primaryPhone.includes("7898522932") && !s.primaryPhone.includes("98270")
+            ? s.primaryPhone
+            : DEFAULT_SITE_SETTINGS.primaryPhone;
+        const validEmail =
+          s.primaryEmail && !s.primaryEmail.includes("vindhya")
+            ? s.primaryEmail
+            : DEFAULT_SITE_SETTINGS.primaryEmail;
+        const validWA =
+          s.whatsAppNumber && !s.whatsAppNumber.includes("7898522932") && !s.whatsAppNumber.includes("98270")
+            ? s.whatsAppNumber
+            : DEFAULT_SITE_SETTINGS.whatsAppNumber;
+        const validMap =
+          s.googleMapUrl && !s.googleMapUrl.includes("maps.google.com/?q=")
+            ? s.googleMapUrl
+            : DEFAULT_SITE_SETTINGS.googleMapUrl;
+
         setSettings({
           ...DEFAULT_SITE_SETTINGS,
-          ...data.settings,
+          ...s,
+          primaryPhone: validPhone,
+          whatsAppNumber: validWA,
+          primaryEmail: validEmail,
+          googleMapUrl: validMap,
           socialLinks: {
             ...DEFAULT_SITE_SETTINGS.socialLinks,
-            ...(data.settings.socialLinks || {}),
+            ...(s.socialLinks || {}),
           },
         });
       }
@@ -102,14 +124,34 @@ export function SettingsProvider({
     // Once mounted, use live settings from database
     const active = mounted ? settings : (initialSettings || DEFAULT_SITE_SETTINGS);
 
-    const phone = active.primaryPhone || DEFAULT_SITE_SETTINGS.primaryPhone;
+    const rawP = (active.primaryPhone || "").trim();
+    const phone =
+      rawP && !rawP.includes("7898522932") && !rawP.includes("98270")
+        ? rawP
+        : DEFAULT_SITE_SETTINGS.primaryPhone;
+
     const rawDigits = phone.replace(/[^0-9+]/g, "");
     const cleanDigits = rawDigits.startsWith("+") ? rawDigits : `+91${rawDigits.replace(/^0+/, "")}`;
     const telLink = `tel:${rawDigits || "+919893518332"}`;
 
-    const formattedWA = formatWhatsAppNumber(
-      active.whatsAppNumber || DEFAULT_SITE_SETTINGS.whatsAppNumber
-    );
+    const rawWA = (active.whatsAppNumber || "").trim();
+    const waNum =
+      rawWA && !rawWA.includes("7898522932") && !rawWA.includes("98270")
+        ? rawWA
+        : DEFAULT_SITE_SETTINGS.whatsAppNumber;
+    const formattedWA = formatWhatsAppNumber(waNum);
+
+    const rawEm = (active.primaryEmail || "").trim();
+    const email =
+      rawEm && !rawEm.includes("vindhya")
+        ? rawEm
+        : DEFAULT_SITE_SETTINGS.primaryEmail;
+
+    const rawMap = (active.googleMapUrl || "").trim();
+    const googleMapUrl: string =
+      rawMap && !rawMap.includes("maps.google.com/?q=")
+        ? rawMap
+        : DEFAULT_SITE_SETTINGS.googleMapUrl || "https://maps.app.goo.gl/oxD7riczpGY7z4LJ7";
 
     const getWhatsAppLink = (customMsg?: string) => {
       const msg =
@@ -123,10 +165,10 @@ export function SettingsProvider({
       phone,
       rawPhone: cleanDigits,
       telLink,
-      whatsAppNumber: active.whatsAppNumber || DEFAULT_SITE_SETTINGS.whatsAppNumber,
-      email: active.primaryEmail || DEFAULT_SITE_SETTINGS.primaryEmail,
+      whatsAppNumber: waNum,
+      email,
       address: active.address || DEFAULT_SITE_SETTINGS.address,
-      googleMapUrl: active.googleMapUrl || DEFAULT_SITE_SETTINGS.googleMapUrl || "https://maps.app.goo.gl/oxD7riczpGY7z4LJ7",
+      googleMapUrl,
       siteName: active.siteName || DEFAULT_SITE_SETTINGS.siteName,
       taglineHindi: active.taglineHindi || DEFAULT_SITE_SETTINGS.taglineHindi || "",
       bannerText: active.bannerText || DEFAULT_SITE_SETTINGS.bannerText || "",

@@ -1399,7 +1399,7 @@ export default function AdminDashboardPage() {
     const updatedSettings = {
       ...settings,
       heroSlides: defaultSlides,
-      bannerText: settings?.bannerText || "🎉 Welcome to Vindhya Events — Weddings & Events",
+      bannerText: settings?.bannerText || "🎉 Welcome to RIWAJ Weddings & Events — Rewa, MP",
       showTopBanner: settings?.showTopBanner ?? true,
       taglineHindi: settings?.taglineHindi || "✨ आपके रीति रिवाज सजावट के साथ ✨",
     };
@@ -3732,7 +3732,7 @@ export default function AdminDashboardPage() {
                     </label>
                     <input
                       type="text"
-                      placeholder="🎉 Welcome to Vindhya Events — Weddings & Events"
+                      placeholder="🎉 Welcome to RIWAJ Weddings & Events — Rewa, MP"
                       value={settings?.bannerText || ""}
                       onChange={(e) => setSettings({ ...settings, bannerText: e.target.value })}
                       className="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-rose-400"
@@ -4707,7 +4707,7 @@ export default function AdminDashboardPage() {
         };
 
         const clientFollowUpWhatsApp = () => {
-          const text = `Namaste ${viewInquiry.name} ji,\n\nRIWAJ Events Rewa ki taraf se greetings! 🙏\nAapke upcoming ${viewInquiry.eventType || "Wedding"} celebration (${viewInquiry.date || "Event Date"}) ke decor and arrangements ke regarding hum connect karna chahte the.\n\nKya hum aapse convenient time par call par baat kar sakte hain ya office par visit plan karein?\n\nDhanyawad,\nRIWAJ Events & Luxury Decor, Rewa (M.P.)\nHelpline: ${settings?.primaryPhone || "+91 98270 00000"}`;
+          const text = `Namaste ${viewInquiry.name} ji,\n\nRIWAJ Events Rewa ki taraf se greetings! 🙏\nAapke upcoming ${viewInquiry.eventType || "Wedding"} celebration (${viewInquiry.date || "Event Date"}) ke decor and arrangements ke regarding hum connect karna chahte the.\n\nKya hum aapse convenient time par call par baat kar sakte hain ya office par visit plan karein?\n\nDhanyawad,\nRIWAJ Events & Luxury Decor, Rewa (M.P.)\nHelpline: ${settings?.primaryPhone || "+91 98935 18332"}`;
           const phoneClean = (viewInquiry.phone || "").replace(/[^0-9]/g, "");
           return `https://wa.me/${phoneClean}?text=${encodeURIComponent(text)}`;
         };

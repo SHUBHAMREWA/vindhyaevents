@@ -18,9 +18,41 @@ export async function GET() {
       });
     }
 
+    // Sanitize any legacy / placeholder numbers or emails
+    const rawPhone = settings.primaryPhone?.trim();
+    const primaryPhone =
+      rawPhone && !rawPhone.includes("7898522932") && !rawPhone.includes("98270")
+        ? rawPhone
+        : DEFAULT_SITE_SETTINGS.primaryPhone;
+
+    const rawWA = settings.whatsAppNumber?.trim();
+    const whatsAppNumber =
+      rawWA && !rawWA.includes("7898522932") && !rawWA.includes("98270")
+        ? rawWA
+        : DEFAULT_SITE_SETTINGS.whatsAppNumber;
+
+    const rawEmail = settings.primaryEmail?.trim();
+    const primaryEmail =
+      rawEmail && !rawEmail.includes("vindhya")
+        ? rawEmail
+        : DEFAULT_SITE_SETTINGS.primaryEmail;
+
+    const rawMap = settings.googleMapUrl?.trim();
+    const googleMapUrl =
+      rawMap && !rawMap.includes("maps.google.com/?q=")
+        ? rawMap
+        : DEFAULT_SITE_SETTINGS.googleMapUrl;
+
     return NextResponse.json({
       success: true,
-      settings,
+      settings: {
+        ...DEFAULT_SITE_SETTINGS,
+        ...settings,
+        primaryPhone,
+        whatsAppNumber,
+        primaryEmail,
+        googleMapUrl,
+      },
     });
   } catch (error: unknown) {
     console.error("Public settings fetch error:", error);
@@ -34,4 +66,3 @@ export async function GET() {
     );
   }
 }
-

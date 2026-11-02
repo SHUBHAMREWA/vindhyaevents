@@ -145,12 +145,13 @@ export async function seedDatabaseIfEmpty() {
     console.log(`Default admin created: ${defaultEmail}`);
   }
 
-  // 2. Seed basic SiteSettings if empty
+  // 2. Seed basic SiteSettings if empty, or ensure contact info is up to date
   if (!existingSetting) {
     await SiteSetting.create({
-      siteName: "RIWAJ Events",
+      siteName: "RIWAJ Weddings & Events",
       tagline: "Wedding & Luxury Event Specialists",
       taglineHindi: "✨ आपके रीति रिवाज सजावट के साथ ✨",
+      bannerText: "🎉 Welcome to RIWAJ Weddings & Events — Rewa, MP",
       primaryPhone: "+91 98935 18332",
       secondaryPhone: "",
       whatsAppNumber: "+91 98935 18332",
@@ -167,7 +168,38 @@ export async function seedDatabaseIfEmpty() {
       testimonials: [],
       defaultTheme: "rose",
     });
-    console.log("SiteSetting initialized cleanly");
+    console.log("SiteSetting initialized cleanly with official contact details");
+  } else {
+    let updated = false;
+    if (
+      !existingSetting.primaryPhone ||
+      existingSetting.primaryPhone.includes("7898522932") ||
+      existingSetting.primaryPhone.includes("98270") ||
+      existingSetting.primaryPhone.trim() !== "+91 98935 18332"
+    ) {
+      existingSetting.primaryPhone = "+91 98935 18332";
+      existingSetting.whatsAppNumber = "+91 98935 18332";
+      updated = true;
+    }
+    if (
+      !existingSetting.primaryEmail ||
+      existingSetting.primaryEmail.includes("vindhya") ||
+      existingSetting.primaryEmail.trim() !== "riwajweddingplanner@gmail.com"
+    ) {
+      existingSetting.primaryEmail = "riwajweddingplanner@gmail.com";
+      updated = true;
+    }
+    if (
+      !existingSetting.googleMapUrl ||
+      existingSetting.googleMapUrl.includes("maps.google.com/?q=")
+    ) {
+      existingSetting.googleMapUrl = "https://maps.app.goo.gl/oxD7riczpGY7z4LJ7";
+      updated = true;
+    }
+    if (updated) {
+      await existingSetting.save();
+      console.log("Existing SiteSetting updated with official contact details (+91 98935 18332, riwajweddingplanner@gmail.com)");
+    }
   }
 
   // 3. Seed Navbar SubCategories if empty (for wedding, catering, decoration, corporate event routes)

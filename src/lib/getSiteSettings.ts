@@ -26,22 +26,50 @@ export async function getSiteSettings(): Promise<ISiteSettingsData> {
           }))
         : DEFAULT_SITE_SETTINGS.heroSlides;
 
+    const rawPhone = doc.primaryPhone?.trim();
+    const primaryPhone =
+      rawPhone &&
+      !rawPhone.includes("7898522932") &&
+      !rawPhone.includes("98270")
+        ? rawPhone
+        : DEFAULT_SITE_SETTINGS.primaryPhone;
+
+    const rawWA = doc.whatsAppNumber?.trim();
+    const whatsAppNumber =
+      rawWA &&
+      !rawWA.includes("7898522932") &&
+      !rawWA.includes("98270")
+        ? rawWA
+        : DEFAULT_SITE_SETTINGS.whatsAppNumber;
+
+    const rawEmail = doc.primaryEmail?.trim();
+    const primaryEmail =
+      rawEmail && !rawEmail.includes("vindhya")
+        ? rawEmail
+        : DEFAULT_SITE_SETTINGS.primaryEmail;
+
+    const rawMap = doc.googleMapUrl?.trim();
+    const googleMapUrl =
+      rawMap && !rawMap.includes("maps.google.com/?q=")
+        ? rawMap
+        : DEFAULT_SITE_SETTINGS.googleMapUrl;
+
     const data: ISiteSettingsData = {
       siteName: doc.siteName || DEFAULT_SITE_SETTINGS.siteName,
       tagline: doc.tagline || DEFAULT_SITE_SETTINGS.tagline,
       taglineHindi: doc.taglineHindi || DEFAULT_SITE_SETTINGS.taglineHindi,
       bannerText: doc.bannerText || DEFAULT_SITE_SETTINGS.bannerText,
       showTopBanner: doc.showTopBanner !== undefined ? doc.showTopBanner : DEFAULT_SITE_SETTINGS.showTopBanner,
-      primaryPhone: doc.primaryPhone || DEFAULT_SITE_SETTINGS.primaryPhone,
+      primaryPhone,
       secondaryPhone: doc.secondaryPhone || DEFAULT_SITE_SETTINGS.secondaryPhone,
-      whatsAppNumber: doc.whatsAppNumber || DEFAULT_SITE_SETTINGS.whatsAppNumber,
-      primaryEmail: doc.primaryEmail || DEFAULT_SITE_SETTINGS.primaryEmail,
+      whatsAppNumber,
+      primaryEmail,
       address: doc.address || DEFAULT_SITE_SETTINGS.address,
-      googleMapUrl: doc.googleMapUrl || DEFAULT_SITE_SETTINGS.googleMapUrl,
+      googleMapUrl,
       socialLinks: {
         instagram: doc.socialLinks?.instagram || DEFAULT_SITE_SETTINGS.socialLinks.instagram,
         facebook: doc.socialLinks?.facebook || DEFAULT_SITE_SETTINGS.socialLinks.facebook,
-        youtube: doc.socialLinks?.youtube || "",
+        youtube: doc.socialLinks?.youtube || DEFAULT_SITE_SETTINGS.socialLinks.youtube || "",
         twitter: doc.socialLinks?.twitter || "",
       },
       heroSlides: sanitizedSlides,
