@@ -75,4 +75,15 @@ export const DEFAULT_WORK_VIDEOS: {
   description: string;
   order: number;
   isActive: boolean;
-}[] = [];
+}[] = [
+  {
+    title: "Royal Palace Wedding Decor & Grand Entry",
+    category: "Wedding Decor",
+    videoUrl: "https://www.youtube.com/watch?v=lB8fc5bDnSY",
+    videoType: "youtube",
+    thumbnailUrl: "https://img.youtube.com/vi/lB8fc5bDnSY/maxresdefault.jpg",
+    description: "Exclusive royal wedding theme, floral arches and luxury stage setup in Rewa.",
+    order: 1,
+    isActive: true,
+  },
+];

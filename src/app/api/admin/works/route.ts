@@ -10,11 +10,13 @@ export async function GET() {
 
     // Seed default works if table is empty
     if (!works || works.length === 0) {
-      await WorkVideo.insertMany(DEFAULT_WORK_VIDEOS);
-      works = await WorkVideo.find().sort({ order: 1, createdAt: -1 }).lean();
+      if (DEFAULT_WORK_VIDEOS && DEFAULT_WORK_VIDEOS.length > 0) {
+        await WorkVideo.insertMany(DEFAULT_WORK_VIDEOS);
+        works = await WorkVideo.find().sort({ order: 1, createdAt: -1 }).lean();
+      }
     }
 
-    return NextResponse.json({ success: true, works });
+    return NextResponse.json({ success: true, works: works || [] });
   } catch (error: any) {
     console.error("GET /api/admin/works error:", error);
     return NextResponse.json(

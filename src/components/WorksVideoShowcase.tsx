@@ -34,9 +34,11 @@ interface WorksVideoShowcaseProps {
 export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseProps) {
   const { siteName, getWhatsAppLink } = useSettings();
   const { theme } = useTheme(); // Reactively re-renders when user changes theme (Rose, Royal, Sunset, Nature)
-  const [works, setWorks] = useState<WorkVideoItem[]>(
-    initialWorks && initialWorks.length > 0 ? initialWorks : DEFAULT_WORK_VIDEOS
-  );
+  const [works, setWorks] = useState<WorkVideoItem[]>(() => {
+    if (initialWorks && initialWorks.length > 0) return initialWorks;
+    if (DEFAULT_WORK_VIDEOS && DEFAULT_WORK_VIDEOS.length > 0) return DEFAULT_WORK_VIDEOS;
+    return [];
+  });
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isInView, setIsInView] = useState(true);
   const [hasInteracted, setHasInteracted] = useState(false);
@@ -54,7 +56,7 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
       fetch("/api/admin/works")
         .then((res) => res.json())
         .then((data) => {
-          if (data && data.success && data.works?.length > 0) {
+          if (data && data.success && Array.isArray(data.works) && data.works.length > 0) {
             setWorks(data.works);
           }
         })
@@ -120,14 +122,19 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
   }, [currentIndex]);
 
   const total = works.length;
-  const currentWork = works[currentIndex] || works[0] || DEFAULT_WORK_VIDEOS[0];
+  const currentWork: WorkVideoItem | null =
+    works && works.length > 0
+      ? works[currentIndex] || works[0]
+      : (DEFAULT_WORK_VIDEOS && DEFAULT_WORK_VIDEOS.length > 0 ? DEFAULT_WORK_VIDEOS[0] : null);
 
   const handlePrev = () => {
+    if (total <= 1) return;
     setHasInteracted(true);
     setCurrentIndex((prev) => (prev === 0 ? total - 1 : prev - 1));
   };
 
   const handleNext = () => {
+    if (total <= 1) return;
     setHasInteracted(true);
     setCurrentIndex((prev) => (prev === total - 1 ? 0 : prev + 1));
   };
@@ -140,6 +147,7 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
   // Sliding window pagination dots: Maximum 5 dots visible at any time
   const visibleDotIndices = useMemo(() => {
     const MAX_DOTS = 5;
+    if (total <= 0) return [];
     if (total <= MAX_DOTS) {
       return Array.from({ length: total }, (_, i) => i);
     }
@@ -151,8 +159,9 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
   // Derive unique categories dynamically from database works
   const uniqueCategories = useMemo(() => {
     const cats: string[] = [];
+    if (!works || works.length === 0) return cats;
     works.forEach((w) => {
-      if (w.category && !cats.includes(w.category)) {
+      if (w?.category && !cats.includes(w.category)) {
         cats.push(w.category);
       }
     });
@@ -162,7 +171,7 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
   const handleCategorySelect = (categoryName: string) => {
     setHasInteracted(true);
     const foundIdx = works.findIndex(
-      (w) => w.category?.toLowerCase() === categoryName.toLowerCase()
+      (w) => w?.category?.toLowerCase() === categoryName.toLowerCase()
     );
     if (foundIdx !== -1) {
       setCurrentIndex(foundIdx);
@@ -172,15 +181,15 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
   // Touch swipe handlers
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
+    setTouchStart(e.targetTouches[0]?.clientX ?? null);
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
+    setTouchEnd(e.targetTouches[0]?.clientX ?? null);
   };
 
   const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
+    if (touchStart === null || touchEnd === null) return;
     const distance = touchStart - touchEnd;
     const isLeftSwipe = distance > 40;
     const isRightSwipe = distance < -40;
@@ -191,17 +200,19 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
     }
   };
 
-  // Extract video details
-  const videoType = currentWork.videoType || detectVideoType(currentWork.videoUrl);
-  const youtubeId = getYouTubeId(currentWork.videoUrl);
-  const instagramId = getInstagramId(currentWork.videoUrl);
+  // Extract video details safely
+  const videoType = currentWork?.videoType || (currentWork?.videoUrl ? detectVideoType(currentWork.videoUrl) : "youtube");
+  const youtubeId = currentWork?.videoUrl ? getYouTubeId(currentWork.videoUrl) : null;
+  const instagramId = currentWork?.videoUrl ? getInstagramId(currentWork.videoUrl) : null;
 
   // Check if current video is a vertical video (YouTube Shorts, Instagram Reels, etc.)
-  const isVerticalVideo =
-    currentWork.videoUrl.includes("/shorts/") ||
-    currentWork.videoUrl.includes("/reel/") ||
-    currentWork.category?.toLowerCase().includes("reel") ||
-    currentWork.category?.toLowerCase().includes("short");
+  const isVerticalVideo = Boolean(
+    currentWork?.videoUrl &&
+      (currentWork.videoUrl.includes("/shorts/") ||
+        currentWork.videoUrl.includes("/reel/") ||
+        currentWork.category?.toLowerCase().includes("reel") ||
+        currentWork.category?.toLowerCase().includes("short"))
+  );
 
   // Fullscreen orientation handler:
   // When a 16:9 video enters fullscreen on mobile, rotate to landscape so it preserves its true ratio
@@ -240,7 +251,7 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
 
   // Fallback thumbnail if none provided
   const thumbnail =
-    currentWork.thumbnailUrl ||
+    currentWork?.thumbnailUrl ||
     (youtubeId ? `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg` : "/girlsimg.webp");
 
   // YouTube embed URL with autoplay parameters (mute=1 ensures modern browsers allow autoplay without blocking)
@@ -252,8 +263,13 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
     ? `https://www.instagram.com/p/${instagramId}/embed/captioned/`
     : "";
 
-  const waMessage = `Namaste ${siteName || "RIWAJ Events"}! 🙏 I saw your work on "${currentWork.title}" (${currentWork.category}). Can you please share pricing and availability for our event?`;
+  const waMessage = `Namaste ${siteName || "RIWAJ Events"}! 🙏 I saw your work on "${currentWork?.title || "Wedding Services"}" (${currentWork?.category || "Decor"}). Can you please share pricing and availability for our event?`;
   const waUrl = getWhatsAppLink(waMessage);
+
+  // If there are no videos or no valid currentWork, safely return null so it NEVER causes a client exception
+  if (!currentWork || !currentWork.videoUrl || total === 0) {
+    return null;
+  }
 
   return (
     <section
@@ -310,7 +326,7 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
           >
             <AnimatePresence mode="wait">
               <motion.div
-                key={currentWork.videoUrl + currentIndex}
+                key={(currentWork.videoUrl || "work") + currentIndex}
                 initial={{ opacity: 0, scale: 0.98 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.98 }}
@@ -323,7 +339,7 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
                     ref={iframeRef}
                     key={youtubeId + currentIndex}
                     src={ytEmbedUrl}
-                    title={currentWork.title}
+                    title={currentWork.title || "Wedding Showcase"}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
                     allowFullScreen
                     className="w-full h-full border-0"
@@ -333,7 +349,7 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
                   <div className="w-full h-full flex items-center justify-center bg-zinc-950 overflow-hidden relative">
                     <iframe
                       src={instaEmbedUrl}
-                      title={currentWork.title}
+                      title={currentWork.title || "Wedding Showcase"}
                       allowFullScreen
                       className="w-full h-full max-w-[480px] border-0 mx-auto"
                     />
@@ -355,7 +371,7 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
                   <div className="w-full h-full relative cursor-pointer" onClick={() => setIsInView(true)}>
                     <Image
                       src={thumbnail}
-                      alt={currentWork.title}
+                      alt={currentWork.title || "Wedding Showcase"}
                       fill
                       className={isVerticalVideo ? "object-contain" : "object-cover"}
                       priority={currentIndex === 0}
@@ -448,7 +464,7 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
           {/* ── Category Name (Centered below bullet navigation) ── */}
           <div className="mt-4 sm:mt-5 text-center px-4">
             <motion.div
-              key={currentWork.category}
+              key={currentWork.category || "category"}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.25 }}
@@ -458,7 +474,7 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
                 className="text-xl sm:text-3xl md:text-4xl font-serif font-black tracking-wide uppercase drop-shadow-md block"
                 style={{ color: "var(--c-secondary)" }}
               >
-                {currentWork.category}
+                {currentWork.category || "Wedding Decor"}
               </span>
             </motion.div>
           </div>
@@ -466,7 +482,7 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
           {/* Work Title & Description */}
           <div className="text-center mt-2.5 sm:mt-3 px-4">
             <h3 className="text-sm sm:text-lg font-medium text-white/95 max-w-2xl mx-auto">
-              {currentWork.title}
+              {currentWork.title || "Wedding Showcase"}
             </h3>
 
             {currentWork.description && (
@@ -493,7 +509,7 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
           {uniqueCategories.length > 0 && (
             <div className="mt-6 sm:mt-8 flex items-center justify-center gap-2 overflow-x-auto pb-2 scrollbar-none px-4">
               {uniqueCategories.map((cat) => {
-                const active = currentWork.category?.toLowerCase() === cat.toLowerCase();
+                const active = (currentWork.category || "").toLowerCase() === cat.toLowerCase();
                 return (
                   <button
                     key={cat}
