@@ -2,103 +2,17 @@ const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
 
-const iconsDir = path.join(__dirname, '..', 'public', 'icons');
+const rootDir = path.join(__dirname, '..');
+const publicDir = path.join(rootDir, 'public');
+const iconsDir = path.join(publicDir, 'icons');
+const faviconPath = path.join(rootDir, 'src', 'app', 'favicon.ico');
+const sourcePath = path.join(__dirname, 'assets', 'riwaj-logo-source.jpg');
+
 if (!fs.existsSync(iconsDir)) {
   fs.mkdirSync(iconsDir, { recursive: true });
 }
 
-// 1. Standard App Icon SVG (512x512)
-const appIconSvg = `
-<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#be123c"/>
-      <stop offset="40%" stop-color="#9f1239"/>
-      <stop offset="100%" stop-color="#4c0519"/>
-    </linearGradient>
-    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fef08a"/>
-      <stop offset="35%" stop-color="#f59e0b"/>
-      <stop offset="70%" stop-color="#d97706"/>
-      <stop offset="100%" stop-color="#b45309"/>
-    </linearGradient>
-    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.4"/>
-    </filter>
-  </defs>
-
-  <!-- Background with subtle luxury border -->
-  <rect width="512" height="512" rx="112" fill="url(#bgGrad)"/>
-  <rect x="14" y="14" width="484" height="484" rx="100" fill="none" stroke="url(#goldGrad)" stroke-width="4" stroke-opacity="0.6"/>
-  <rect x="24" y="24" width="464" height="464" rx="90" fill="none" stroke="url(#goldGrad)" stroke-width="1.5" stroke-dasharray="6,6" stroke-opacity="0.4"/>
-
-  <!-- Ornate Arch / Floral Garland -->
-  <g filter="url(#shadow)">
-    <!-- Royal Crown / Crest at top -->
-    <path d="M256 90 L275 130 L315 110 L295 150 L256 142 L217 150 L197 110 L237 130 Z" fill="url(#goldGrad)"/>
-    <circle cx="256" cy="82" r="6" fill="#fef08a"/>
-    <circle cx="195" cy="104" r="5" fill="#fef08a"/>
-    <circle cx="317" cy="104" r="5" fill="#fef08a"/>
-
-    <!-- Mandap Arch Curves -->
-    <path d="M120 340 C120 190, 392 190, 392 340" fill="none" stroke="url(#goldGrad)" stroke-width="5" stroke-linecap="round"/>
-    <path d="M140 340 C140 215, 372 215, 372 340" fill="none" stroke="url(#goldGrad)" stroke-width="2" stroke-opacity="0.7"/>
-
-    <!-- Central Royal Monogram 'R' -->
-    <text x="256" y="295" font-family="'Playfair Display', Georgia, serif" font-size="160" font-weight="bold" fill="url(#goldGrad)" text-anchor="middle">R</text>
-
-    <!-- Sparkles / Stars -->
-    <path d="M165 195 Q175 195 175 185 Q175 195 185 195 Q175 195 175 205 Q175 195 165 195 Z" fill="#fef08a"/>
-    <path d="M327 195 Q337 195 337 185 Q337 195 347 195 Q337 195 337 205 Q337 195 327 195 Z" fill="#fef08a"/>
-
-    <!-- Brand Name Text -->
-    <text x="256" y="375" font-family="'Playfair Display', Georgia, serif" font-size="44" font-weight="bold" letter-spacing="8" fill="#ffffff" text-anchor="middle">RIWAJ</text>
-    <text x="256" y="415" font-family="system-ui, sans-serif" font-size="16" font-weight="600" letter-spacing="6" fill="#fef08a" text-anchor="middle">VINDHYA EVENTS</text>
-  </g>
-</svg>
-`;
-
-// 2. Maskable Icon SVG (512x512) - Content stays inside safe zone (padding 18%)
-const maskableIconSvg = `
-<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="bgGradMask" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#be123c"/>
-      <stop offset="50%" stop-color="#9f1239"/>
-      <stop offset="100%" stop-color="#4c0519"/>
-    </linearGradient>
-    <linearGradient id="goldGradMask" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fef08a"/>
-      <stop offset="50%" stop-color="#f59e0b"/>
-      <stop offset="100%" stop-color="#d97706"/>
-    </linearGradient>
-  </defs>
-
-  <!-- Full background bleed for maskable -->
-  <rect width="512" height="512" fill="url(#bgGradMask)"/>
-
-  <!-- Safe Area Content: Center within 380x380 box -->
-  <g transform="translate(256, 256) scale(0.78) translate(-256, -256)">
-    <!-- Royal Crown -->
-    <path d="M256 100 L275 140 L315 120 L295 160 L256 152 L217 160 L197 120 L237 140 Z" fill="url(#goldGradMask)"/>
-    <circle cx="256" cy="92" r="6" fill="#fef08a"/>
-    <circle cx="195" cy="114" r="5" fill="#fef08a"/>
-    <circle cx="317" cy="114" r="5" fill="#fef08a"/>
-
-    <!-- Mandap Arch -->
-    <path d="M120 340 C120 200, 392 200, 392 340" fill="none" stroke="url(#goldGradMask)" stroke-width="6" stroke-linecap="round"/>
-
-    <!-- Central Monogram -->
-    <text x="256" y="295" font-family="'Playfair Display', Georgia, serif" font-size="155" font-weight="bold" fill="url(#goldGradMask)" text-anchor="middle">R</text>
-
-    <!-- Text -->
-    <text x="256" y="375" font-family="'Playfair Display', Georgia, serif" font-size="44" font-weight="bold" letter-spacing="8" fill="#ffffff" text-anchor="middle">RIWAJ</text>
-    <text x="256" y="415" font-family="system-ui, sans-serif" font-size="16" font-weight="600" letter-spacing="6" fill="#fef08a" text-anchor="middle">VINDHYA EVENTS</text>
-  </g>
-</svg>
-`;
-
-// 3. Badge Icon SVG (96x96 / 72x72) - High-contrast silhouette on transparent background
+// Badge Icon SVG (96x96 / 72x72) - High-contrast silhouette on transparent background
 const badgeIconSvg = `
 <svg width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -122,65 +36,120 @@ const badgeIconSvg = `
 </svg>
 `;
 
-async function generate() {
-  console.log('Generating PWA icons...');
-
-  // 512x512 App Icon
-  await sharp(Buffer.from(appIconSvg))
-    .resize(512, 512)
+// Cuts the round logo out of its square photo background.
+async function buildRoundLogo() {
+  const { width } = await sharp(sourcePath).metadata();
+  const center = width / 2;
+  const mask = Buffer.from(
+    `<svg width="${width}" height="${width}"><circle cx="${center}" cy="${center}" r="${center - 2}" fill="#fff"/></svg>`
+  );
+  return sharp(sourcePath)
+    .ensureAlpha()
+    .composite([{ input: mask, blend: 'dest-in' }])
     .png()
-    .toFile(path.join(iconsDir, 'icon-512x512.png'));
-  console.log('✓ icon-512x512.png generated');
-
-  // 192x192 App Icon
-  await sharp(Buffer.from(appIconSvg))
-    .resize(192, 192)
-    .png()
-    .toFile(path.join(iconsDir, 'icon-192x192.png'));
-  console.log('✓ icon-192x192.png generated');
-
-  // 180x180 Apple Touch Icon
-  await sharp(Buffer.from(appIconSvg))
-    .resize(180, 180)
-    .png()
-    .toFile(path.join(iconsDir, 'apple-touch-icon.png'));
-  console.log('✓ apple-touch-icon.png generated');
-
-  // 512x512 Maskable Icon
-  await sharp(Buffer.from(maskableIconSvg))
-    .resize(512, 512)
-    .png()
-    .toFile(path.join(iconsDir, 'icon-maskable-512x512.png'));
-  console.log('✓ icon-maskable-512x512.png generated');
-
-  // 192x192 Maskable Icon
-  await sharp(Buffer.from(maskableIconSvg))
-    .resize(192, 192)
-    .png()
-    .toFile(path.join(iconsDir, 'icon-maskable-192x192.png'));
-  console.log('✓ icon-maskable-192x192.png generated');
-
-  // 96x96 Badge Icon (User requested badge icon)
-  await sharp(Buffer.from(badgeIconSvg))
-    .resize(96, 96)
-    .png()
-    .toFile(path.join(iconsDir, 'badge-96x96.png'));
-  console.log('✓ badge-96x96.png generated');
-
-  // 72x72 Badge Icon
-  await sharp(Buffer.from(badgeIconSvg))
-    .resize(72, 72)
-    .png()
-    .toFile(path.join(iconsDir, 'badge-72x72.png'));
-  console.log('✓ badge-72x72.png generated');
-
-  // Save SVG source as well for vector crispness
-  fs.writeFileSync(path.join(iconsDir, 'icon.svg'), appIconSvg);
-  fs.writeFileSync(path.join(iconsDir, 'badge.svg'), badgeIconSvg);
-  console.log('All PWA icons generated successfully!');
+    .toBuffer();
 }
 
-generate().catch(err => {
+// Burgundy taken from the logo itself, for icons that must be fully opaque.
+async function sampleLogoBackground() {
+  const { data } = await sharp(sourcePath)
+    .extract({ left: 500, top: 150, width: 80, height: 40 })
+    .resize(1, 1)
+    .removeAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  return { r: data[0], g: data[1], b: data[2], alpha: 1 };
+}
+
+function resizeLogo(logo, size) {
+  return sharp(logo)
+    .resize(size, size, { kernel: 'lanczos3' })
+    .sharpen({ sigma: 0.5 })
+    .png({ compressionLevel: 9 });
+}
+
+// Square opaque icon with the logo centered, filling `scale` of the width.
+async function buildOpaqueIcon(logo, background, size, scale) {
+  const logoSize = Math.round(size * scale);
+  return sharp({ create: { width: size, height: size, channels: 4, background } })
+    .composite([{ input: await resizeLogo(logo, logoSize).toBuffer() }])
+    .png({ compressionLevel: 9 });
+}
+
+// An ICO file is a small directory header followed by embedded PNG images.
+function buildIco(images) {
+  const header = Buffer.alloc(6);
+  header.writeUInt16LE(1, 2);
+  header.writeUInt16LE(images.length, 4);
+
+  let offset = header.length + images.length * 16;
+  const entries = images.map(({ size, data }) => {
+    const entry = Buffer.alloc(16);
+    entry.writeUInt8(size, 0);
+    entry.writeUInt8(size, 1);
+    entry.writeUInt16LE(1, 4);
+    entry.writeUInt16LE(32, 6);
+    entry.writeUInt32LE(data.length, 8);
+    entry.writeUInt32LE(offset, 12);
+    offset += data.length;
+    return entry;
+  });
+
+  return Buffer.concat([header, ...entries, ...images.map(({ data }) => data)]);
+}
+
+async function generate() {
+  console.log('Generating logo, favicon and PWA icons...');
+
+  const logo = await buildRoundLogo();
+  const background = await sampleLogoBackground();
+
+  // Site logo used in the navbar and footer
+  await resizeLogo(logo, 256).toFile(path.join(publicDir, 'riwaj-logo.png'));
+  console.log('✓ riwaj-logo.png generated');
+
+  // Favicon
+  const faviconImages = await Promise.all(
+    [16, 32, 48].map(async (size) => ({
+      size,
+      data: await resizeLogo(logo, size).toBuffer(),
+    }))
+  );
+  fs.writeFileSync(faviconPath, buildIco(faviconImages));
+  console.log('✓ favicon.ico generated');
+
+  // App icons with transparent corners
+  for (const size of [192, 512]) {
+    await resizeLogo(logo, size).toFile(path.join(iconsDir, `icon-${size}x${size}.png`));
+    console.log(`✓ icon-${size}x${size}.png generated`);
+  }
+
+  // Apple touch icon: iOS paints transparency black, so it must be opaque
+  const appleIcon = await buildOpaqueIcon(logo, background, 180, 0.94);
+  await appleIcon.toFile(path.join(iconsDir, 'apple-touch-icon.png'));
+  console.log('✓ apple-touch-icon.png generated');
+
+  // Maskable icons: the logo stays inside the central 80% safe zone
+  for (const size of [192, 512]) {
+    const maskableIcon = await buildOpaqueIcon(logo, background, size, 0.8);
+    await maskableIcon.toFile(path.join(iconsDir, `icon-maskable-${size}x${size}.png`));
+    console.log(`✓ icon-maskable-${size}x${size}.png generated`);
+  }
+
+  // Notification badges
+  for (const size of [96, 72]) {
+    await sharp(Buffer.from(badgeIconSvg))
+      .resize(size, size)
+      .png()
+      .toFile(path.join(iconsDir, `badge-${size}x${size}.png`));
+    console.log(`✓ badge-${size}x${size}.png generated`);
+  }
+
+  fs.writeFileSync(path.join(iconsDir, 'badge.svg'), badgeIconSvg);
+  console.log('All icons generated successfully!');
+}
+
+generate().catch((err) => {
   console.error('Error generating icons:', err);
   process.exit(1);
 });

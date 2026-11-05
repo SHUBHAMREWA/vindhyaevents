@@ -51,9 +51,9 @@ export default function Footer() {
           {/* 1. Logo & Tagline */}
           <div className="lg:col-span-1 sm:col-span-2">
             <Link href="/" className="flex items-center gap-3.5 mb-4 w-fit group">
-              <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-amber-400/70 shadow-lg shrink-0 group-hover:scale-105 transition-transform duration-300 bg-amber-950/40">
+              <div className="relative w-12 h-12 rounded-full overflow-hidden shadow-lg shrink-0 group-hover:scale-105 transition-transform duration-300">
                 <Image
-                  src="/riwaj-logo.jpg"
+                  src="/riwaj-logo.png"
                   alt="RIWAJ Events"
                   fill
                   className="object-cover"

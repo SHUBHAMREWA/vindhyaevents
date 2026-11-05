@@ -160,9 +160,9 @@ export default function Navbar() {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 sm:gap-2.5 select-none shrink-0 group py-0.5">
-              <div className="relative w-[42px] h-[42px] sm:w-[48px] sm:h-[48px] lg:w-[52px] lg:h-[52px] rounded-full overflow-hidden border-2 border-amber-400/70 shadow-sm shrink-0 group-hover:scale-105 transition-transform duration-200 bg-amber-950/20">
+              <div className="relative w-[42px] h-[42px] sm:w-[48px] sm:h-[48px] lg:w-[52px] lg:h-[52px] rounded-full overflow-hidden shadow-sm shrink-0 group-hover:scale-105 transition-transform duration-200">
                 <Image
-                  src="/riwaj-logo.jpg"
+                  src="/riwaj-logo.png"
                   alt="RIWAJ Logo"
                   fill
                   className="object-cover"

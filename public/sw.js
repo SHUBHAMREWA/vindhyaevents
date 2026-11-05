@@ -1,6 +1,6 @@
 // RIWAJ (Vindhya Events) Progressive Web App Service Worker
-const CACHE_NAME = "riwaj-pwa-v2";
-const RUNTIME_CACHE = "riwaj-runtime-v2";
+const CACHE_NAME = "riwaj-pwa-v3";
+const RUNTIME_CACHE = "riwaj-runtime-v3";
 
 const PRECACHE_URLS = [
   "/",
