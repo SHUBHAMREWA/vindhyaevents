@@ -188,13 +188,13 @@ export default async function RootLayout({
           </SettingsProvider>
         </ThemeProvider>
         {/* Google Analytics */}
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-0SH969NJTJ" strategy="afterInteractive" />
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-39TJ68LG6V" strategy="afterInteractive" />
         <Script id="google-analytics" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-0SH969NJTJ');
+            gtag('config', 'G-39TJ68LG6V');
           `}
         </Script>
       </body>
