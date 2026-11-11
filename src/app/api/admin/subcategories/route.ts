@@ -5,6 +5,7 @@ import { SubCategory } from "@/lib/models/SubCategory";
 import { getAdminFromRequest } from "@/lib/auth";
 import { seedSubCategoriesIfEmpty } from "@/lib/seed";
 import { safeDeleteCloudinaryImage } from "@/lib/cloudinary";
+import { ALL_EVENTS } from "@/data/eventRoutes";
 
 export async function GET(req: NextRequest) {
   try {
@@ -19,7 +20,11 @@ export async function GET(req: NextRequest) {
 
     const { searchParams } = new URL(req.url);
     const category = searchParams.get("category");
-    const query = category && category !== "all" ? { category } : {};
+    // Only list pages that still exist in eventRoutes.ts; rows for deleted pages stay hidden
+    const query = {
+      slug: { $in: ALL_EVENTS.map((event) => event.slug) },
+      ...(category && category !== "all" ? { category } : {}),
+    };
 
     const subcategories = await SubCategory.find(query).sort({ category: 1, order: 1 });
     return NextResponse.json({ success: true, subcategories });

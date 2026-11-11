@@ -238,23 +238,45 @@ button:disabled,
   }
 }
 
-/* ─── Default Brand Theme Variables (Rose Preset - Default) ─────────────────────── */
+/* ─── Default Brand Theme Variables (RIWAJ logo preset - Default) ───────────────── */
+/* Keep in sync with the "riwaj" theme in src/context/ThemeContext.tsx */
 :root {
-  --c-primary:        #f43f5e;
-  --c-primary-dark:   #e11d48;
-  --c-primary-light:  #fda4af;
-  --c-secondary:      #f59e0b;
-  --c-accent:         #fb7185;
-  --c-bg:             #ffffff;
-  --c-bg-soft:        #fff1f2;
+  --c-primary:        #7a2e35;
+  --c-primary-dark:   #5e222a;
+  --c-primary-light:  #b87a72;
+  --c-secondary:      #c9a66b;
+  --c-accent:         #d8b98a;
+  --c-bg:             #fffaf3;
+  --c-bg-soft:        #f8eee0;
   --c-surface:        #ffffff;
-  --c-text:           #1c1917;
-  --c-text-muted:     #6b7280;
-  --c-border:         #fecdd3;
-  --c-banner-from:    #e11d48;
-  --c-banner-to:      #f43f5e;
-  --c-footer-from:    #881337;
-  --c-footer-to:      #4c0519;
+  --c-text:           #2b1517;
+  --c-text-muted:     #7a5f5c;
+  --c-border:         #ead9c6;
+  --c-banner-from:    #5e222a;
+  --c-banner-to:      #7a2e35;
+  --c-footer-from:    #4a1a20;
+  --c-footer-to:      #2a0d11;
+}
+
+/* The site uses Tailwind rose-* / pink-* classes in many places. While the RIWAJ
+   theme is active (no data-theme yet, or data-theme="riwaj") those shades are
+   remapped to the logo's maroon. Other themes keep Tailwind's own rose. */
+:root:not([data-theme]),
+:root[data-theme="riwaj"] {
+  --color-rose-50:  #fbf5f3;
+  --color-rose-100: #f6e8e5;
+  --color-rose-200: #ecd0cb;
+  --color-rose-300: #dcaca6;
+  --color-rose-400: #b9706c;
+  --color-rose-500: #8f3a40;
+  --color-rose-600: #7a2e35;
+  --color-rose-700: #66252d;
+  --color-rose-800: #521e25;
+  --color-rose-900: #3f171d;
+  --color-rose-950: #260c10;
+  --color-pink-50:  #fbf5f3;
+  --color-pink-500: #9b4a4a;
+  --color-pink-600: #843a3d;
 }
 
 /* ─── Hero slide text animation ─── */

@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 
-export type ThemeId = "rose" | "royal" | "sunset" | "nature";
+export type ThemeId = "riwaj" | "rose" | "royal" | "sunset" | "nature";
 
 export interface Theme {
   id: ThemeId;
@@ -13,7 +13,33 @@ export interface Theme {
   vars: Record<string, string>;
 }
 
+// The first theme is the site default. "riwaj" follows the logo colours; its rose-* remap lives in src/styles/index.css.
+const THEME_STORAGE_KEY = "site-theme-v2";
+
 export const THEMES: Theme[] = [
+  {
+    id: "riwaj",
+    name: "RIWAJ",
+    description: "Logo Maroon & Cream Gold",
+    dot: "#7a2e35",
+    vars: {
+      "--c-primary":        "#7a2e35",
+      "--c-primary-dark":   "#5e222a",
+      "--c-primary-light":  "#b87a72",
+      "--c-secondary":      "#c9a66b",
+      "--c-accent":         "#d8b98a",
+      "--c-bg":             "#fffaf3",
+      "--c-bg-soft":        "#f8eee0",
+      "--c-surface":        "#ffffff",
+      "--c-text":           "#2b1517",
+      "--c-text-muted":     "#7a5f5c",
+      "--c-border":         "#ead9c6",
+      "--c-banner-from":    "#5e222a",
+      "--c-banner-to":      "#7a2e35",
+      "--c-footer-from":    "#4a1a20",
+      "--c-footer-to":      "#2a0d11",
+    },
+  },
   {
     id: "rose",
     name: "Rose",
@@ -125,13 +151,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setTheme(t);
     const root = document.documentElement;
     Object.entries(t.vars).forEach(([key, val]) => root.style.setProperty(key, val));
+    root.setAttribute("data-theme", t.id);
     document.body.style.backgroundColor = t.vars["--c-bg"];
-    localStorage.setItem("site-theme", t.id);
+    localStorage.setItem(THEME_STORAGE_KEY, t.id);
   };
 
-  // On mount: read saved theme from localStorage, or default to rose
+  // On mount: read saved theme from localStorage, or default to the RIWAJ logo theme
   useEffect(() => {
-    const saved = localStorage.getItem("site-theme") as ThemeId | null;
+    const saved = localStorage.getItem(THEME_STORAGE_KEY) as ThemeId | null;
     if (saved) {
       const found = THEMES.find((t) => t.id === saved);
       if (found) {
@@ -139,7 +166,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         return () => clearTimeout(timer);
       }
     } else {
-      // Default apply rose theme
+      // Default apply RIWAJ logo theme
       applyTheme(THEMES[0]);
     }
   }, []);

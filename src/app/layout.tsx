@@ -112,7 +112,7 @@ export default async function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="RIWAJ Events" />
         <meta name="application-name" content="RIWAJ Events" />
-        <meta name="theme-color" content="#f43f5e" />
+        <meta name="theme-color" content="#7a2e35" />
 
         {/* ── Fonts ── */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />

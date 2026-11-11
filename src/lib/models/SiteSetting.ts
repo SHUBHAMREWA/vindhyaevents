@@ -55,7 +55,7 @@ export interface ISiteSetting extends Document {
   heroSlides: IHeroSlide[];
   stats: IStatItem[];
   testimonials: ITestimonialItem[];
-  defaultTheme: "rose" | "royal" | "nature" | "sunset";
+  defaultTheme: "riwaj" | "rose" | "royal" | "nature" | "sunset";
   createdAt: Date;
   updatedAt: Date;
 }
@@ -160,7 +160,7 @@ const SiteSettingSchema = new Schema<ISiteSetting>(
     ],
     defaultTheme: {
       type: String,
-      enum: ["rose", "royal", "nature", "sunset"],
+      enum: ["riwaj", "rose", "royal", "nature", "sunset"],
       default: "rose",
     },
   },

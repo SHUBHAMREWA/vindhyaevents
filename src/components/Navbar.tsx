@@ -12,7 +12,6 @@ import {
   Briefcase,
   Heart,
   UtensilsCrossed,
-  ChefHat,
   Flower2,
   Palette,
   Phone,
@@ -32,8 +31,6 @@ import {
 } from "@/data/eventRoutes";
 import "./cssFile/Navbar.css";
 
-const cateringCol1 = CATERING_EVENTS.slice(0, 6);
-const cateringCol2 = CATERING_EVENTS.slice(6);
 const decorationCol1 = DECORATION_EVENTS.slice(0, 6);
 const decorationCol2 = DECORATION_EVENTS.slice(6);
 const weddingCol1 = WEDDING_EVENTS.slice(0, 6);
@@ -199,7 +196,7 @@ export default function Navbar() {
                   type="button"
                   onClick={() => handleToggleMenu("catering")}
                   className={`nav-menu-item flex items-center gap-1.5 px-2.5 lg:px-3 py-1.5 rounded-xl text-gray-800 hover:text-emerald-700 hover:bg-emerald-50/70 transition-all ${
-                    openMegaMenu === "catering" || pathname.includes("-catering") || pathname.includes("buffet-live-counters") || pathname.includes("regional-cuisines")
+                    openMegaMenu === "catering" || pathname.includes("-catering")
                       ? "text-emerald-700 bg-emerald-50/80 font-bold"
                       : ""
                   }`}
@@ -222,7 +219,7 @@ export default function Navbar() {
                   <div
                     className="absolute top-full z-50 pt-2 animate-in fade-in duration-200 before:content-[''] before:absolute before:-top-3 before:left-0 before:right-0 before:h-4"
                     style={{
-                      width: "920px",
+                      width: "640px",
                       maxWidth: "calc(100vw - 32px)",
                       left: "0",
                     }}
@@ -233,7 +230,7 @@ export default function Navbar() {
                       className="bg-white rounded-3xl shadow-2xl border border-gray-100 p-6 text-xs"
                       style={{
                         display: "grid",
-                        gridTemplateColumns: "1.05fr 1.05fr 1.25fr",
+                        gridTemplateColumns: "1fr 1.25fr",
                         gap: "24px",
                       }}
                     >
@@ -251,7 +248,7 @@ export default function Navbar() {
                           </div>
                         </div>
                         <ul className="space-y-1">
-                          {cateringCol1.map((item) => (
+                          {CATERING_EVENTS.map((item) => (
                             <li key={item.slug}>
                               <Link
                                 href={`/${item.slug}`}
@@ -269,39 +266,7 @@ export default function Navbar() {
                         </ul>
                       </div>
 
-                      {/* Column 2: FOOD & PACKAGES */}
-                      <div>
-                        <div className="flex items-center gap-2 pb-2.5 mb-3 border-b border-amber-100">
-                          <div className="w-7 h-7 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-                            <ChefHat className="w-3.5 h-3.5" />
-                          </div>
-                          <div>
-                            <span className="font-bold text-gray-900 text-[11px] tracking-wider uppercase block">
-                              Food & Packages
-                            </span>
-                            <span className="text-[10px] text-gray-400 font-normal">लाइव काउंटर्स व पैकेज</span>
-                          </div>
-                        </div>
-                        <ul className="space-y-1">
-                          {cateringCol2.map((item) => (
-                            <li key={item.slug}>
-                              <Link
-                                href={`/${item.slug}`}
-                                onClick={() => setOpenMegaMenu(null)}
-                                className="flex items-center justify-between py-1.5 px-2.5 rounded-lg text-gray-700 hover:text-amber-700 hover:bg-amber-50/70 font-semibold text-xs transition-all group"
-                              >
-                                <span className="flex items-center gap-2">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 group-hover:scale-125 group-hover:bg-amber-600 transition-all shrink-0" />
-                                  <span>{item.menuTitle}</span>
-                                </span>
-                                <ArrowRight className="w-3 h-3 text-amber-600 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all shrink-0" />
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      {/* Column 3: Featured Catering Preview */}
+                      {/* Column 2: Featured Catering Preview */}
                       <div className="bg-gradient-to-br from-emerald-50/60 via-amber-50/40 to-white p-4 rounded-2xl border border-emerald-100/90 flex flex-col justify-between shadow-xs">
                         <div>
                           <div className="flex items-center justify-between pb-2 mb-3 border-b border-emerald-200/80">
@@ -345,7 +310,7 @@ export default function Navbar() {
 
                             {/* Card 2 */}
                             <Link
-                              href="/buffet-live-counters"
+                              href="/engagement-catering"
                               onClick={() => setOpenMegaMenu(null)}
                               className="group block rounded-xl overflow-hidden shadow-sm border border-white hover:shadow-md transition-all"
                             >
