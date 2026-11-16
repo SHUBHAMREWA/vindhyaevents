@@ -55,6 +55,7 @@ Next.js 16 App Router with React 18, TypeScript, Tailwind 4 and Mongoose. The pa
 - The root layout loads settings server-side via `getSiteSettings()` and passes them to `SettingsProvider`. It is `force-dynamic`, so pages are not statically cached.
 - Client components get content from `useInstantContent` (`src/lib/cache/`). It reads IndexedDB first and refreshes from `/api/public/content` in the background. In development it always fetches fresh. Inquiries made offline are queued in IndexedDB and synced later.
 - `src/app/[eventSlug]/page.tsx` renders event pages from the static `src/data/eventRoutes.ts`. Images and titles can be overridden by the matching `SubCategory` document. A new event needs an entry in `eventRoutes.ts`; existing databases won't get a new `SubCategory` automatically because seeding only runs when that collection is empty.
+- `/catalog` and `/catalog/[slug]` are server pages that read `CatalogItem` (type `occasion` or `entertainment`) through `src/lib/catalog.ts`. Admins manage items in the admin Catalog tab (`components/admin/CatalogManager.tsx`, API `/api/admin/catalog`). The API deletes Cloudinary photos when they are removed from an item or the item is deleted.
 - Themes are CSS variables (`--c-primary` and so on) defined in `src/context/ThemeContext.tsx`. Style with these rather than fixed colours on public pages.
 - `public/sw.js` caches pages and assets. Bump `CACHE_NAME` and `RUNTIME_CACHE` when changing cached assets such as icons. `public/manifest.json` and `src/app/manifest.ts` are duplicates, so keep them in sync.
 

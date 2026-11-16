@@ -952,6 +952,17 @@ export default function Navbar() {
                 <span>Gallery</span>
               </Link>
 
+              {/* Catalog */}
+              <Link
+                href="/catalog"
+                className={`nav-menu-item relative px-2.5 lg:px-3 py-1.5 rounded-xl text-gray-800 hover:text-rose-600 hover:bg-rose-50/60 transition-all ${
+                  pathname?.startsWith("/catalog") ? "text-rose-600 bg-rose-50/70" : ""
+                }`}
+                style={pathname?.startsWith("/catalog") ? { color: theme.vars["--c-primary"] } : {}}
+              >
+                <span>Catalog</span>
+              </Link>
+
               {/* Blog */}
               <Link
                 href="/blog"
@@ -1184,6 +1195,13 @@ export default function Navbar() {
                 className="block px-4 py-3 text-gray-800 font-bold text-sm rounded-xl hover:bg-rose-50"
               >
                 Gallery
+              </Link>
+              <Link
+                href="/catalog"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-4 py-3 text-gray-800 font-bold text-sm rounded-xl hover:bg-rose-50"
+              >
+                Catalog
               </Link>
               <Link
                 href="/blog"

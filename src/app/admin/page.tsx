@@ -62,6 +62,7 @@ import CustomerCRM from "@/components/admin/CustomerCRM";
 import BookingManagement from "@/components/admin/BookingManagement";
 import WhatsAppCenter from "@/components/admin/WhatsAppCenter";
 import ImagePreviewStudio from "@/components/admin/ImagePreviewStudio";
+import CatalogManager from "@/components/admin/CatalogManager";
 import { INDIAN_STATES_AND_CITIES, INDIAN_STATES } from "@/lib/indianLocations";
 
 // Client-side image compression and WebP conversion helper
@@ -142,6 +143,7 @@ export default function AdminDashboardPage() {
     | "services"
     | "blogs"
     | "gallery"
+    | "catalog"
     | "testimonials"
     | "team"
     | "settings"
@@ -156,6 +158,7 @@ export default function AdminDashboardPage() {
   const [inquiries, setInquiries] = useState<any[]>([]);
   const [vendors, setVendors] = useState<any[]>([]);
   const [works, setWorks] = useState<any[]>([]);
+  const [catalogCount, setCatalogCount] = useState<number | undefined>(undefined);
   const [subcategories, setSubcategories] = useState<any[]>([]);
   const [services, setServices] = useState<any[]>([]);
   const [blogs, setBlogs] = useState<any[]>([]);
@@ -427,6 +430,7 @@ export default function AdminDashboardPage() {
         fetchServices(),
         fetchBlogs(),
         fetchGallery(),
+        fetchCatalogCount(),
         fetchTestimonials(),
         fetchTeam(),
         fetchSettings(),
@@ -462,6 +466,16 @@ export default function AdminDashboardPage() {
       if (data.success) setVendors(data.vendors || []);
     } catch (err) {
       console.error("Error fetching vendors:", err);
+    }
+  };
+
+  const fetchCatalogCount = async () => {
+    try {
+      const res = await fetch("/api/admin/catalog");
+      const data = await res.json();
+      if (data.success) setCatalogCount((data.items || []).length);
+    } catch (err) {
+      console.error("Error fetching catalog:", err);
     }
   };
 
@@ -1551,6 +1565,7 @@ export default function AdminDashboardPage() {
                   { id: "vendors", label: "Vendor Directory", icon: Truck, count: vendors.length },
                   { id: "blogs", label: "Wedding Blogs", icon: BookOpen, count: blogs.length },
                   { id: "gallery", label: "Event Gallery", icon: ImageIcon, count: gallery.length },
+                  { id: "catalog", label: "Catalog", icon: LayoutGrid, count: catalogCount },
                 ].map((tab) => {
                   const Icon = tab.icon;
                   const isActive = activeTab === tab.id;
@@ -1725,6 +1740,7 @@ export default function AdminDashboardPage() {
               { id: "vendors", label: "Vendor Directory", icon: Truck, count: vendors.length },
               { id: "blogs", label: "Wedding Blogs", icon: BookOpen, count: blogs.length },
               { id: "gallery", label: "Event Gallery", icon: ImageIcon, count: gallery.length },
+                  { id: "catalog", label: "Catalog", icon: LayoutGrid, count: catalogCount },
             ].map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -3023,6 +3039,8 @@ export default function AdminDashboardPage() {
           )}
 
           {/* TAB 4: GALLERY */}
+          {activeTab === "catalog" && <CatalogManager onCountChange={setCatalogCount} />}
+
           {activeTab === "gallery" && (
             <div className="space-y-6">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">

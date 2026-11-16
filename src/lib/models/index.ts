@@ -12,3 +12,4 @@ export { Customer, type ICustomer, type ICustomerLocation, type ICustomerChild }
 export { Booking, type IBooking, type ISubEvent, type IAssignedPerson, type IBookingFinancials, type IPaymentRecord } from "./Booking";
 export { WhatsAppLog, type IWhatsAppLog } from "./WhatsAppLog";
 export { WorkVideo, type IWorkVideo } from "./WorkVideo";
+export { CatalogItem, CATALOG_TYPES, type ICatalogItem, type ICatalogImage, type CatalogType } from "./CatalogItem";
