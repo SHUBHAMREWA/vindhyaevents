@@ -90,8 +90,11 @@ export default function HeroCarousel({ slides: propSlides }: { slides?: HeroSlid
     ),
   };
 
+  // From md up the hero follows the 16:9 shape of the uploaded photos, so the
+  // whole image shows instead of being cropped to a fixed height. Phones keep a
+  // tall hero so the heading and button still fit.
   return (
-    <div className="relative h-[80vh] overflow-hidden mt-[88px]" id="home">
+    <div className="relative h-[80vh] md:h-auto md:aspect-video overflow-hidden mt-[88px]" id="home">
       {/* Prev */}
       {slides.length > 1 && (
         <button
@@ -116,7 +119,7 @@ export default function HeroCarousel({ slides: propSlides }: { slides?: HeroSlid
 
       <Slider ref={sliderRef} {...settings} className="h-full">
         {slides.map((slide, index) => (
-          <div key={index} className="relative h-[80vh] outline-none">
+          <div key={index} className="relative h-[80vh] md:h-auto md:aspect-video outline-none">
             {/* Image */}
             <div className="absolute inset-0">
               <Image

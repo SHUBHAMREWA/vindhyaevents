@@ -5,7 +5,7 @@ import React from "react";
  */
 export function HeroShimmerSkeleton() {
   return (
-    <div className="relative h-[80vh] mt-[88px] flex items-center justify-center text-center bg-gradient-to-br from-[#1c080d] via-[#300810] to-[#140508] text-white px-6 overflow-hidden">
+    <div className="relative h-[80vh] md:h-auto md:aspect-video mt-[88px] flex items-center justify-center text-center bg-gradient-to-br from-[#1c080d] via-[#300810] to-[#140508] text-white px-6 overflow-hidden">
       {/* Background shimmer wave */}
       <div className="absolute inset-0 shimmer-dark opacity-40 pointer-events-none" />
 
