@@ -2,115 +2,151 @@
 
 import PageLayout from "@/components/PageLayout";
 import BookConsultation from "@/components/BookConsultation";
-import { Phone, Mail, MapPin, Clock, MessageSquare } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, MessageSquare, ChevronRight } from "lucide-react";
 import { useSettings } from "@/context/SettingsContext";
 
 export default function ContactPage() {
   const { phone, telLink, getWhatsAppLink, email, address, siteName, googleMapUrl } = useSettings();
+  const brand = siteName && !siteName.toLowerCase().includes("vindhya") ? siteName : "RIWAJ Wedding & Events";
+
+  const contactMethods = [
+    {
+      key: "phone",
+      title: "Call Directly",
+      description: "Immediate discussion with our wedding team.",
+      mobileValue: phone,
+      cardValue: phone,
+      href: telLink,
+      external: false,
+      Icon: Phone,
+      iconBg: "bg-rose-500",
+      cardTone: "bg-rose-50/50 border-rose-100",
+      linkTone: "text-rose-600",
+    },
+    {
+      key: "whatsapp",
+      title: "WhatsApp Chat",
+      description: "Share decor photos, dates & get quick quotes.",
+      mobileValue: "Share photos & dates, get quick quotes",
+      cardValue: "Chat on WhatsApp →",
+      href: getWhatsAppLink(`Hi ${brand}, I want to book a consultation!`),
+      external: true,
+      Icon: MessageSquare,
+      iconBg: "bg-emerald-500",
+      cardTone: "bg-emerald-50/50 border-emerald-100",
+      linkTone: "text-emerald-600",
+    },
+    {
+      key: "email",
+      title: "Email Us",
+      description: "Send official inquiries & event briefs.",
+      mobileValue: email,
+      cardValue: email,
+      href: `mailto:${email}`,
+      external: false,
+      Icon: Mail,
+      iconBg: "bg-purple-600",
+      cardTone: "bg-purple-50/50 border-purple-100",
+      linkTone: "text-purple-600",
+    },
+    {
+      key: "address",
+      title: "Studio & Office",
+      description: "Visit our design gallery for a personal meeting.",
+      mobileValue: address,
+      cardValue: "Open on Map →",
+      href: googleMapUrl || "https://maps.app.goo.gl/oxD7riczpGY7z4LJ7",
+      external: true,
+      Icon: MapPin,
+      iconBg: "bg-amber-500",
+      cardTone: "bg-amber-50/50 border-amber-100",
+      linkTone: "text-amber-700",
+    },
+    {
+      key: "hours",
+      title: "Working Hours",
+      description: "Available 7 days a week for booked couples.",
+      mobileValue: "Mon – Sun: 9 AM – 9 PM",
+      cardValue: "Mon – Sun: 9 AM – 9 PM",
+      href: "",
+      external: false,
+      Icon: Clock,
+      iconBg: "bg-blue-500",
+      cardTone: "bg-blue-50/50 border-blue-100",
+      linkTone: "text-gray-800",
+    },
+  ];
 
   return (
     <PageLayout
       badge="Let's Connect"
-      title={`Contact ${siteName && !siteName.toLowerCase().includes("vindhya") ? siteName : "RIWAJ Wedding & Events"}`}
+      title={`Contact ${brand}`}
       subtitle="Have questions or ready to plan your fairytale wedding? Reach out to our expert team for a complimentary personalized consultation."
     >
-      {/* ── Contact Info Horizontal/Grid ─────────────────────────────────── */}
+      {/* ── Contact Info: stacked list on phones, card grid from sm up ───────────── */}
       <section className="py-4 md:py-16 bg-white border-b border-gray-100">
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
-          <div className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar gap-2.5 sm:gap-4 pb-2 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-5">
-            {/* Phone */}
-            <div className="w-[195px] xs:w-[215px] sm:w-auto shrink-0 snap-start p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl bg-rose-50/50 border border-rose-100 flex flex-col justify-between hover:shadow-lg transition-all">
-              <div>
-                <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-rose-500 text-white flex items-center justify-center mb-2.5 sm:mb-3 shadow-sm sm:shadow-md">
-                  <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
-                </div>
-                <h3 className="font-serif font-bold text-sm sm:text-base text-gray-900 mb-0.5 sm:mb-1">Call Directly</h3>
-                <p className="text-[11px] sm:text-xs text-gray-500 mb-2 sm:mb-3 leading-tight sm:leading-normal">Immediate discussion with our wedding team.</p>
-              </div>
-              <a
-                href={telLink}
-                className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-rose-600 hover:text-rose-700 mt-auto truncate"
-              >
-                <span suppressHydrationWarning>{phone}</span>
-              </a>
-            </div>
+          {/* Phones: one compact tappable row per contact method */}
+          <ul className="sm:hidden divide-y divide-gray-100 rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden">
+            {contactMethods.map(({ key, title, mobileValue, href, external, Icon, iconBg }) => {
+              const content = (
+                <>
+                  <span className={`w-9 h-9 shrink-0 rounded-xl ${iconBg} text-white flex items-center justify-center`}>
+                    <Icon className="w-4 h-4" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-sm font-semibold text-gray-900">{title}</span>
+                    <span suppressHydrationWarning className="block text-xs text-gray-500 truncate">{mobileValue}</span>
+                  </span>
+                  {href && <ChevronRight className="w-4 h-4 shrink-0 text-gray-300" />}
+                </>
+              );
+              return (
+                <li key={key}>
+                  {href ? (
+                    <a
+                      href={href}
+                      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                      className="flex items-center gap-3 px-3.5 py-3 active:bg-gray-50"
+                    >
+                      {content}
+                    </a>
+                  ) : (
+                    <div className="flex items-center gap-3 px-3.5 py-3">{content}</div>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
 
-            {/* WhatsApp */}
-            <div className="w-[195px] xs:w-[215px] sm:w-auto shrink-0 snap-start p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl bg-emerald-50/50 border border-emerald-100 flex flex-col justify-between hover:shadow-lg transition-all">
-              <div>
-                <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-emerald-500 text-white flex items-center justify-center mb-2.5 sm:mb-3 shadow-sm sm:shadow-md">
-                  <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5" />
+          {/* Tablet and desktop: card grid */}
+          <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            {contactMethods.map(({ key, title, description, cardValue, href, external, Icon, iconBg, cardTone, linkTone }) => {
+              const className = `p-5 rounded-3xl border ${cardTone} flex flex-col justify-between hover:shadow-lg transition-all group`;
+              const body = (
+                <>
+                  <div>
+                    <div className={`w-11 h-11 rounded-2xl ${iconBg} text-white flex items-center justify-center mb-3 shadow-md group-hover:scale-105 transition-transform`}>
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-serif font-bold text-base text-gray-900 mb-1">{title}</h3>
+                    <p className="text-xs text-gray-500 mb-3">{description}</p>
+                  </div>
+                  <span suppressHydrationWarning className={`mt-auto text-xs font-bold truncate ${linkTone}`}>
+                    {cardValue}
+                  </span>
+                </>
+              );
+              return href ? (
+                <a key={key} href={href} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})} className={className}>
+                  {body}
+                </a>
+              ) : (
+                <div key={key} className={className}>
+                  {body}
                 </div>
-                <h3 className="font-serif font-bold text-sm sm:text-base text-gray-900 mb-0.5 sm:mb-1">WhatsApp Chat</h3>
-                <p className="text-[11px] sm:text-xs text-gray-500 mb-2 sm:mb-3 leading-tight sm:leading-normal">Share decor photos, dates & get quick quotes.</p>
-              </div>
-              <a
-                href={getWhatsAppLink(`Hi ${siteName && !siteName.toLowerCase().includes("vindhya") ? siteName : "RIWAJ Wedding & Events"}, I want to book a consultation!`)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-emerald-600 hover:text-emerald-700 mt-auto"
-              >
-                <span>Chat on WhatsApp →</span>
-              </a>
-            </div>
-
-            {/* Email */}
-            <div className="w-[195px] xs:w-[215px] sm:w-auto shrink-0 snap-start p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl bg-purple-50/50 border border-purple-100 flex flex-col justify-between hover:shadow-lg transition-all">
-              <div>
-                <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-purple-600 text-white flex items-center justify-center mb-2.5 sm:mb-3 shadow-sm sm:shadow-md">
-                  <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
-                </div>
-                <h3 className="font-serif font-bold text-sm sm:text-base text-gray-900 mb-0.5 sm:mb-1">Email Us</h3>
-                <p className="text-[11px] sm:text-xs text-gray-500 mb-2 sm:mb-3 leading-tight sm:leading-normal">Send official inquiries & event briefs.</p>
-              </div>
-              <a
-                href={`mailto:${email}`}
-                className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-purple-600 hover:text-purple-700 mt-auto truncate"
-                title={email}
-              >
-                <span suppressHydrationWarning>{email}</span>
-              </a>
-            </div>
-
-            {/* Address */}
-            <a
-              href={googleMapUrl || "https://maps.app.goo.gl/oxD7riczpGY7z4LJ7"}
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Click to navigate on Google Maps"
-              className="w-[195px] xs:w-[215px] sm:w-auto shrink-0 snap-start p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl bg-amber-50/50 border border-amber-100 flex flex-col justify-between hover:shadow-lg hover:border-amber-300 transition-all group"
-            >
-              <div>
-                <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-amber-500 text-white flex items-center justify-center mb-2.5 sm:mb-3 shadow-sm sm:shadow-md group-hover:scale-105 transition-transform">
-                  <MapPin className="w-4 h-4 sm:w-5 sm:h-5" />
-                </div>
-                <h3 className="font-serif font-bold text-sm sm:text-base text-gray-900 mb-0.5 sm:mb-1">Studio & Office</h3>
-                <p className="text-[11px] sm:text-xs text-gray-500 mb-2 sm:mb-3 leading-tight sm:leading-normal">Visit our design gallery for a personal meeting.</p>
-              </div>
-              <div className="mt-auto">
-                <span suppressHydrationWarning className="text-[11px] sm:text-xs font-semibold text-gray-800 line-clamp-2 block">{address}</span>
-                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-700 group-hover:text-amber-800 mt-1">
-                  <span>Open on Map →</span>
-                </span>
-              </div>
-            </a>
-
-            {/* Working Hours */}
-            <div className="w-[195px] xs:w-[215px] sm:w-auto shrink-0 snap-start p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl bg-blue-50/50 border border-blue-100 flex flex-col justify-between hover:shadow-lg transition-all">
-              <div>
-                <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-blue-500 text-white flex items-center justify-center mb-2.5 sm:mb-3 shadow-sm sm:shadow-md">
-                  <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
-                </div>
-                <h3 className="font-serif font-bold text-sm sm:text-base text-gray-900 mb-0.5 sm:mb-1">Hours</h3>
-                <p className="text-[11px] sm:text-xs text-gray-500 mb-2 sm:mb-3 leading-tight sm:leading-normal">Available 7 days a week for booked couples.</p>
-              </div>
-              <span className="text-[11px] sm:text-xs font-semibold text-gray-800 mt-auto">Mon – Sun: 9 AM – 9 PM</span>
-            </div>
-          </div>
-
-          {/* Mobile Swipe Indicator */}
-          <div className="flex sm:hidden items-center justify-center gap-1.5 mt-2 text-[10px] text-gray-400 font-medium">
-            <span>← Swipe options horizontally →</span>
+              );
+            })}
           </div>
         </div>
       </section>
