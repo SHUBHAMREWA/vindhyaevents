@@ -18,18 +18,20 @@ function CoverFallback({ title }: { title: string }) {
   );
 }
 
+// On phones the cards sit in a grid. From md up they share one row, and the
+// hovered (or keyboard-focused) card grows while the others shrink to make room.
 function OccasionCard({ item }: { item: CatalogItemData }) {
   return (
     <Link
       href={`/catalog/${item.slug}`}
-      className="group relative block aspect-[3/4] overflow-hidden rounded-2xl shadow-md transition-shadow hover:shadow-xl"
+      className="group relative block aspect-[3/4] overflow-hidden rounded-2xl shadow-md transition-all duration-500 ease-out hover:shadow-xl md:aspect-auto md:h-full md:min-w-0 md:flex-1 md:hover:flex-[4] md:focus-visible:flex-[4]"
     >
       {item.coverUrl ? (
         <Image
           src={item.coverUrl}
           alt={`${item.title} décor by RIWAJ`}
           fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+          sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 60vw"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
       ) : (
@@ -37,8 +39,8 @@ function OccasionCard({ item }: { item: CatalogItemData }) {
       )}
       <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
       <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4">
-        <h3 className="font-serif text-lg font-bold leading-tight text-white sm:text-2xl">{item.title}</h3>
-        <span className="mt-2 inline-flex items-center gap-1 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-gray-900 transition-colors group-hover:bg-white">
+        <h3 className="whitespace-nowrap font-serif text-lg font-bold leading-tight text-white sm:text-2xl">{item.title}</h3>
+        <span className="mt-2 inline-flex items-center gap-1 whitespace-nowrap rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-gray-900 transition-colors group-hover:bg-white">
           View All <ArrowRight className="h-3 w-3" />
         </span>
       </div>
@@ -85,7 +87,7 @@ export default function CatalogView({ items }: { items: CatalogItemData[] }) {
               <h2 className="font-serif text-2xl font-bold text-gray-900 md:text-4xl">Occasions</h2>
               <p className="mt-1 text-sm text-gray-500 md:text-base">Tap an occasion to see all its photos.</p>
             </div>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:flex md:h-[420px] lg:h-[480px]">
               {occasions.map((item) => (
                 <OccasionCard key={item.id} item={item} />
               ))}
