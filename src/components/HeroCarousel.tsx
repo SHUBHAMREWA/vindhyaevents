@@ -6,6 +6,7 @@ import Image from "next/image";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useRouter } from "next/navigation";
+import { ChevronDown } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { useSettings } from "@/context/SettingsContext";
 import { HeroShimmerSkeleton } from "@/components/HomeSkeletons";
@@ -174,6 +175,24 @@ export default function HeroCarousel({ slides: propSlides }: { slides?: HeroSlid
           </div>
         ))}
       </Slider>
+
+      {/* Scroll hint: jumps to the section right below the hero. Hidden on
+          tablets, where the 16:9 hero is too short to fit it under the button. */}
+      <button
+        type="button"
+        onClick={(e) => {
+          const hero = e.currentTarget.parentElement;
+          if (!hero) return;
+          window.scrollTo({ top: hero.getBoundingClientRect().bottom + window.scrollY - 80, behavior: "smooth" });
+        }}
+        aria-label="Scroll down"
+        className="absolute bottom-12 sm:bottom-16 left-1/2 -translate-x-1/2 z-30 flex md:hidden lg:flex flex-col items-center gap-1 text-white/90 hover:text-white transition-colors"
+      >
+        <span className="text-[10px] font-semibold uppercase tracking-[0.2em] hero-subtitle-shadow">Scroll</span>
+        <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/40 bg-black/30 backdrop-blur-sm animate-bounce">
+          <ChevronDown className="h-5 w-5" />
+        </span>
+      </button>
     </div>
   );
 }
