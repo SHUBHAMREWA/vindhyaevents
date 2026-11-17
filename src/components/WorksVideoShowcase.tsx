@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import Image from "next/image";
 import {
@@ -40,11 +40,11 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
     return [];
   });
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isInView, setIsInView] = useState(true);
+  // Videos never start on their own: the visitor presses play. Only the video
+  // they started plays, so changing to another one shows its thumbnail again.
+  const [startedIndex, setStartedIndex] = useState<number | null>(null);
+  const hasStarted = startedIndex === currentIndex;
   const [hasInteracted, setHasInteracted] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
 
   // Touch swipe support for mobile
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -63,63 +63,6 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
         .catch(() => {});
     }
   }, [initialWorks]);
-
-  // Autoplay Trigger Function: send playVideo command to YouTube iframe or video element
-  const triggerAutoplay = () => {
-    setIsInView(true);
-    if (iframeRef.current && iframeRef.current.contentWindow) {
-      try {
-        iframeRef.current.contentWindow.postMessage(
-          JSON.stringify({ event: "command", func: "playVideo", args: "" }),
-          "*"
-        );
-      } catch (_) {}
-    }
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => {});
-    }
-  };
-
-  // Scroll & Touch Event Listeners: Jaise hi user scroll ya touch kare, turant video autoplay ho jaye
-  useEffect(() => {
-    const handleScrollEvent = () => {
-      triggerAutoplay();
-    };
-
-    window.addEventListener("scroll", handleScrollEvent, { passive: true });
-    window.addEventListener("touchmove", handleScrollEvent, { passive: true });
-    window.addEventListener("wheel", handleScrollEvent, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScrollEvent);
-      window.removeEventListener("touchmove", handleScrollEvent);
-      window.removeEventListener("wheel", handleScrollEvent);
-    };
-  }, [currentIndex]);
-
-  // IntersectionObserver: jab user scroll karke showcase section par aaye
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting) {
-          triggerAutoplay();
-        }
-      },
-      { threshold: 0.05, rootMargin: "150px" }
-    );
-
-    const currentRef = sectionRef.current;
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
-  }, [currentIndex]);
 
   const total = works.length;
   const currentWork: WorkVideoItem | null =
@@ -254,9 +197,10 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
     currentWork?.thumbnailUrl ||
     (youtubeId ? `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg` : "/girlsimg.webp");
 
-  // YouTube embed URL with autoplay parameters (mute=1 ensures modern browsers allow autoplay without blocking)
+  // YouTube embed URL. The iframe is only mounted after the visitor presses play,
+  // so autoplay=1 here starts the video they asked for, with sound.
   const ytEmbedUrl = youtubeId
-    ? `https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=1&modestbranding=1&rel=0&playsinline=1&enablejsapi=1`
+    ? `https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&loop=1&playlist=${youtubeId}&controls=1&modestbranding=1&rel=0&playsinline=1&enablejsapi=1`
     : "";
 
   const instaEmbedUrl = instagramId
@@ -273,7 +217,6 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
 
   return (
     <section
-      ref={sectionRef}
       id="works-showcase"
       className="py-12 sm:py-20 relative overflow-hidden text-white transition-colors duration-500"
       style={{
@@ -334,9 +277,8 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
                 className="w-full h-full relative"
               >
                 {/* 1. YouTube Player */}
-                {videoType === "youtube" && youtubeId && isInView ? (
+                {videoType === "youtube" && youtubeId && hasStarted ? (
                   <iframe
-                    ref={iframeRef}
                     key={youtubeId + currentIndex}
                     src={ytEmbedUrl}
                     title={currentWork.title || "Wedding Showcase"}
@@ -357,18 +299,17 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
                 ) : videoType === "custom" && currentWork.videoUrl.endsWith(".mp4") ? (
                   /* 3. Direct MP4 video */
                   <video
-                    ref={videoRef}
                     src={currentWork.videoUrl}
-                    autoPlay
-                    muted
+                    poster={currentWork.thumbnailUrl || undefined}
+                    preload="metadata"
                     loop
                     playsInline
                     controls
                     className="w-full h-full object-contain"
                   />
                 ) : (
-                  /* 4. Preload Thumbnail / Waiting for In-View */
-                  <div className="w-full h-full relative cursor-pointer" onClick={() => setIsInView(true)}>
+                  /* 4. Thumbnail with play button, shown until the visitor presses play */
+                  <div className="w-full h-full relative cursor-pointer" onClick={() => setStartedIndex(currentIndex)}>
                     <Image
                       src={thumbnail}
                       alt={currentWork.title || "Wedding Showcase"}
