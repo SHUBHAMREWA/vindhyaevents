@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useInstantContent } from "@/lib/cache/useInstantContent";
 import { GalleryShimmerSkeleton } from "@/components/HomeSkeletons";
+import MasonryGrid from "@/components/MasonryGrid";
 
 export default function GalleryPreview() {
   const { content, isLoading } = useInstantContent();
@@ -32,18 +33,22 @@ export default function GalleryPreview() {
         {isLoading && (!content.gallery || content.gallery.length === 0) ? (
           <GalleryShimmerSkeleton />
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {preview.map((img, i) => (
-              <motion.div key={img.url || i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.08 }}
-                className="relative aspect-[4/3] rounded-2xl overflow-hidden group shadow-md hover:shadow-xl">
-                <Image src={img.url} alt={img.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700" sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw" loading="lazy" />
+          <MasonryGrid
+            items={preview.filter((img) => img.url)}
+            columns={{ base: 2, lg: 3 }}
+            gapClassName="gap-3 md:gap-5"
+            getKey={(img, i) => img.url + i}
+            renderItem={(img, i) => (
+              <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.08 }}
+                className="relative rounded-2xl overflow-hidden group shadow-md hover:shadow-xl bg-white">
+                <Image src={img.url} alt={img.title} width={800} height={600} className="block h-auto w-full group-hover:scale-105 transition-transform duration-700" sizes="(max-width:1024px) 50vw, 33vw" loading="lazy" />
                 <div className="absolute inset-0 flex items-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                   style={{ background: "linear-gradient(to top, rgba(0,0,0,0.6), transparent)" }}>
                   <span className="text-white font-medium text-sm">{img.title}</span>
                 </div>
               </motion.div>
-            ))}
-          </div>
+            )}
+          />
         )}
 
         <div className="text-center mt-10">

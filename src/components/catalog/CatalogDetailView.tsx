@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, ChevronLeft, ChevronRight, X } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
+import MasonryGrid from "@/components/MasonryGrid";
 import { useSettings } from "@/context/SettingsContext";
 import type { CatalogItemData } from "@/lib/catalog";
 
@@ -50,13 +51,14 @@ export default function CatalogDetailView({ item }: { item: CatalogItemData }) {
         </Link>
 
         {photos.length > 0 ? (
-          <div className="columns-2 gap-3 sm:gap-4 md:columns-3 lg:columns-4">
-            {photos.map((photo, index) => (
+          <MasonryGrid
+            items={photos}
+            getKey={(photo, index) => `${photo.url}-${index}`}
+            renderItem={(photo, index) => (
               <button
-                key={`${photo.url}-${index}`}
                 type="button"
                 onClick={() => setOpenIndex(index)}
-                className="mb-3 block w-full break-inside-avoid overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-lg sm:mb-4"
+                className="block w-full overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-lg"
               >
                 <span className="block overflow-hidden">
                   <Image
@@ -74,8 +76,8 @@ export default function CatalogDetailView({ item }: { item: CatalogItemData }) {
                   </span>
                 )}
               </button>
-            ))}
-          </div>
+            )}
+          />
         ) : (
           <p className="py-12 text-center text-gray-500">Photos for {item.title} are coming soon.</p>
         )}

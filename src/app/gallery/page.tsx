@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import PageLayout from "@/components/PageLayout";
+import MasonryGrid from "@/components/MasonryGrid";
 import { motion, AnimatePresence } from "motion/react";
 import Image from "next/image";
 import { X, ZoomIn, Image as ImageIcon } from "lucide-react";
@@ -91,36 +92,38 @@ export default function GalleryPage() {
               </p>
             </div>
           ) : (
-            <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-              <AnimatePresence>
-                {filtered.length === 0 ? (
-                  <div className="col-span-full py-16 text-center text-gray-400">
-                    <p className="text-base font-serif text-gray-600">No photos available in &quot;{selected}&quot; yet</p>
-                    <p className="text-xs text-gray-400 mt-1">Select another category above to view our portfolio.</p>
-                  </div>
-                ) : (
-                  filtered.map((img, i) => (
-                    <motion.div key={img.url + i}
-                      layout
-                      initial={{ opacity: 0, scale: 0.92 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.92 }}
-                      transition={{ duration: 0.4, delay: i * 0.04 }}
-                      className="relative aspect-[4/3] rounded-2xl overflow-hidden group cursor-pointer shadow-md hover:shadow-2xl"
-                      onClick={() => setLightbox(img)}
-                    >
-                      <Image src={img.url} alt={img.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700" sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 25vw" loading="lazy" />
-                      <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300"
-                        style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 100%)" }}>
-                        <ZoomIn className="w-8 h-8 text-white mb-2" />
-                        <p className="text-white font-semibold text-sm">{img.title}</p>
-                        <span className="text-white/70 text-xs mt-1">{img.category}</span>
-                      </div>
-                    </motion.div>
-                  ))
+            filtered.length === 0 ? (
+              <div className="py-16 text-center text-gray-400">
+                <p className="text-base font-serif text-gray-600">No photos available in &quot;{selected}&quot; yet</p>
+                <p className="text-xs text-gray-400 mt-1">Select another category above to view our portfolio.</p>
+              </div>
+            ) : (
+              // Each photo keeps its own shape, Pinterest style. The key makes the
+              // fade-in replay when the category changes.
+              <MasonryGrid
+                key={selected}
+                items={filtered}
+                gapClassName="gap-3 md:gap-5"
+                getKey={(img, i) => img.url + i}
+                renderItem={(img, i) => (
+                  <motion.div
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: Math.min(i, 12) * 0.04 }}
+                    className="relative rounded-2xl overflow-hidden group cursor-pointer shadow-md hover:shadow-2xl bg-white"
+                    onClick={() => setLightbox(img)}
+                  >
+                    <Image src={img.url} alt={img.title} width={800} height={600} className="block h-auto w-full group-hover:scale-105 transition-transform duration-700" sizes="(max-width:768px) 50vw, (max-width:1024px) 33vw, 25vw" loading="lazy" />
+                    <div className="absolute inset-0 flex flex-col items-center justify-center p-3 text-center opacity-0 group-hover:opacity-100 transition-all duration-300"
+                      style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 100%)" }}>
+                      <ZoomIn className="w-8 h-8 text-white mb-2" />
+                      <p className="text-white font-semibold text-sm">{img.title}</p>
+                      <span className="text-white/70 text-xs mt-1">{img.category}</span>
+                    </div>
+                  </motion.div>
                 )}
-              </AnimatePresence>
-            </motion.div>
+              />
+            )
           )}
         </div>
       </section>
