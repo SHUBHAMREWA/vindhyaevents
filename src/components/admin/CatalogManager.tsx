@@ -24,6 +24,7 @@ interface CatalogImage {
   url: string;
   public_id?: string;
   alt?: string;
+  title?: string;
 }
 
 interface CatalogItem {
@@ -67,6 +68,16 @@ async function uploadImage(file: File): Promise<CatalogImage | null> {
   return { url: data.data.url, public_id: data.data.public_id || "", alt: "" };
 }
 
+// Deletes photos from Cloudinary that were uploaded in the form but never saved.
+function discardUploads(images: CatalogImage[]) {
+  for (const image of images) {
+    const query = image.public_id
+      ? `public_id=${encodeURIComponent(image.public_id)}`
+      : `url=${encodeURIComponent(image.url)}`;
+    fetch(`/api/upload?${query}`, { method: "DELETE" }).catch(() => {});
+  }
+}
+
 export default function CatalogManager({ onCountChange }: { onCountChange?: (count: number) => void }) {
   const [items, setItems] = useState<CatalogItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -77,6 +88,25 @@ export default function CatalogManager({ onCountChange }: { onCountChange?: (cou
   const [error, setError] = useState("");
   const coverInput = useRef<HTMLInputElement>(null);
   const galleryInput = useRef<HTMLInputElement>(null);
+  // Photos uploaded since the form was opened. Saved photos are cleaned up by
+  // the API; these exist only in Cloudinary until the item is saved.
+  const sessionUploads = useRef<CatalogImage[]>([]);
+  // Changes each time the form opens or closes, so an upload that finishes
+  // after the form was closed can be recognised and deleted.
+  const formSession = useRef(0);
+
+  const startSession = () => {
+    formSession.current += 1;
+    sessionUploads.current = [];
+  };
+
+  // Closes the form. `kept` is the saved item, or null when cancelling.
+  const closeEditor = (kept: CatalogItem | null) => {
+    const keptUrls = new Set(kept ? [kept.coverImage?.url, ...kept.images.map((image) => image.url)] : []);
+    discardUploads(sessionUploads.current.filter((image) => !keptUrls.has(image.url)));
+    startSession();
+    setEditing(null);
+  };
 
   const load = async () => {
     try {
@@ -107,11 +137,13 @@ export default function CatalogManager({ onCountChange }: { onCountChange?: (cou
     const sameType = items.filter((item) => item.type === type);
     const nextOrder = sameType.reduce((max, item) => Math.max(max, item.order), 0) + 1;
     setError("");
+    startSession();
     setEditing(emptyItem(type, nextOrder));
   };
 
   const openEdit = (item: CatalogItem) => {
     setError("");
+    startSession();
     setEditing({
       ...emptyItem(item.type, item.order),
       ...item,
@@ -143,7 +175,7 @@ export default function CatalogManager({ onCountChange }: { onCountChange?: (cou
         setError(data.message || "Could not save this item.");
         return;
       }
-      setEditing(null);
+      closeEditor(editing);
       await load();
     } catch {
       setError("Could not save this item. Check your connection and try again.");
@@ -191,10 +223,15 @@ export default function CatalogManager({ onCountChange }: { onCountChange?: (cou
   const handleCoverUpload = async (files: FileList | null) => {
     const file = files?.[0];
     if (!file || !editing) return;
+    const session = formSession.current;
     setUploadStatus("Uploading cover photo...");
     try {
       const image = await uploadImage(file);
-      if (image) setEditing((prev) => (prev ? { ...prev, coverImage: image } : prev));
+      if (image && session !== formSession.current) discardUploads([image]);
+      else if (image) {
+        sessionUploads.current.push(image);
+        setEditing((prev) => (prev ? { ...prev, coverImage: image } : prev));
+      }
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -206,8 +243,10 @@ export default function CatalogManager({ onCountChange }: { onCountChange?: (cou
   const handleGalleryUpload = async (files: FileList | null) => {
     const list = Array.from(files || []).filter((file) => file.type.startsWith("image/"));
     if (list.length === 0 || !editing) return;
+    const session = formSession.current;
     const uploaded: CatalogImage[] = [];
     for (let i = 0; i < list.length; i++) {
+      if (session !== formSession.current) break;
       setUploadStatus(`Uploading photo ${i + 1} of ${list.length}...`);
       try {
         const image = await uploadImage(list[i]);
@@ -216,13 +255,23 @@ export default function CatalogManager({ onCountChange }: { onCountChange?: (cou
         setError(`${list[i].name}: ${(err as Error).message}`);
       }
     }
-    setEditing((prev) => (prev ? { ...prev, images: [...prev.images, ...uploaded] } : prev));
+    if (session !== formSession.current) {
+      discardUploads(uploaded);
+    } else {
+      sessionUploads.current.push(...uploaded);
+      setEditing((prev) => (prev ? { ...prev, images: [...prev.images, ...uploaded] } : prev));
+    }
     setUploadStatus("");
     if (galleryInput.current) galleryInput.current.value = "";
   };
 
   const removeGalleryImage = (index: number) =>
     setEditing((prev) => (prev ? { ...prev, images: prev.images.filter((_, i) => i !== index) } : prev));
+
+  const setGalleryTitle = (index: number, title: string) =>
+    setEditing((prev) =>
+      prev ? { ...prev, images: prev.images.map((image, i) => (i === index ? { ...image, title } : image)) } : prev
+    );
 
   const coverOf = (item: CatalogItem) => item.coverImage?.url || item.images?.[0]?.url || "";
 
@@ -350,7 +399,7 @@ export default function CatalogManager({ onCountChange }: { onCountChange?: (cou
               <h3 className="text-lg font-bold text-gray-900">
                 {editing._id ? "Edit" : "New"} {TYPE_LABELS[editing.type].toLowerCase()}
               </h3>
-              <button onClick={() => setEditing(null)} className="rounded-lg p-1.5 text-gray-500 hover:bg-gray-100" aria-label="Close">
+              <button onClick={() => closeEditor(null)} className="rounded-lg p-1.5 text-gray-500 hover:bg-gray-100" aria-label="Close">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -449,23 +498,33 @@ export default function CatalogManager({ onCountChange }: { onCountChange?: (cou
                   </button>
                 </div>
                 {editing.images.length > 0 ? (
-                  <div className="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-4">
+                  <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
                     {editing.images.map((image, index) => (
-                      <div key={`${image.url}-${index}`} className="group relative aspect-square overflow-hidden rounded-lg bg-gray-100">
-                        <Image src={image.url} alt="" fill sizes="150px" className="object-cover" />
-                        <button
-                          type="button"
-                          onClick={() => removeGalleryImage(index)}
-                          className="absolute right-1 top-1 rounded-full bg-black/60 p-1 text-white hover:bg-red-600"
-                          aria-label="Remove photo"
-                        >
-                          <X className="h-3.5 w-3.5" />
-                        </button>
+                      <div key={`${image.url}-${index}`}>
+                        <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100">
+                          <Image src={image.url} alt="" fill sizes="200px" className="object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => removeGalleryImage(index)}
+                            className="absolute right-1 top-1 rounded-full bg-black/60 p-1 text-white hover:bg-red-600"
+                            aria-label="Remove photo"
+                          >
+                            <X className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                        <input
+                          value={image.title || ""}
+                          onChange={(e) => setGalleryTitle(index, e.target.value)}
+                          maxLength={120}
+                          placeholder="Photo title (optional)"
+                          aria-label={`Title for photo ${index + 1}`}
+                          className="mt-1.5 w-full rounded-lg border border-gray-300 px-2 py-1.5 text-xs focus:border-rose-500 focus:outline-none"
+                        />
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <p className="mt-2 text-xs text-gray-500">No photos yet. You can select several at once.</p>
+                  <p className="mt-2 text-xs text-gray-500">No photos yet. You can select several at once, then give each one a title.</p>
                 )}
               </div>
 
@@ -488,7 +547,7 @@ export default function CatalogManager({ onCountChange }: { onCountChange?: (cou
             </div>
 
             <div className="sticky bottom-0 flex justify-end gap-2 border-t bg-white px-5 py-4">
-              <button onClick={() => setEditing(null)} className="rounded-xl px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-100">
+              <button onClick={() => closeEditor(null)} className="rounded-xl px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-100">
                 Cancel
               </button>
               <button

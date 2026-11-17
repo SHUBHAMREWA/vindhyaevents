@@ -56,16 +56,23 @@ export default function CatalogDetailView({ item }: { item: CatalogItemData }) {
                 key={`${photo.url}-${index}`}
                 type="button"
                 onClick={() => setOpenIndex(index)}
-                className="mb-3 block w-full overflow-hidden rounded-xl shadow-sm transition-shadow hover:shadow-lg sm:mb-4"
+                className="mb-3 block w-full break-inside-avoid overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-lg sm:mb-4"
               >
-                <Image
-                  src={photo.url}
-                  alt={photo.alt || `${item.title} by RIWAJ — photo ${index + 1}`}
-                  width={800}
-                  height={600}
-                  sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                  className="h-auto w-full transition-transform duration-500 hover:scale-105"
-                />
+                <span className="block overflow-hidden">
+                  <Image
+                    src={photo.url}
+                    alt={photo.title || photo.alt || `${item.title} by RIWAJ — photo ${index + 1}`}
+                    width={800}
+                    height={600}
+                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    className="h-auto w-full transition-transform duration-500 hover:scale-105"
+                  />
+                </span>
+                {photo.title && (
+                  <span className="block px-3 py-2 text-left text-xs font-semibold leading-snug text-gray-800 sm:text-sm">
+                    {photo.title}
+                  </span>
+                )}
               </button>
             ))}
           </div>
@@ -138,11 +145,14 @@ export default function CatalogDetailView({ item }: { item: CatalogItemData }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={current.url}
-            alt={current.alt || item.title}
-            className="max-h-[85vh] max-w-full rounded-lg object-contain"
+            alt={current.title || current.alt || item.title}
+            className="max-h-[78vh] max-w-full rounded-lg object-contain"
             onClick={(e) => e.stopPropagation()}
           />
-          <p className="absolute bottom-4 text-sm text-white/70">
+          <p className="absolute inset-x-4 bottom-3 text-center text-sm text-white/70">
+            {current.title && (
+              <span className="block truncate text-base font-semibold text-white">{current.title}</span>
+            )}
             {openIndex! + 1} / {photos.length}
           </p>
         </div>

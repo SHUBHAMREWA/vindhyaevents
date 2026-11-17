@@ -7,6 +7,7 @@ export interface ICatalogImage {
   url: string;
   public_id?: string;
   alt?: string;
+  title?: string;
 }
 
 export interface ICatalogItem extends Document {
@@ -27,6 +28,7 @@ const CatalogImageSchema = new Schema<ICatalogImage>(
     url: { type: String, required: true },
     public_id: { type: String, default: "" },
     alt: { type: String, default: "" },
+    title: { type: String, default: "", trim: true },
   },
   { _id: false }
 );

@@ -4,6 +4,7 @@ import { CatalogItem, type CatalogType } from "@/lib/models/CatalogItem";
 export interface CatalogImageData {
   url: string;
   alt?: string;
+  title?: string;
 }
 
 export interface CatalogItemData {
@@ -20,7 +21,7 @@ export interface CatalogItemData {
 function toData(doc: any): CatalogItemData {
   const images: CatalogImageData[] = (doc.images || [])
     .filter((img: any) => img?.url)
-    .map((img: any) => ({ url: img.url, alt: img.alt || "" }));
+    .map((img: any) => ({ url: img.url, alt: img.alt || "", title: img.title || "" }));
   return {
     id: String(doc._id),
     type: doc.type,

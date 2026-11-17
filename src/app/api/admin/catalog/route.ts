@@ -19,6 +19,7 @@ const cleanImage = (img: any): ICatalogImage | null => {
     url,
     public_id: typeof img.public_id === "string" ? img.public_id : "",
     alt: typeof img.alt === "string" ? img.alt : "",
+    title: typeof img.title === "string" ? img.title.trim().slice(0, 120) : "",
   };
 };
 
