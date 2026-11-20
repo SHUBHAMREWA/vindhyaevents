@@ -121,11 +121,45 @@ export async function purgePredefinedDemoData() {
   }
 }
 
+// Old default service photo → new one. Only services still using the exact old
+// stock photo are changed; photos admins uploaded are left alone.
+const SERVICE_PHOTO_FIXES: Record<string, string> = {
+  "photo-1724847664960-5060a1ae8259": "photo-1756190564669-215843660e93", // Full wedding planning
+  "photo-1719499809556-070ec0dfda8b": "photo-1745573673583-a51f665ae48e", // Mandap & floral décor
+  "photo-1591604129939-f1efa4d9f7fa": "photo-1722952934708-749c22eb2e58", // Photography
+  "photo-1766113483422-7c871de23591": "photo-1587012521796-6359d3678f2a", // Sangeet & entertainment
+  "photo-1732259495388-af40b972c311": "photo-1555244162-803834f70033", // Catering
+  "photo-1754782921197-ba8514594184": "photo-1781077128735-ee92e7377d78", // Baraat
+};
+
+async function replaceOldServicePhotos() {
+  try {
+    const services = await Service.find({ "coverImage.url": { $regex: "images\\.unsplash\\.com/photo-" } })
+      .select("coverImage")
+      .lean();
+    for (const service of services) {
+      const url = service.coverImage?.url || "";
+      const oldId = Object.keys(SERVICE_PHOTO_FIXES).find((id) => url.includes(id));
+      if (!oldId) continue;
+      await Service.updateOne(
+        { _id: service._id, "coverImage.url": url },
+        { $set: { "coverImage.url": url.replace(oldId, SERVICE_PHOTO_FIXES[oldId]) } }
+      );
+    }
+  } catch (error) {
+    console.error("Service photo update skipped:", error);
+  }
+}
+
 export async function seedDatabaseIfEmpty() {
   await connectToDatabase();
 
   // Purge any lingering demo data
   await purgePredefinedDemoData();
+
+  // Swap the old mismatched stock photos on the default services (a mosque on
+  // Photography, tacos on Catering…) for ones that match each service.
+  await replaceOldServicePhotos();
 
   const existingSetting = await SiteSetting.findOne();
   const adminCount = await AdminUser.countDocuments();

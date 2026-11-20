@@ -1,6 +1,6 @@
 // RIWAJ (Vindhya Events) Progressive Web App Service Worker
-const CACHE_NAME = "riwaj-pwa-v3";
-const RUNTIME_CACHE = "riwaj-runtime-v3";
+const CACHE_NAME = "riwaj-pwa-v4";
+const RUNTIME_CACHE = "riwaj-runtime-v4";
 
 const PRECACHE_URLS = [
   "/",
@@ -16,8 +16,8 @@ const PRECACHE_URLS = [
   "/icons/badge-96x96.png",
   "/icons/badge-72x72.png",
   "/icons/apple-touch-icon.png",
-  "/girlsimg.webp",
-  "/dercoration1.webp",
+  "/riwaj-logo.png",
+  "/riwaj-text-logo.png",
 ];
 
 // Install: Cache essential shell & assets

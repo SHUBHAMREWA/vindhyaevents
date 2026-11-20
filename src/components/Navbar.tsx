@@ -162,6 +162,7 @@ export default function Navbar() {
                   src="/riwaj-logo.png"
                   alt="RIWAJ Logo"
                   fill
+                  sizes="56px"
                   className="object-cover"
                 />
               </div>
@@ -171,6 +172,7 @@ export default function Navbar() {
                     src="/riwaj-text-logo.png"
                     alt="RIWAJ"
                     fill
+                    sizes="160px"
                     priority
                     className="object-contain object-left"
                   />

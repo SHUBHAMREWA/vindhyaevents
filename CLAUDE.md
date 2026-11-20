@@ -57,6 +57,7 @@ Next.js 16 App Router with React 18, TypeScript, Tailwind 4 and Mongoose. The pa
 - `src/app/[eventSlug]/page.tsx` renders event pages from the static `src/data/eventRoutes.ts`. Images and titles can be overridden by the matching `SubCategory` document. A new event needs an entry in `eventRoutes.ts`; existing databases won't get a new `SubCategory` automatically because seeding only runs when that collection is empty.
 - `/catalog` and `/catalog/[slug]` are server pages that read `CatalogItem` (type `occasion` or `entertainment`) through `src/lib/catalog.ts`. Admins manage items in the admin Catalog tab (`components/admin/CatalogManager.tsx`, API `/api/admin/catalog`). The API deletes Cloudinary photos when they are removed from an item or the item is deleted.
 - **Bills** (admin "Bills & History" tab, `components/admin/bills/`, API `/api/admin/bills`, model `Bill.ts`): bills for one service or a package, with advance and later payments. `src/lib/billing.ts` holds the shared maths; the API recalculates all totals and assigns numbers like `RW-2026-0001`. `printBill()` prints just the bill through the browser's print dialog ("Save as PDF" downloads it); Quick bill prints without saving.
+- The home hero (`HeroCarousel`) renders on the server so its first photo loads with the page; later slides load just before their turn. Services still using the old default stock photos are switched to matching ones by `replaceOldServicePhotos()` in `seed.ts`.
 - Themes are CSS variables (`--c-primary` and so on) defined in `src/context/ThemeContext.tsx`. Style with these rather than fixed colours on public pages.
 - `public/sw.js` caches pages and assets. Bump `CACHE_NAME` and `RUNTIME_CACHE` when changing cached assets such as icons. `public/manifest.json` and `src/app/manifest.ts` are duplicates, so keep them in sync.
 
@@ -69,7 +70,7 @@ Next.js 16 App Router with React 18, TypeScript, Tailwind 4 and Mongoose. The pa
 
 ### Integrations
 
-- **Images:** go through `/api/upload` to Cloudinary (`src/lib/cloudinary.ts`), converted to WebP. Delete with `safeDeleteCloudinaryImage`, which ignores non-Cloudinary URLs. `next.config.mjs` sets `images.unoptimized: true`, so files are served at full size; keep them small.
+- **Images:** go through `/api/upload` to Cloudinary (`src/lib/cloudinary.ts`), converted to WebP. Delete with `safeDeleteCloudinaryImage`, which ignores non-Cloudinary URLs. `next/image` uses the custom loader `src/lib/imageLoader.ts`: Cloudinary and Unsplash images are resized by those hosts to the width each screen needs (Cloudinary gets `f_auto,q_auto,w_…`). The server does not resize images, and files in `public/` are served as they are, so keep those small. Always give `<Image fill>` a `sizes` prop.
 - **WhatsApp:** `src/lib/whatsapp.ts` sends through Meta's Cloud API or builds a `wa.me` link. Credentials saved in `SiteSetting` take priority over env vars. Sends are logged in `WhatsAppLog`.
 - **Email and bot checks:** `/api/bookconsultation` saves the inquiry, emails via Nodemailer (`src/lib/backendhelper/email.ts`) without blocking the response, and checks Turnstile only when a token is sent.
 - **Analytics:** the Google Analytics tag `G-39TJ68LG6V` is in `src/app/layout.tsx`.
@@ -85,5 +86,5 @@ These were found by reading the code and have not been fixed:
 - **Token exposure:** `/api/public/settings` and `/api/public/content` spread the whole `SiteSetting` document into their responses, including `whatsAppAccessToken`.
 - **Missing auth:** `/api/admin/works` has no login check on any method.
 - **Hard-coded fallbacks:** the JWT secret and default admin password have fallbacks in source, and `.env.example` contains what look like real Turnstile keys.
-- **Missing assets:** `/og-image.jpg`, `/girlsimg.webp` and `/dercoration1.webp` are referenced but not in `public/`. `sw.js` precaches the two `.webp` files, so `cache.addAll` fails and precaching doesn't complete.
+- **Missing assets:** `/og-image.jpg`, `/girlsimg.webp` and `/dercoration1.webp` are referenced as fallbacks but not in `public/`.
 - **Deprecation:** Next.js warns that the `middleware` file convention should become `proxy`.

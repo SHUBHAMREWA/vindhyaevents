@@ -315,7 +315,7 @@ export default function WorksVideoShowcase({ initialWorks }: WorksVideoShowcaseP
                       alt={currentWork.title || "Wedding Showcase"}
                       fill
                       className={isVerticalVideo ? "object-contain" : "object-cover"}
-                      priority={currentIndex === 0}
+                      sizes="(max-width: 1024px) 100vw, 60vw"
                     />
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                       <div

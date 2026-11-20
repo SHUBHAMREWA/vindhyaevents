@@ -1,13 +1,9 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { HeroShimmerSkeleton } from "@/components/HomeSkeletons";
+import HeroCarousel from "@/components/HeroCarousel";
 
-const HeroCarousel = dynamic(() => import("@/components/HeroCarousel"), {
-  ssr: false,
-  loading: () => <HeroShimmerSkeleton />,
-});
-
+// Rendered on the server too, so the first hero photo starts downloading with
+// the page instead of waiting for the JavaScript to load.
 export default function HeroSectionWrapper({ slides }: { slides?: any[] }) {
   return <HeroCarousel slides={slides} />;
 }

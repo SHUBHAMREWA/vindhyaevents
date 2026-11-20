@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Slider from "react-slick";
 import Image from "next/image";
 import "slick-carousel/slick/slick.css";
@@ -40,6 +40,17 @@ export interface HeroSlideInput {
 export default function HeroCarousel({ slides: propSlides }: { slides?: HeroSlideInput[] }) {
   const { heroSlides, mounted } = useSettings();
   const [currentSlide, setCurrentSlide] = useState(0);
+  // Slides whose photo may load. The first is rendered on the server so it shows
+  // straight away; the others load just before their turn instead of all at once.
+  const [loadedSlides, setLoadedSlides] = useState<Set<number>>(() => new Set([0]));
+  const allowSlide = (index: number) =>
+    setLoadedSlides((prev) => (prev.has(index) ? prev : new Set(prev).add(index)));
+
+  // Fetch the second photo once the first has had time to show.
+  useEffect(() => {
+    const timer = setTimeout(() => setLoadedSlides((prev) => new Set(prev).add(1)), 2500);
+    return () => clearTimeout(timer);
+  }, []);
   const sliderRef = useRef<Slider | null>(null);
   const { theme } = useTheme();
   const router = useRouter();
@@ -77,10 +88,13 @@ export default function HeroCarousel({ slides: propSlides }: { slides?: HeroSlid
     autoplaySpeed: 4500,
     fade: true,
     pauseOnHover: false,
-    lazyLoad: "ondemand" as const,
     cssEase: "ease-in-out",
     arrows: false,
-    beforeChange: (_: number, next: number) => setCurrentSlide(next),
+    beforeChange: (_: number, next: number) => {
+      setCurrentSlide(next);
+      allowSlide(next);
+      allowSlide((next + 1) % slides.length);
+    },
     appendDots: (dots: React.ReactNode) => (
       <div className="absolute bottom-6 sm:bottom-8 w-full z-30 pointer-events-auto">
         <ul className="flex justify-center gap-3">{dots}</ul>
@@ -123,17 +137,18 @@ export default function HeroCarousel({ slides: propSlides }: { slides?: HeroSlid
           <div key={index} className="relative h-[80vh] md:h-auto md:aspect-video outline-none">
             {/* Image */}
             <div className="absolute inset-0">
-              <Image
-                src={slide.image}
-                alt={slide.title}
-                fill
-                priority={index === 0}
-                loading={index === 0 ? "eager" : "lazy"}
-                className="object-cover"
-                quality={index === 0 ? 85 : 65}
-                sizes="100vw"
-                {...(index === 0 ? { fetchPriority: "high" } : {})}
-              />
+              {loadedSlides.has(index) && (
+                <Image
+                  src={slide.image}
+                  alt={slide.title}
+                  fill
+                  priority={index === 0}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  className="object-cover"
+                  sizes="100vw"
+                  {...(index === 0 ? { fetchPriority: "high" } : {})}
+                />
+              )}
               <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50 z-10" />
             </div>
 

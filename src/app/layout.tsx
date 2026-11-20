@@ -122,16 +122,10 @@ export default async function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
         />
 
-        {/* ── Preconnect to external origins ── */}
+        {/* ── Preconnect to image hosts. The hero image itself is preloaded by
+             next/image (priority) with the right size for each screen. ── */}
+        <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="preconnect" href="https://images.unsplash.com" />
-        <link rel="dns-prefetch" href="https://images.unsplash.com" />
-
-        {/* ── Preload LCP hero image ── */}
-        <link rel="preload" as="image" href="/girlsimg.webp" type="image/webp" fetchPriority="high" />
-
-        {/* ── Prefetch hero carousel images ── */}
-        <link rel="prefetch" href="https://images.unsplash.com/photo-1724847664960-5060a1ae8259?w=1200&q=75" as="image" />
-        <link rel="prefetch" href="https://images.unsplash.com/photo-1732382643619-872165f61891?w=1200&q=75" as="image" />
 
         {/* ── Viewport ── */}
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />

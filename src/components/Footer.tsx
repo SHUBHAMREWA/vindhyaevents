@@ -56,6 +56,7 @@ export default function Footer() {
                   src="/riwaj-logo.png"
                   alt="RIWAJ Events"
                   fill
+                  sizes="56px"
                   className="object-cover"
                 />
               </div>
@@ -65,6 +66,7 @@ export default function Footer() {
                     src="/riwaj-text-logo.png"
                     alt="RIWAJ Events"
                     fill
+                    sizes="160px"
                     className="object-contain object-left"
                   />
                 </div>

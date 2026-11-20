@@ -105,7 +105,7 @@ async function generate() {
   const background = await sampleLogoBackground();
 
   // Site logo used in the navbar and footer
-  await resizeLogo(logo, 256).toFile(path.join(publicDir, 'riwaj-logo.png'));
+  await resizeLogo(logo, 256).png({ palette: true, quality: 90, compressionLevel: 9, effort: 10 }).toFile(path.join(publicDir, 'riwaj-logo.png'));
   console.log('✓ riwaj-logo.png generated');
 
   // Favicon

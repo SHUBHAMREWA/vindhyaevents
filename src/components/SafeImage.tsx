@@ -54,7 +54,6 @@ export default function SafeImage({
         {...props}
         src={effectiveSrc}
         alt={alt || "RIWAJ Events"}
-        unoptimized={true}
         className={`${className} transition-opacity duration-300 ${isLoading ? "opacity-0" : "opacity-100"}`}
         onLoad={() => setIsLoading(false)}
         onError={() => {

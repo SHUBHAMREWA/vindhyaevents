@@ -64,7 +64,7 @@ export const defaultIndianServices = [
     order: 1,
     isActive: true,
     coverImage: {
-      url: "https://images.unsplash.com/photo-1724847664960-5060a1ae8259?auto=format&fit=crop&w=1200&q=80",
+      url: "https://images.unsplash.com/photo-1756190564669-215843660e93?auto=format&fit=crop&w=1200&q=80",
       alt: "Royal Indian Wedding Planning & Coordination",
     },
   },
@@ -84,7 +84,7 @@ export const defaultIndianServices = [
     order: 2,
     isActive: true,
     coverImage: {
-      url: "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=1200&q=80",
+      url: "https://images.unsplash.com/photo-1745573673583-a51f665ae48e?auto=format&fit=crop&w=1200&q=80",
       alt: "Royal Indian Wedding Mandap & Stage Decor",
     },
   },
@@ -104,7 +104,7 @@ export const defaultIndianServices = [
     order: 3,
     isActive: true,
     coverImage: {
-      url: "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=1200&q=80",
+      url: "https://images.unsplash.com/photo-1722952934708-749c22eb2e58?auto=format&fit=crop&w=1200&q=80",
       alt: "Indian Bride and Wedding Photography",
     },
   },
@@ -124,7 +124,7 @@ export const defaultIndianServices = [
     order: 4,
     isActive: true,
     coverImage: {
-      url: "https://images.unsplash.com/photo-1766113483422-7c871de23591?auto=format&fit=crop&w=1200&q=80",
+      url: "https://images.unsplash.com/photo-1587012521796-6359d3678f2a?auto=format&fit=crop&w=1200&q=80",
       alt: "Indian Sangeet Night and Dance Celebration",
     },
   },
@@ -144,7 +144,7 @@ export const defaultIndianServices = [
     order: 5,
     isActive: true,
     coverImage: {
-      url: "https://images.unsplash.com/photo-1732259495388-af40b972c311?auto=format&fit=crop&w=1200&q=80",
+      url: "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=1200&q=80",
       alt: "Royal Indian Wedding Catering and Feast",
     },
   },
@@ -164,7 +164,7 @@ export const defaultIndianServices = [
     order: 6,
     isActive: true,
     coverImage: {
-      url: "https://images.unsplash.com/photo-1754782921197-ba8514594184?auto=format&fit=crop&w=1200&q=80",
+      url: "https://images.unsplash.com/photo-1781077128735-ee92e7377d78?auto=format&fit=crop&w=1200&q=80",
       alt: "Royal Indian Baraat Procession and Hospitality",
     },
   },

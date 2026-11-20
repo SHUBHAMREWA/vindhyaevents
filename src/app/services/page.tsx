@@ -40,7 +40,7 @@ const allServices = [
     description:
       "Comprehensive end-to-end wedding management tailored for traditional Indian rituals — Muhurat timelines, royal venue selection, vendor negotiation, and dedicated day-of event coordination.",
     image:
-      "https://images.unsplash.com/photo-1724847664960-5060a1ae8259?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1756190564669-215843660e93?auto=format&fit=crop&w=1200&q=80",
     features: [
       "Custom 12-month wedding timeline & rasam checklist",
       "Venue selection & contract negotiations across Rewa & MP",
@@ -55,7 +55,7 @@ const allServices = [
     description:
       "Mesmerizing royal mandap installations, marigold & red rose cascades, illuminated entrance walkways, and majestic VIP stage seating reflecting your family's royal heritage.",
     image:
-      "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1745573673583-a51f665ae48e?auto=format&fit=crop&w=1200&q=80",
     features: [
       "Traditional Shahi & modern pastel theme mandap setups",
       "Fresh exotic orchids, desi genda & red rose arrangements",
@@ -70,7 +70,7 @@ const allServices = [
     description:
       "Top-tier Indian wedding photography capturing raw candid emotions, bridal portraits, drone aerial coverage, and Bollywood-style cinematic trailers.",
     image:
-      "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1722952934708-749c22eb2e58?auto=format&fit=crop&w=1200&q=80",
     features: [
       "Royal bridal portraits & candid emotional ceremony moments",
       "4K cinematic wedding trailer & full documentary films",
@@ -85,7 +85,7 @@ const allServices = [
     description:
       "Concert-grade line array sound systems, dynamic truss lighting, celebrity DJs, family dance choreographers, and traditional energetic Punjabi Dhol troupes.",
     image:
-      "https://images.unsplash.com/photo-1766113483422-7c871de23591?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1587012521796-6359d3678f2a?auto=format&fit=crop&w=1200&q=80",
     features: [
       "Bollywood choreographers for family sangeet performances",
       "Concert-style LED stage walls & intelligent beam lighting",
@@ -100,7 +100,7 @@ const allServices = [
     description:
       "Authentic Indian wedding feasts crafted by master chefs — Bundelkhandi royal delicacies, live chaat stalls, North Indian curries, and gourmet dessert counters.",
     image:
-      "https://images.unsplash.com/photo-1732259495388-af40b972c311?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=1200&q=80",
     features: [
       "100% pure vegetarian & customized royal gourmet menus",
       "Authentic Bundelkhandi, Awadhi & Mughlai royal delicacies",
@@ -115,7 +115,7 @@ const allServices = [
     description:
       "Make the groom's entry legendary with vintage convertibles, royal decorated chariots, synchronized brass bands, and royal aarti guest reception.",
     image:
-      "https://images.unsplash.com/photo-1754782921197-ba8514594184?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1781077128735-ee92e7377d78?auto=format&fit=crop&w=1200&q=80",
     features: [
       "Vintage open cars & decorated royal chariot / horse setups",
       "Synchronized royal brass band & percussion musicians",

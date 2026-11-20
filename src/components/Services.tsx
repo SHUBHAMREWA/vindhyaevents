@@ -14,42 +14,42 @@ const defaultServices = [
     title: "Full Wedding Planning",
     description:
       "End-to-end royal wedding management from Roka to Vidai. Complete budget, muhurat timelines & flawless day-of execution.",
-    image: "https://images.unsplash.com/photo-1724847664960-5060a1ae8259?auto=format&fit=crop&w=1080&q=80",
+    image: "https://images.unsplash.com/photo-1756190564669-215843660e93?auto=format&fit=crop&w=1080&q=80",
   },
   {
     icon: Flower2,
     title: "Mandap & Floral Décor",
     description:
       "Grand palace mandaps, fresh marigold and red rose cascades, illuminated entrance walkways & royal stage seating.",
-    image: "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=1080&q=80",
+    image: "https://images.unsplash.com/photo-1745573673583-a51f665ae48e?auto=format&fit=crop&w=1080&q=80",
   },
   {
     icon: Camera,
     title: "Photography & Videography",
     description:
       "Royal bridal portraits, candid ceremony moments, 4K cinematic teasers & drone aerial coverage in Rewa and MP.",
-    image: "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=1080&q=80",
+    image: "https://images.unsplash.com/photo-1722952934708-749c22eb2e58?auto=format&fit=crop&w=1080&q=80",
   },
   {
     icon: Music,
     title: "Sangeet & Entertainment",
     description:
       "Concert-grade sound & lighting truss, high-energy wedding DJs, family choreographers & live Punjabi Dhol troupes.",
-    image: "https://images.unsplash.com/photo-1766113483422-7c871de23591?auto=format&fit=crop&w=1080&q=80",
+    image: "https://images.unsplash.com/photo-1587012521796-6359d3678f2a?auto=format&fit=crop&w=1080&q=80",
   },
   {
     icon: Utensils,
     title: "Royal Catering Services",
     description:
       "Shahi Dawat multi-course banquets, authentic Bundelkhandi royal delicacies, live chaat stalls & dessert stations.",
-    image: "https://images.unsplash.com/photo-1732259495388-af40b972c311?auto=format&fit=crop&w=1080&q=80",
+    image: "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=1080&q=80",
   },
   {
     icon: Sparkles,
     title: "Royal Baraat & Hospitality",
     description:
       "Vintage open car processions, decorated royal chariots, brass band musicians & royal aarti guest welcome teams.",
-    image: "https://images.unsplash.com/photo-1754782921197-ba8514594184?auto=format&fit=crop&w=1080&q=80",
+    image: "https://images.unsplash.com/photo-1781077128735-ee92e7377d78?auto=format&fit=crop&w=1080&q=80",
   },
 ];
 
