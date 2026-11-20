@@ -48,6 +48,7 @@ import {
   MapPin,
   List,
   LayoutGrid,
+  ReceiptText,
   Copy,
   ChevronRight,
   ChevronDown,
@@ -63,6 +64,7 @@ import BookingManagement from "@/components/admin/BookingManagement";
 import WhatsAppCenter from "@/components/admin/WhatsAppCenter";
 import ImagePreviewStudio from "@/components/admin/ImagePreviewStudio";
 import CatalogManager from "@/components/admin/CatalogManager";
+import BillManager from "@/components/admin/bills/BillManager";
 import { INDIAN_STATES_AND_CITIES, INDIAN_STATES } from "@/lib/indianLocations";
 
 // Client-side image compression and WebP conversion helper
@@ -144,6 +146,7 @@ export default function AdminDashboardPage() {
     | "blogs"
     | "gallery"
     | "catalog"
+    | "bills"
     | "testimonials"
     | "team"
     | "settings"
@@ -159,6 +162,7 @@ export default function AdminDashboardPage() {
   const [vendors, setVendors] = useState<any[]>([]);
   const [works, setWorks] = useState<any[]>([]);
   const [catalogCount, setCatalogCount] = useState<number | undefined>(undefined);
+  const [billCount, setBillCount] = useState<number | undefined>(undefined);
   const [subcategories, setSubcategories] = useState<any[]>([]);
   const [services, setServices] = useState<any[]>([]);
   const [blogs, setBlogs] = useState<any[]>([]);
@@ -431,6 +435,7 @@ export default function AdminDashboardPage() {
         fetchBlogs(),
         fetchGallery(),
         fetchCatalogCount(),
+        fetchBillCount(),
         fetchTestimonials(),
         fetchTeam(),
         fetchSettings(),
@@ -476,6 +481,16 @@ export default function AdminDashboardPage() {
       if (data.success) setCatalogCount((data.items || []).length);
     } catch (err) {
       console.error("Error fetching catalog:", err);
+    }
+  };
+
+  const fetchBillCount = async () => {
+    try {
+      const res = await fetch("/api/admin/bills");
+      const data = await res.json();
+      if (data.success) setBillCount((data.bills || []).length);
+    } catch (err) {
+      console.error("Error fetching bills:", err);
     }
   };
 
@@ -1459,9 +1474,9 @@ export default function AdminDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex flex-col overflow-x-hidden overflow-y-auto">
+    <div className="min-h-screen md:h-screen md:min-h-0 bg-[#f8fafc] flex flex-col overflow-x-hidden overflow-y-auto md:overflow-hidden">
       {/* Top Navigation Bar */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-40 px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between shadow-2xs">
+      <header className="shrink-0 bg-white border-b border-gray-200 sticky top-0 z-40 px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between shadow-2xs">
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           {/* Mobile Hamburger Menu Button */}
           <button
@@ -1666,6 +1681,28 @@ export default function AdminDashboardPage() {
                     </div>
                   )}
                 </div>
+
+                {/* Billing (Drawer) */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveTab("bills");
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`mt-1 w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-medium transition-all ${
+                    activeTab === "bills"
+                      ? "bg-gradient-to-r from-rose-500 to-rose-600 text-white shadow-md shadow-rose-200 font-semibold"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <ReceiptText className="w-4 h-4" />
+                    <span>Bills &amp; History</span>
+                  </div>
+                  {billCount !== undefined && (
+                    <span className={`text-xs ${activeTab === "bills" ? "text-rose-100" : "text-gray-400"}`}>{billCount}</span>
+                  )}
+                </button>
               </div>
 
               {/* Quick Metrics in Drawer */}
@@ -1728,9 +1765,9 @@ export default function AdminDashboardPage() {
       )}
 
       {/* Main Container */}
-      <div className="flex-1 flex flex-col md:flex-row">
+      <div className="flex-1 flex flex-col md:flex-row md:min-h-0">
         {/* Desktop Sidebar Nav (Hidden on Mobile) */}
-        <aside className="hidden md:block w-64 bg-white border-r border-gray-200 p-4 shrink-0">
+        <aside className="hidden md:block w-64 bg-white border-r border-gray-200 p-4 shrink-0 md:overflow-y-auto md:overscroll-contain">
           <div className="space-y-1">
             {[
               { id: "inquiries", label: "Consultation Leads", icon: Users, badge: inquiries.filter((i) => i.status === "pending").length },
@@ -1840,6 +1877,27 @@ export default function AdminDashboardPage() {
                   })}
                 </div>
               )}
+
+              {/* Billing (Desktop) */}
+              <button
+                type="button"
+                onClick={() => setActiveTab("bills")}
+                className={`mt-1.5 w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                  activeTab === "bills"
+                    ? "bg-gradient-to-r from-rose-500 to-rose-600 text-white shadow-md shadow-rose-200 font-semibold"
+                    : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`p-1 rounded-lg ${activeTab === "bills" ? "bg-white/20 text-white" : "bg-gray-100 text-gray-600"}`}>
+                    <ReceiptText className="w-3.5 h-3.5" />
+                  </div>
+                  <span>Bills &amp; History</span>
+                </div>
+                {billCount !== undefined && (
+                  <span className={`text-xs ${activeTab === "bills" ? "text-rose-100" : "text-gray-400"}`}>{billCount}</span>
+                )}
+              </button>
             </div>
           </div>
 
@@ -1868,7 +1926,8 @@ export default function AdminDashboardPage() {
         </aside>
 
         {/* Tab Content Area */}
-        <main className="flex-1 p-3 sm:p-6 md:p-8 pb-36 md:pb-8 max-w-7xl mx-auto w-full overflow-x-hidden overflow-y-visible">
+        <main id="admin-content" className="flex-1 min-w-0 overflow-x-hidden md:overflow-y-auto">
+        <div className="p-3 sm:p-6 md:p-8 pb-36 md:pb-8 max-w-7xl mx-auto w-full">
           {/* TAB 1: INQUIRIES & LEADS */}
           {activeTab === "inquiries" && (
             <div className="space-y-6">
@@ -3040,6 +3099,8 @@ export default function AdminDashboardPage() {
 
           {/* TAB 4: GALLERY */}
           {activeTab === "catalog" && <CatalogManager onCountChange={setCatalogCount} />}
+
+          {activeTab === "bills" && <BillManager onCountChange={setBillCount} />}
 
           {activeTab === "gallery" && (
             <div className="space-y-6">
@@ -4249,6 +4310,7 @@ export default function AdminDashboardPage() {
               </div>
             </div>
           )}
+        </div>
         </main>
       </div>
 

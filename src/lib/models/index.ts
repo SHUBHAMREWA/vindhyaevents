@@ -13,3 +13,4 @@ export { Booking, type IBooking, type ISubEvent, type IAssignedPerson, type IBoo
 export { WhatsAppLog, type IWhatsAppLog } from "./WhatsAppLog";
 export { WorkVideo, type IWorkVideo } from "./WorkVideo";
 export { CatalogItem, CATALOG_TYPES, type ICatalogItem, type ICatalogImage, type CatalogType } from "./CatalogItem";
+export { Bill, PAYMENT_MODES, type IBill, type IBillItem, type IBillPayment } from "./Bill";
