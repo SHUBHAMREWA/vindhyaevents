@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import connectToDatabase from "./db";
 import { AdminUser, Blog, GalleryItem, Service, SiteSetting, Testimonial, TeamMember, Vendor, SubCategory } from "./models";
+import { EVENT_PHOTO_FIXES } from "@/data/eventPhotoFixes";
 import { stats } from "@/data/staticData";
 import { ALL_EVENTS } from "@/data/eventRoutes";
 
@@ -132,7 +133,13 @@ const SERVICE_PHOTO_FIXES: Record<string, string> = {
   "photo-1754782921197-ba8514594184": "photo-1781077128735-ee92e7377d78", // Baraat
 };
 
+// These photo fixes only need to run once per server start; after that the
+// database no longer has the old photos.
+let servicePhotosChecked = false;
+let eventPhotosChecked = false;
+
 async function replaceOldServicePhotos() {
+  if (servicePhotosChecked) return;
   try {
     const services = await Service.find({ "coverImage.url": { $regex: "images\\.unsplash\\.com/photo-" } })
       .select("coverImage")
@@ -146,8 +153,47 @@ async function replaceOldServicePhotos() {
         { $set: { "coverImage.url": url.replace(oldId, SERVICE_PHOTO_FIXES[oldId]) } }
       );
     }
+    servicePhotosChecked = true;
   } catch (error) {
     console.error("Service photo update skipped:", error);
+  }
+}
+
+// Event pages read their hero and gallery photos from SubCategory documents,
+// which were filled from src/data/eventRoutes.ts. Swap the wrong defaults listed
+// in EVENT_PHOTO_FIXES; a photo is only changed while it is still the old one.
+async function replaceOldEventPhotos() {
+  if (eventPhotosChecked) return;
+  try {
+    const oldIds = [...new Set(Object.values(EVENT_PHOTO_FIXES).flat().map(([oldId]) => oldId))];
+    const pattern = oldIds.map((id) => `photo-${id}`).join("|");
+    const docs = await SubCategory.find({
+      slug: { $in: Object.keys(EVENT_PHOTO_FIXES) },
+      $or: [{ "mainImage.url": { $regex: pattern } }, { "relevantImages.url": { $regex: pattern } }],
+    })
+      .select("slug mainImage relevantImages")
+      .lean();
+
+    for (const doc of docs as any[]) {
+      // Paths in page order: hero first, then gallery.
+      const slots: { path: string; url: string }[] = [
+        { path: "mainImage.url", url: doc.mainImage?.url || "" },
+        ...(doc.relevantImages || []).map((img: any, i: number) => ({ path: `relevantImages.${i}.url`, url: img?.url || "" })),
+      ];
+      const done = new Set<string>();
+      for (const [oldId, newId] of EVENT_PHOTO_FIXES[doc.slug] || []) {
+        const slot = slots.find((s) => !done.has(s.path) && s.url.includes(`photo-${oldId}`));
+        if (!slot) continue;
+        done.add(slot.path);
+        await SubCategory.updateOne(
+          { _id: doc._id, [slot.path]: slot.url },
+          { $set: { [slot.path]: slot.url.replace(`photo-${oldId}`, `photo-${newId}`) } }
+        );
+      }
+    }
+    eventPhotosChecked = true;
+  } catch (error) {
+    console.error("Event photo update skipped:", error);
   }
 }
 
@@ -160,6 +206,7 @@ export async function seedDatabaseIfEmpty() {
   // Swap the old mismatched stock photos on the default services (a mosque on
   // Photography, tacos on Catering…) for ones that match each service.
   await replaceOldServicePhotos();
+  await replaceOldEventPhotos();
 
   const existingSetting = await SiteSetting.findOne();
   const adminCount = await AdminUser.countDocuments();

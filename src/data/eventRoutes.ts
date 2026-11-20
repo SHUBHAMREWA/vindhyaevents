@@ -41,7 +41,7 @@ export const CATERING_EVENTS: EventDetail[] = [
     "badge": "Royal Shahi Dawat & Feasts",
     "title": "Grand Wedding Catering & Royal Shahi Dawat in Rewa & MP",
     "subtitle": "50+ authentic delicacies, royal Mughlai & Awadhi curries, live tandoor stations aur 5-star hospitality ke sath yaadgar bhojan.",
-    "heroImage": "https://images.unsplash.com/photo-1732259495388-af40b972c311?auto=format&fit=crop&w=1200&q=80",
+    "heroImage": "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=1200&q=80",
     "stats": [
       {
         "number": "500+",
@@ -170,7 +170,7 @@ export const CATERING_EVENTS: EventDetail[] = [
       }
     ],
     "galleryImages": [
-      "https://images.unsplash.com/photo-1732259495388-af40b972c311?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1732519970445-8f2d6998961f?auto=format&fit=crop&w=800&q=75"
     ],
@@ -324,7 +324,7 @@ export const CATERING_EVENTS: EventDetail[] = [
       }
     ],
     "galleryImages": [
-      "https://images.unsplash.com/photo-1732259495388-af40b972c311?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1742281257707-0c7f7e5ca9c6?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1593701461250-d7b22dfd3a77?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1727280376746-b89107a5b0df?auto=format&fit=crop&w=800&q=75"
     ],
@@ -357,7 +357,7 @@ export const CATERING_EVENTS: EventDetail[] = [
     "badge": "Mega Banquet & Multi-Cuisine",
     "title": "Grand Wedding Reception Feast & Mega Banquet Catering",
     "subtitle": "Large-scale opulent dinner spreads for 500 to 5000+ guests with multiple buffet stations and zero waiting time.",
-    "heroImage": "https://images.unsplash.com/photo-1732259495388-af40b972c311?auto=format&fit=crop&w=1200&q=80",
+    "heroImage": "https://images.unsplash.com/photo-1728910156510-77488f19b152?auto=format&fit=crop&w=1200&q=80",
     "stats": [
       {
         "number": "700+",
@@ -470,7 +470,7 @@ export const CATERING_EVENTS: EventDetail[] = [
     ],
     "galleryImages": [
       "https://images.unsplash.com/photo-1732519970445-8f2d6998961f?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1732259495388-af40b972c311?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1742281258189-3b933879867a?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1630409346824-4f0e7b080087?auto=format&fit=crop&w=800&q=75"
     ],
     "packages": [
@@ -505,7 +505,7 @@ export const DECORATION_EVENTS: EventDetail[] = [
     "badge": "Grand Venue Artistry",
     "title": "Royal Wedding Decoration & Complete Venue Styling",
     "subtitle": "Grand palace entrance arches, illuminated walkways, majestic mandaps aur bespoke floral setups.",
-    "heroImage": "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=1200&q=80",
+    "heroImage": "https://images.unsplash.com/photo-1745573673583-a51f665ae48e?auto=format&fit=crop&w=1200&q=80",
     "stats": [
       {
         "number": "800+",
@@ -544,8 +544,8 @@ export const DECORATION_EVENTS: EventDetail[] = [
       }
     ],
     "galleryImages": [
-      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1600428853876-fb3179bec3b2?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1587271407850-8d438ca9fdf2?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1745573673043-43a4f3b91466?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1752857015591-c1b85c01c461?auto=format&fit=crop&w=800&q=75"
     ],
     "packages": [
@@ -577,7 +577,7 @@ export const DECORATION_EVENTS: EventDetail[] = [
     "badge": "Mesmerizing Backdrops",
     "title": "Magnificent Wedding Stage Decoration & Backdrop Artistry",
     "subtitle": "40-60ft wide designer stages, golden pillars, cascading floral arches aur photographer-friendly studio lighting.",
-    "heroImage": "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80",
+    "heroImage": "https://images.unsplash.com/photo-1745573673416-66e829644ae9?auto=format&fit=crop&w=1200&q=80",
     "stats": [
       {
         "number": "1000+",
@@ -616,9 +616,9 @@ export const DECORATION_EVENTS: EventDetail[] = [
       }
     ],
     "galleryImages": [
-      "https://images.unsplash.com/photo-1600428853876-fb3179bec3b2?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1762709118823-7fe9c9afa8ff?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1760669343328-d84fbde15b65?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=800&q=75"
+      "https://images.unsplash.com/photo-1601482441062-b9f13131f33a?auto=format&fit=crop&w=800&q=75"
     ],
     "packages": [
       {
@@ -648,7 +648,7 @@ export const DECORATION_EVENTS: EventDetail[] = [
     "badge": "Sacred & Royal Saat Phere",
     "title": "Sacred & Royal Wedding Mandap Decoration",
     "subtitle": "Vedic traditional rajwadi mandaps, glass water pool mandaps, hanging floral bells aur auspicious hawan setups.",
-    "heroImage": "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=1200&q=80",
+    "heroImage": "https://images.unsplash.com/photo-1587271407850-8d438ca9fdf2?auto=format&fit=crop&w=1200&q=80",
     "stats": [
       {
         "number": "600+",
@@ -689,7 +689,7 @@ export const DECORATION_EVENTS: EventDetail[] = [
     "galleryImages": [
       "https://images.unsplash.com/photo-1680490961937-e933bf1ef920?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1771992228552-4cf49506dd7b?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75"
+      "https://images.unsplash.com/photo-1587271636175-90d58cdad458?auto=format&fit=crop&w=800&q=75"
     ],
     "packages": [
       {
@@ -719,7 +719,7 @@ export const DECORATION_EVENTS: EventDetail[] = [
     "badge": "Vibrant Yellow & Boho Colors",
     "title": "Vibrant Haldi & Mehendi Thematic D\u00e9cor",
     "subtitle": "Marigold floral curtains, traditional brass urlis, colorful cabanas, dreamcatchers aur bohemian photo swings.",
-    "heroImage": "https://images.unsplash.com/photo-1607861716497-e65ab29fc7ac?auto=format&fit=crop&w=1200&q=80",
+    "heroImage": "https://images.unsplash.com/photo-1744891471118-f74c0453cd21?auto=format&fit=crop&w=1200&q=80",
     "stats": [
       {
         "number": "500+",
@@ -759,8 +759,8 @@ export const DECORATION_EVENTS: EventDetail[] = [
     ],
     "galleryImages": [
       "https://images.unsplash.com/photo-1771992228552-4cf49506dd7b?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1756483510767-35245638c057?auto=format&fit=crop&w=800&q=75"
+      "https://images.unsplash.com/photo-1698460918119-7359a8a945a0?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1505932794465-147d1f1b2c97?auto=format&fit=crop&w=800&q=75"
     ],
     "packages": [
       {
@@ -790,7 +790,7 @@ export const DECORATION_EVENTS: EventDetail[] = [
     "badge": "Glamorous & Imperial Nights",
     "title": "Glamorous Wedding Reception Stage & Ballroom D\u00e9cor",
     "subtitle": "Opulent chandeliers, high-gloss mirror walkway, cascading white floral arches aur ambient mood lighting.",
-    "heroImage": "https://images.unsplash.com/photo-1600428853876-fb3179bec3b2?auto=format&fit=crop&w=1200&q=80",
+    "heroImage": "https://images.unsplash.com/photo-1757017199822-beab923a1afc?auto=format&fit=crop&w=1200&q=80",
     "stats": [
       {
         "number": "650+",
@@ -829,9 +829,9 @@ export const DECORATION_EVENTS: EventDetail[] = [
       }
     ],
     "galleryImages": [
-      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1741201864710-8c031ebd13bc?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1752857015591-c1b85c01c461?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=75"
+      "https://images.unsplash.com/photo-1745573673043-43a4f3b91466?auto=format&fit=crop&w=800&q=75"
     ],
     "packages": [
       {
@@ -861,7 +861,7 @@ export const DECORATION_EVENTS: EventDetail[] = [
     "badge": "Modern Romantic Arches",
     "title": "Romantic Engagement & Ring Ceremony Stage D\u00e9cor",
     "subtitle": "Geometric golden frames, pastel floral rings, neon initial lettering ('Better Together') aur magical dry ice fog.",
-    "heroImage": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80",
+    "heroImage": "https://images.unsplash.com/photo-1762709118823-7fe9c9afa8ff?auto=format&fit=crop&w=1200&q=80",
     "stats": [
       {
         "number": "400+",
@@ -900,9 +900,9 @@ export const DECORATION_EVENTS: EventDetail[] = [
       }
     ],
     "galleryImages": [
-      "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1600428853876-fb3179bec3b2?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75"
+      "https://images.unsplash.com/photo-1745573673583-a51f665ae48e?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1601482441062-b9f13131f33a?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1573951648026-fa38ff3f6770?auto=format&fit=crop&w=800&q=75"
     ],
     "packages": [
       {
@@ -971,9 +971,9 @@ export const DECORATION_EVENTS: EventDetail[] = [
       }
     ],
     "galleryImages": [
-      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1745573673043-43a4f3b91466?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1771992228552-4cf49506dd7b?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=800&q=75"
+      "https://images.unsplash.com/photo-1587271636175-90d58cdad458?auto=format&fit=crop&w=800&q=75"
     ],
     "packages": [
       {
@@ -1003,7 +1003,7 @@ export const DECORATION_EVENTS: EventDetail[] = [
     "badge": "Heritage Rajwadi Grandeur",
     "title": "Royal Rajwadi & Heritage Palace Wedding D\u00e9cor",
     "subtitle": "Intricately carved jharokhas, velvet shamianas, vintage lanterns, golden pillars aur royal court aesthetics.",
-    "heroImage": "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?auto=format&fit=crop&w=1200&q=80",
+    "heroImage": "https://images.unsplash.com/photo-1587271407850-8d438ca9fdf2?auto=format&fit=crop&w=1200&q=80",
     "stats": [
       {
         "number": "150+",
@@ -1042,8 +1042,8 @@ export const DECORATION_EVENTS: EventDetail[] = [
       }
     ],
     "galleryImages": [
-      "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1756190564669-215843660e93?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1745573673416-66e829644ae9?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=800&q=75"
     ],
     "packages": [
@@ -1113,8 +1113,8 @@ export const DECORATION_EVENTS: EventDetail[] = [
       }
     ],
     "galleryImages": [
-      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1600428853876-fb3179bec3b2?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1601482441062-b9f13131f33a?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1762709118823-7fe9c9afa8ff?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1752857015591-c1b85c01c461?auto=format&fit=crop&w=800&q=75"
     ],
     "packages": [
@@ -1184,9 +1184,9 @@ export const DECORATION_EVENTS: EventDetail[] = [
       }
     ],
     "galleryImages": [
-      "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1682802142549-b72576d31d5e?auto=format&fit=crop&w=800&q=75"
+      "https://images.unsplash.com/photo-1587271636175-90d58cdad458?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1756190564669-215843660e93?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1745573673043-43a4f3b91466?auto=format&fit=crop&w=800&q=75"
     ],
     "packages": [
       {
@@ -1257,7 +1257,7 @@ export const DECORATION_EVENTS: EventDetail[] = [
     "galleryImages": [
       "https://images.unsplash.com/photo-1732519970445-8f2d6998961f?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1666190092159-3171cf0fbb12?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75"
+      "https://images.unsplash.com/photo-1767070805821-60c701885151?auto=format&fit=crop&w=800&q=75"
     ],
     "packages": [
       {
@@ -1305,7 +1305,7 @@ export const DECORATION_EVENTS: EventDetail[] = [
     "galleryImages": [
       "https://images.unsplash.com/photo-1733937140732-2cc70a1d7017?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1666190092159-3171cf0fbb12?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1607861716497-e65ab29fc7ac?auto=format&fit=crop&w=800&q=75"
+      "https://images.unsplash.com/photo-1768776183122-95c7d3adbf3e?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -1446,7 +1446,7 @@ export const WEDDING_EVENTS: EventDetail[] = [
     badge: "Best Haldi Décor & Planning in Rewa",
     title: "Haldi Rasam Ki Grand Sajawat & Yellow Floral Themes",
     subtitle: "Desi genda phoolon ki barsaat, custom photobooths, traditional peela mandap aur dhamaakedar dhol ke sath manaiye apni Haldi ki rasam.",
-    heroImage: "https://images.unsplash.com/photo-1607861716497-e65ab29fc7ac?auto=format&fit=crop&w=1200&q=80",
+    heroImage: "https://images.unsplash.com/photo-1681717166573-f71589207785?auto=format&fit=crop&w=1200&q=80",
     stats: [
       { number: "450+", label: "Haldi Functions Done" },
       { number: "100%", label: "Fresh Phool & Themes" },
@@ -1462,7 +1462,7 @@ export const WEDDING_EVENTS: EventDetail[] = [
     ],
     "galleryImages": [
       "https://images.unsplash.com/photo-1771992228552-4cf49506dd7b?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1681717165154-00750796278c?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1733937140732-2cc70a1d7017?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
@@ -1498,7 +1498,7 @@ export const WEDDING_EVENTS: EventDetail[] = [
     badge: "Designer Mehendi Artists & Vibrant Décor",
     title: "Mehendi Ki Raat, Sajawat Aur Khaas Andaaz",
     subtitle: "Bright colorful canopies, bohemian floral jhula, fairy light ambience aur Rewa ke best bridal mehendi artists ke sath apni sham banayein yaadgar.",
-    heroImage: "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=1200&q=80",
+    heroImage: "https://images.unsplash.com/photo-1730003873829-09b4b16444c1?auto=format&fit=crop&w=1200&q=80",
     stats: [
       { number: "500+", label: "Mehendi Events Crafted" },
       { number: "25+", label: "Expert Mehendi Artists" },
@@ -1513,9 +1513,9 @@ export const WEDDING_EVENTS: EventDetail[] = [
       { title: "Evening Fairy Lighting", desc: "Shaam ke waqt glowing fairy lights, lanterns aur warm chandeliers ka jadoo." },
     ],
     "galleryImages": [
-      "https://images.unsplash.com/photo-1628221482312-439eb2f3367d?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1756483510767-35245638c057?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1607861716497-e65ab29fc7ac?auto=format&fit=crop&w=800&q=75"
+      "https://images.unsplash.com/photo-1505932794465-147d1f1b2c97?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1732118400647-a81e3b37be87?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1755234993813-054bc8c8a698?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -1543,7 +1543,7 @@ export const WEDDING_EVENTS: EventDetail[] = [
     badge: "Two Hearts, One Promise",
     title: "Romantic Sagai & Royal Ring Ceremony Planners",
     subtitle: "Grand engagement stage, ring platter entry, cold pyro sparklers aur magical fairytale floral decor jo dono parivaron ko impress kar de.",
-    heroImage: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80",
+    heroImage: "https://images.unsplash.com/photo-1760080839561-6b1228ed2e60?auto=format&fit=crop&w=1200&q=80",
     stats: [
       { number: "600+", label: "Ring Ceremonies Managed" },
       { number: "180+", label: "Venues Covered in MP" },
@@ -1558,8 +1558,8 @@ export const WEDDING_EVENTS: EventDetail[] = [
       { title: "Cinematic Stage Lighting", desc: "Warm ambient wash, moving beam lights aur spotlight couple portraits ke liye." },
     ],
     "galleryImages": [
-      "https://images.unsplash.com/photo-1682802142549-b72576d31d5e?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1680491024206-7321f775d538?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1573951648026-fa38ff3f6770?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1754782921197-ba8514594184?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
@@ -1588,7 +1588,7 @@ export const WEDDING_EVENTS: EventDetail[] = [
     badge: "High-Energy Music & Concert Stage",
     title: "Dhamakedar Sangeet Night & Dance Stage Décor",
     subtitle: "Concert-style LED wall, truss lighting, professional DJ sound, energetic anchoring aur Bollywood style dance floor setup.",
-    heroImage: "https://images.unsplash.com/photo-1766113483422-7c871de23591?auto=format&fit=crop&w=1200&q=80",
+    heroImage: "https://images.unsplash.com/photo-1587012521796-6359d3678f2a?auto=format&fit=crop&w=1200&q=80",
     stats: [
       { number: "350+", label: "Rocking Sangeet Nights" },
       { number: "Top DJs", label: "Rewa & MP Region" },
@@ -1603,9 +1603,9 @@ export const WEDDING_EVENTS: EventDetail[] = [
       { title: "Stage Floor & Couple Ramp", desc: "Non-slip high gloss dance stage jaha sabhi comfortably perform kar sakein." },
     ],
     "galleryImages": [
-      "https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1756483510767-35245638c057?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1682802142549-b72576d31d5e?auto=format&fit=crop&w=800&q=75"
+      "https://images.unsplash.com/photo-1717011969223-0217a302ec6f?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1601482441062-b9f13131f33a?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1517263904808-5dc91e3e7044?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -1633,7 +1633,7 @@ export const WEDDING_EVENTS: EventDetail[] = [
     badge: "Glamorous Evening & Lounge Soiree",
     title: "Glamorous Cocktail Night & Moody Bar Décor",
     subtitle: "Sleek modern lounge seating, neon glow lighting, signature mocktail/cocktail bars aur acoustic live band setup.",
-    heroImage: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1200&q=80",
+    heroImage: "https://images.unsplash.com/photo-1771476320575-02ab6cc4ecd9?auto=format&fit=crop&w=1200&q=80",
     stats: [
       { number: "200+", label: "Cocktail Parties Managed" },
       { number: "Chic", label: "Modern Lounge Themes" },
@@ -1648,9 +1648,9 @@ export const WEDDING_EVENTS: EventDetail[] = [
       { title: "Acoustic / Live Saxophone Setup", desc: "Subtle background melodies jo party ke mahol ko ultra-luxurious banati hain." },
     ],
     "galleryImages": [
-      "https://images.unsplash.com/photo-1766113483422-7c871de23591?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1771395999627-a57a7c6739d1?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1727280376746-b89107a5b0df?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1600428853876-fb3179bec3b2?auto=format&fit=crop&w=800&q=75"
+      "https://images.unsplash.com/photo-1517263904808-5dc91e3e7044?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -1678,7 +1678,7 @@ export const WEDDING_EVENTS: EventDetail[] = [
     badge: "Cinematic Love Story in Rewa & MP",
     title: "Filmy Pre-Wedding Shoot Setup & Royal Locations",
     subtitle: "Rewa ke royal palaces, Govindgarh Lake, waterfalls aur custom sets par cinematic drone photography aur 4K video teaser.",
-    heroImage: "https://images.unsplash.com/photo-1628315821764-e15c0cec9024?auto=format&fit=crop&w=1200&q=80",
+    heroImage: "https://images.unsplash.com/photo-1630526720753-aa4e71acf67d?auto=format&fit=crop&w=1200&q=80",
     stats: [
       { number: "300+", label: "Couples Captured" },
       { number: "15+", label: "Secret Scenic Spots" },
@@ -1694,8 +1694,8 @@ export const WEDDING_EVENTS: EventDetail[] = [
     ],
     "galleryImages": [
       "https://images.unsplash.com/photo-1754782921197-ba8514594184?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1682802142549-b72576d31d5e?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?auto=format&fit=crop&w=800&q=75"
+      "https://images.unsplash.com/photo-1735052712464-9d24b69be5f5?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1722952934708-749c22eb2e58?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -1723,7 +1723,7 @@ export const WEDDING_EVENTS: EventDetail[] = [
     badge: "All-in-One Wedding Solutions",
     title: "Complete All-in-One Shaadi Packages in Rewa & MP",
     subtitle: "Haldi se lekar Vidai tak — Mandap, Catering, Stage, DJ, Photography sab kuch ek hi transparent package me bina kisi jhanjhat ke.",
-    heroImage: "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=1200&q=80",
+    heroImage: "https://images.unsplash.com/photo-1756190564669-215843660e93?auto=format&fit=crop&w=1200&q=80",
     stats: [
       { number: "750+", label: "Weddings Executed" },
       { number: "All-In-One", label: "Single Vendor Solution" },
@@ -1738,9 +1738,9 @@ export const WEDDING_EVENTS: EventDetail[] = [
       { title: "Dedicated Event Director", desc: "Event day par ek senior event manager jo har minute ka coordination sambhalta hai." },
     ],
     "galleryImages": [
-      "https://images.unsplash.com/photo-1682802142549-b72576d31d5e?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1732259495388-af40b972c311?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75"
+      "https://images.unsplash.com/photo-1774024051727-499f15bff4c9?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1573951648026-fa38ff3f6770?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -1774,7 +1774,7 @@ export const WEDDING_EVENTS: EventDetail[] = [
     badge: "Zero-Stress Wedding Management",
     title: "Zero-Stress Complete Wedding Planning & Execution",
     subtitle: "Roka se lekar Vidai tak, har rasam ki zimmedari hamari — aap aur aapka parivar sirf khushiyan manaiye aur guest bane rahiye.",
-    heroImage: "https://images.unsplash.com/photo-1682802142549-b72576d31d5e?auto=format&fit=crop&w=1200&q=80",
+    heroImage: "https://images.unsplash.com/photo-1741201864710-8c031ebd13bc?auto=format&fit=crop&w=1200&q=80",
     stats: [
       { number: "100%", label: "Stress Free Execution" },
       { number: "24x7", label: "Wedding Helpline Support" },
@@ -1789,8 +1789,8 @@ export const WEDDING_EVENTS: EventDetail[] = [
       { title: "Guest Helpdesk & Room Allocation", desc: "Hotel rooms, welcome hampers aur out-of-town guests ka special khayal." },
     ],
     "galleryImages": [
-      "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1732259495388-af40b972c311?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1587271407850-8d438ca9fdf2?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1742281257707-0c7f7e5ca9c6?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1763553113332-800519753e40?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
@@ -1828,9 +1828,9 @@ export const WEDDING_EVENTS: EventDetail[] = [
       { title: "Buffet & Dining Hall Illumination", desc: "Food area me appetizing warm lighting aur clean thematic presentation." },
     ],
     "galleryImages": [
-      "https://images.unsplash.com/photo-1600428853876-fb3179bec3b2?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1682802142549-b72576d31d5e?auto=format&fit=crop&w=800&q=75"
+      "https://images.unsplash.com/photo-1757017199822-beab923a1afc?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1741201864710-8c031ebd13bc?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -1858,7 +1858,7 @@ export const WEDDING_EVENTS: EventDetail[] = [
     badge: "Opulent & Royal Celebrations",
     title: "Luxury & High-Profile Wedding Planner in Madhya Pradesh",
     subtitle: "5-star hospitality, customized palace architectural sets, celebrity performers, designer gifting aur bespoke royal execution.",
-    heroImage: "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?auto=format&fit=crop&w=1200&q=80",
+    heroImage: "https://images.unsplash.com/photo-1587271407850-8d438ca9fdf2?auto=format&fit=crop&w=1200&q=80",
     stats: [
       { number: "100+", label: "Elite Luxury Weddings" },
       { number: "VIP", label: "Security & Guest Care" },
@@ -1873,9 +1873,9 @@ export const WEDDING_EVENTS: EventDetail[] = [
       { title: "Gourmet Global Catering Concepts", desc: "Live chaat counters, regional delicacies aur international food stations." },
     ],
     "galleryImages": [
-      "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1756190564669-215843660e93?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1682802142549-b72576d31d5e?auto=format&fit=crop&w=800&q=75"
+      "https://images.unsplash.com/photo-1745573673416-66e829644ae9?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -1912,9 +1912,9 @@ export const WEDDING_EVENTS: EventDetail[] = [
       { title: "On-Site Command Center", desc: "Hotel me 24/7 helpdesk jo guests ki har zaroorat ka dhyan rakhti hai." },
     ],
     "galleryImages": [
-      "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1682802142549-b72576d31d5e?auto=format&fit=crop&w=800&q=75"
+      "https://images.unsplash.com/photo-1630526720753-aa4e71acf67d?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1587271636175-90d58cdad458?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1756190564669-215843660e93?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -1936,7 +1936,7 @@ export const WEDDING_EVENTS: EventDetail[] = [
     badge: "Affordable & Honest Pricing",
     title: "Budget-Friendly Wedding Planning — Smart & Grand",
     subtitle: "Kam kharche me bhi shandar dikhne wali shaadi — Smart vendor management, honest costing aur zero unnecessary commission.",
-    heroImage: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80",
+    heroImage: "https://images.unsplash.com/photo-1573951648026-fa38ff3f6770?auto=format&fit=crop&w=1200&q=80",
     stats: [
       { number: "400+", label: "Budget Weddings Managed" },
       { number: "Save 25%", label: "Through Smart Planning" },
@@ -1951,9 +1951,9 @@ export const WEDDING_EVENTS: EventDetail[] = [
       { title: "Transparent Cost Breakdown", desc: "Har cheez ka written bill aur advance clear commitment." },
     ],
     "galleryImages": [
-      "https://images.unsplash.com/photo-1719499809556-070ec0dfda8b?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1745573673583-a51f665ae48e?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1680993032090-1ef7ea9b51e5?auto=format&fit=crop&w=800&q=75",
-      "https://images.unsplash.com/photo-1607861716497-e65ab29fc7ac?auto=format&fit=crop&w=800&q=75"
+      "https://images.unsplash.com/photo-1742281258189-3b933879867a?auto=format&fit=crop&w=800&q=75"
     ],
     packages: [
       {
@@ -2070,7 +2070,7 @@ export const CORPORATE_EVENTS: EventDetail[] = [
       { title: "Award & Trophy Stage", desc: "Star performers ko recognize karne ke liye special spotlight stage." },
     ],
     "galleryImages": [
-      "https://images.unsplash.com/photo-1732259495388-af40b972c311?auto=format&fit=crop&w=800&q=75",
+      "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=800&q=75",
       "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=75"
     ],
@@ -2321,7 +2321,7 @@ export const CORPORATE_EVENTS: EventDetail[] = [
     badge: "Sales Milestone Celebration",
     title: "Sales Milestone & Target Achievement Victory Bash",
     subtitle: "Team ke target achieve hone par special celebratory event — Champagne pop, celebratory cake, trophy felicitation aur high-energy party.",
-    heroImage: "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=1200&q=80",
+    heroImage: "https://images.unsplash.com/photo-1768508951262-42931f7ad924?auto=format&fit=crop&w=1200&q=80",
     stats: [
       { number: "160+", label: "Victory Bashes Managed" },
       { number: "100%", label: "High Morale & Celebration" },
